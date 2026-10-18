@@ -1,0 +1,42 @@
+{
+  "schema_version": "workflow_view.v1",
+  "title": "沉淀 Remotion 能力",
+  "sections": [
+    {
+      "id": "request",
+      "title": "能力需求",
+      "fields": [
+        {
+          "id": "request",
+          "label": "缺什么能力",
+          "type": "text",
+          "required": true,
+          "placeholder": "例如：需要展示总量向多个目标分配，但现有 flow 不能表达比例"
+        },
+        {
+          "id": "workspace_root",
+          "label": "扩展源目录",
+          "type": "text",
+          "picker": "directory",
+          "required": true,
+          "placeholder": "选择 himind-media-studio 仓库或插件工作区"
+        }
+      ]
+    },
+    {
+      "id": "audit",
+      "title": "审计已有能力",
+      "fields": [
+        {
+          "id": "capability_id",
+          "label": "能力 ID",
+          "type": "text",
+          "required": false,
+          "placeholder": "例如：sankey-flow",
+          "hint": "填写后跳过提案，直接进入六件套审计。"
+        }
+      ]
+    }
+  ],
+  "actions": ["gap", "audit"]
+}

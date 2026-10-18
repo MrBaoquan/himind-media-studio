@@ -1,0 +1,20 @@
+{
+  "schema": "himind.video.style-pack.v1",
+  "id": "kinetic-reel",
+  "version": "1.0.0",
+  "name": "动态字体 Reel",
+  "description": "Condensed display type, HUD micro-type, three.js generative layers and a beat-locked score.",
+  "renderer": "browser-code",
+  "entry": "render.mjs",
+  "video_out": "out/reel.mp4",
+  "duration_seconds": 17,
+  "preview": {
+    "sheet_out": "out/check/sheet.jpg",
+    "strip_out": "out/check/strip.jpg",
+    "stills_out": "out/stills"
+  },
+  "license": "MIT",
+  "network": {"mode": "none", "allow": []},
+  "delivery": {"web": true, "web_width": 1280, "web_crf": 23, "max_master_mb": 200},
+  "attribution": "Adapted from tuzhechen2005/opus-video-skills (MIT); render.mjs derived from John Heibel's ClaudeAnimationBase (MIT)."
+}

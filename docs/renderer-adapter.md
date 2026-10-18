@@ -4,9 +4,9 @@
 
 ## 调用顺序
 
-1. AI 调用 `short.video.render.start`，得到 `job.job_id`、`job.recipe_path` 和 `adapter`。
+1. AI 调用 `media.workbench.render.start`，得到 `job.job_id`、`job.recipe_path` 和 `adapter`。
 2. 适配器读取 `recipe_path`，在同一个 `workspace_root` 内运行自己的渲染工具链。禁止读取工作区外的素材，禁止执行未声明的任意命令。
-3. 适配器把 `video/mp4`、`video/webm` 或其他明确的 `video/*` 文件写入工作区内，再调用 `short.video.render.complete`，传入 `job_id`、`status: completed`、`artifact_path` 和 `renderer`。
+3. 适配器把 `video/mp4`、`video/webm` 或其他明确的 `video/*` 文件写入工作区内，再调用 `media.workbench.render.complete`，传入 `job_id`、`status: completed`、`artifact_path` 和 `renderer`。
 4. 失败时传入 `status: failed` 和结构化可读的 `message`。AI 使用 `render.status` 查询状态，使用 `artifact.export` 获取制品路径与 SHA-256。
 
 ## 设计约束

@@ -1,0 +1,36 @@
+{
+  "schema": "himind.video.style-pack.v1",
+  "id": "isometric-infographic",
+  "version": "1.0.0",
+  "name": "等距信息图",
+  "description": "等距模块、立体卡片、流程箭头与信息图层。",
+  "renderer": "browser-code",
+  "entry": "render.mjs",
+  "video_out": "out/video.mp4",
+  "duration_seconds": 10,
+  "preview": {
+    "sheet_out": "out/check/sheet.jpg",
+    "strip_out": "out/check/strip.jpg",
+    "stills_out": "out/stills"
+  },
+  "license": "MIT",
+  "network": {
+    "mode": "none",
+    "allow": []
+  },
+  "delivery": {
+    "web": true,
+    "web_width": 1280,
+    "web_crf": 23,
+    "max_master_mb": 50
+  },
+  "attribution": "HiMind original isometric-infographic style pack",
+  "quality": {
+    "text_audit": {
+      "enabled": true,
+      "page": "reel/index.html",
+      "times": "1.5,5,8.5"
+    },
+    "banding_gate": false
+  }
+}

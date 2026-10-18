@@ -1,0 +1,4 @@
+interface:
+  display_name: "代码型视频项目"
+  short_description: "用 AI 写代码做风格型短视频，并接入创作台"
+  default_prompt: "使用 $video-code-project：先判断是否适合代码型视频；复制 Style Pack 到工作区，写 STORYBOARD.md，调用 project.import 与 preview.review，让用户在创作台审查，再根据反馈修改代码、project.sync、重新预览并最终渲染。"

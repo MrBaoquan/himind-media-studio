@@ -1,0 +1,28 @@
+{
+  "schema": "himind.video.style-pack.v1",
+  "id": "comic-panel",
+  "version": "1.0.0",
+  "name": "漫画分镜",
+  "description": "美式漫画分镜、网点、粗描边、对话气泡与动作线。",
+  "renderer": "browser-code",
+  "entry": "render.mjs",
+  "video_out": "out/video.mp4",
+  "duration_seconds": 10,
+  "preview": {
+    "sheet_out": "out/check/sheet.jpg",
+    "strip_out": "out/check/strip.jpg",
+    "stills_out": "out/stills"
+  },
+  "license": "MIT",
+  "network": {
+    "mode": "none",
+    "allow": []
+  },
+  "delivery": {
+    "web": true,
+    "web_width": 1280,
+    "web_crf": 23,
+    "max_master_mb": 50
+  },
+  "attribution": "HiMind original comic-panel style pack"
+}

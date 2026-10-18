@@ -1,0 +1,362 @@
+[
+  {
+    "id": "leaderboard-tech",
+    "version": "1.1.0",
+    "family": "leaderboard",
+    "name": "排行榜 · 科技蓝",
+    "description": "适合数据排行、项目榜单和阶段性成果展示，通常只需替换数据和标题。",
+    "adapter": "remotion",
+    "composition": "LeaderboardTech",
+    "slots": [
+      "title",
+      "subtitle",
+      "items",
+      "logo",
+      "voiceover"
+    ],
+    "compatible_styles": [
+      "tech-blue",
+      "minimal-white"
+    ],
+    "duration_seconds": 12,
+    "status": "ready"
+  },
+  {
+    "id": "leaderboard-map-trend",
+    "version": "1.0.0",
+    "family": "leaderboard",
+    "name": "排行榜 · 地图趋势",
+    "description": "排行榜与地区标签、地图和趋势箭头组合，适合区域数据传播。",
+    "adapter": "remotion",
+    "composition": "LeaderboardMapTrend",
+    "slots": [
+      "title",
+      "items",
+      "map_data",
+      "trend",
+      "voiceover"
+    ],
+    "compatible_styles": [
+      "tech-blue"
+    ],
+    "duration_seconds": 15,
+    "status": "placeholder"
+  },
+  {
+    "id": "photo-narrative",
+    "version": "1.0.0",
+    "family": "photo-narrative",
+    "name": "图片叙事",
+    "description": "图片、标题、旁白和字幕组成的节奏化故事模板。",
+    "adapter": "hyperframes",
+    "composition": "PhotoNarrative",
+    "slots": [
+      "title",
+      "subtitle",
+      "media",
+      "voiceover",
+      "captions"
+    ],
+    "compatible_styles": [
+      "tech-blue",
+      "minimal-white"
+    ],
+    "duration_seconds": 20,
+    "status": "planned"
+  },
+  {
+    "id": "gdp-map-story",
+    "version": "1.0.0",
+    "family": "map-story",
+    "name": "地图数据故事",
+    "description": "占位实现，已被 choropleth 取代，保留用于兼容。",
+    "adapter": "remotion",
+    "composition": "GDPMapStory",
+    "slots": [
+      "title",
+      "map_data",
+      "legend",
+      "callouts",
+      "voiceover"
+    ],
+    "compatible_styles": [
+      "tech-blue"
+    ],
+    "duration_seconds": 18,
+    "status": "placeholder"
+  },
+  {
+    "id": "route-growth",
+    "version": "1.0.0",
+    "family": "map-transit",
+    "name": "路网生长",
+    "description": "按开通年份逐条生长地理线路，带站点锚定与标签避让。",
+    "adapter": "remotion",
+    "composition": "RouteGrowth",
+    "slots": [
+      "title",
+      "subtitle",
+      "period",
+      "lines",
+      "region",
+      "source"
+    ],
+    "compatible_styles": [
+      "tech-blue",
+      "culture-ink"
+    ],
+    "duration_seconds": 18,
+    "status": "ready",
+    "storyboard_shot": true,
+    "storyboard_order": 90
+  },
+  {
+    "id": "big-number",
+    "version": "1.0.0",
+    "family": "stat",
+    "name": "数字冲击",
+    "description": "让一个数字成为画面主体，用于钩子与结论。",
+    "adapter": "remotion",
+    "composition": "BigNumber",
+    "slots": [
+      "title",
+      "subtitle",
+      "value",
+      "unit",
+      "delta"
+    ],
+    "compatible_styles": [
+      "tech-blue",
+      "minimal-white",
+      "culture-ink"
+    ],
+    "duration_seconds": 5,
+    "status": "ready",
+    "data_contract": "catalog/contracts/big-number.schema.json",
+    "storyboard_shot": true,
+    "storyboard_order": 10
+  },
+  {
+    "id": "compare",
+    "version": "1.0.0",
+    "family": "compare",
+    "name": "数据对比",
+    "description": "上下两栏对比两个数值，给出一句话结论。",
+    "adapter": "remotion",
+    "composition": "Compare",
+    "slots": [
+      "title",
+      "subtitle",
+      "left",
+      "right",
+      "verdict"
+    ],
+    "compatible_styles": [
+      "tech-blue",
+      "minimal-white",
+      "culture-ink"
+    ],
+    "duration_seconds": 7,
+    "status": "ready",
+    "data_contract": "catalog/contracts/compare.schema.json",
+    "storyboard_shot": true,
+    "storyboard_order": 20
+  },
+  {
+    "id": "quote",
+    "version": "1.0.0",
+    "family": "quote",
+    "name": "引语卡",
+    "description": "大字引语逐行揭示，用于观点与官方表述。",
+    "adapter": "remotion",
+    "composition": "Quote",
+    "slots": [
+      "title",
+      "author",
+      "role"
+    ],
+    "compatible_styles": [
+      "tech-blue",
+      "minimal-white",
+      "culture-ink"
+    ],
+    "duration_seconds": 6,
+    "status": "ready",
+    "data_contract": "catalog/contracts/quote.schema.json",
+    "storyboard_shot": true,
+    "storyboard_order": 30
+  },
+  {
+    "id": "storyboard",
+    "version": "1.0.0",
+    "family": "storyboard",
+    "name": "多镜头成片",
+    "description": "把若干镜头串成一条片子，支持交叉淡入淡出。",
+    "adapter": "remotion",
+    "composition": "Storyboard",
+    "slots": [
+      "title",
+      "storyboard"
+    ],
+    "compatible_styles": [
+      "tech-blue",
+      "minimal-white",
+      "culture-ink"
+    ],
+    "duration_seconds": 14,
+    "status": "ready",
+    "data_contract": "catalog/contracts/storyboard.schema.json"
+  },
+  {
+    "id": "bar-race",
+    "version": "1.0.0",
+    "family": "race",
+    "name": "时序竞速",
+    "description": "按年份播放的排名竞速，名次平滑过渡。",
+    "adapter": "remotion",
+    "composition": "BarRace",
+    "slots": [
+      "title",
+      "items",
+      "years"
+    ],
+    "compatible_styles": [
+      "tech-blue",
+      "minimal-white",
+      "culture-ink"
+    ],
+    "duration_seconds": 12,
+    "status": "ready",
+    "data_contract": "catalog/contracts/bar-race.schema.json",
+    "storyboard_shot": true,
+    "storyboard_order": 40
+  },
+  {
+    "id": "timeline",
+    "version": "1.0.0",
+    "family": "timeline",
+    "name": "时间线",
+    "description": "纵向事件时间线，标签自动避让。",
+    "adapter": "remotion",
+    "composition": "Timeline",
+    "slots": [
+      "title",
+      "events"
+    ],
+    "compatible_styles": [
+      "tech-blue",
+      "minimal-white",
+      "culture-ink"
+    ],
+    "duration_seconds": 12,
+    "status": "ready",
+    "data_contract": "catalog/contracts/timeline.schema.json",
+    "storyboard_shot": true,
+    "storyboard_order": 50
+  },
+  {
+    "id": "choropleth",
+    "version": "1.0.0",
+    "family": "choropleth",
+    "name": "分级填色地图",
+    "description": "按数值给区域填色，带图例与标签避让。",
+    "adapter": "remotion",
+    "composition": "Choropleth",
+    "slots": [
+      "title",
+      "geo",
+      "values",
+      "legend"
+    ],
+    "compatible_styles": [
+      "tech-blue",
+      "minimal-white",
+      "culture-ink"
+    ],
+    "duration_seconds": 10,
+    "status": "ready",
+    "data_contract": "catalog/contracts/choropleth.schema.json",
+    "storyboard_shot": true,
+    "storyboard_order": 60
+  },
+  {
+    "id": "composition",
+    "version": "1.0.0",
+    "family": "composition",
+    "name": "占比构成",
+    "description": "用环形图、百分比堆叠条与自动图例回答整体由什么组成。",
+    "adapter": "remotion",
+    "composition": "ShareBreakdown",
+    "slots": [
+      "title",
+      "subtitle",
+      "categories",
+      "total_label",
+      "unit",
+      "source"
+    ],
+    "compatible_styles": [
+      "tech-blue",
+      "minimal-white",
+      "culture-ink"
+    ],
+    "duration_seconds": 10,
+    "status": "ready",
+    "data_contract": "catalog/contracts/composition.schema.json",
+    "storyboard_shot": true,
+    "storyboard_order": 70
+  },
+  {
+    "id": "flow",
+    "version": "1.0.0",
+    "family": "flow",
+    "name": "流程链路",
+    "description": "按步骤展示流程、链路与方法论，节点之间用生长的主轴连接。",
+    "adapter": "remotion",
+    "composition": "Flow",
+    "slots": [
+      "title",
+      "subtitle",
+      "steps",
+      "conclusion",
+      "source"
+    ],
+    "compatible_styles": [
+      "tech-blue",
+      "minimal-white",
+      "culture-ink"
+    ],
+    "duration_seconds": 10,
+    "status": "ready",
+    "data_contract": "catalog/contracts/flow.schema.json",
+    "storyboard_shot": true,
+    "storyboard_order": 80
+  },
+  {
+    "id": "sankey-flow",
+    "version": "1.0.0",
+    "family": "flow-distribution",
+    "name": "桑基流向图",
+    "description": "用节点与流向带展示总量如何分配到各个部分。",
+    "adapter": "remotion",
+    "composition": "SankeyFlow",
+    "slots": [
+      "title",
+      "subtitle",
+      "links",
+      "unit",
+      "total_label",
+      "source"
+    ],
+    "compatible_styles": [
+      "tech-blue",
+      "minimal-white",
+      "culture-ink"
+    ],
+    "duration_seconds": 10,
+    "status": "ready",
+    "data_contract": "catalog/contracts/sankey.schema.json",
+    "storyboard_shot": true,
+    "storyboard_order": 85
+  }
+]

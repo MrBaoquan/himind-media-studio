@@ -1,0 +1,4 @@
+interface:
+  display_name: "视频能力作者"
+  short_description: "把视觉缺口沉淀为新的 Remotion 能力"
+  default_prompt: "使用 $video-capability-author，先判断现有 Shot 是否足够；不足时提出能力提案，写 Shot/Technique/Contract，注册模板并跑门禁，最后沉淀为 Candidate。"

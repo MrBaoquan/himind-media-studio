@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "choropleth data contract",
+  "type": "object",
+  "required": ["geo", "values"],
+  "properties": {
+    "geo": {"type": "object", "required": ["features"], "description": "GeoJSON FeatureCollection"},
+    "values": {"type": "object", "minProperties": 1, "description": "区域名 → 数值"},
+    "unit": {"type": "string"},
+    "title": {"type": "string"},
+    "subtitle": {"type": "string"},
+    "source": {"type": "string"}
+  }
+}

@@ -1,0 +1,246 @@
+{
+  "schema": "himind.style-sources.v1",
+  "version": "1.0.0",
+  "sources": [
+    {
+      "id": "remotion",
+      "name": "Remotion",
+      "url": "https://github.com/remotion-dev/remotion",
+      "license": "check repository LICENSE",
+      "stack": [
+        "react",
+        "canvas",
+        "webgl"
+      ],
+      "runtime": "remotion",
+      "candidate_styles": [
+        "data-story",
+        "motion-typography",
+        "transitions"
+      ],
+      "priority": "p1",
+      "status": "candidate"
+    },
+    {
+      "id": "motion-canvas",
+      "name": "Motion Canvas",
+      "url": "https://github.com/motion-canvas/motion-canvas",
+      "license": "check repository LICENSE",
+      "stack": [
+        "typescript",
+        "canvas"
+      ],
+      "runtime": "node",
+      "candidate_styles": [
+        "whiteboard-explainer",
+        "technical-diagram"
+      ],
+      "priority": "p1",
+      "status": "candidate"
+    },
+    {
+      "id": "manim",
+      "name": "Manim Community",
+      "url": "https://github.com/ManimCommunity/manim",
+      "license": "MIT (verify assets separately)",
+      "stack": [
+        "python",
+        "cairo"
+      ],
+      "runtime": "python",
+      "candidate_styles": [
+        "math-explainer",
+        "algorithm-visualization"
+      ],
+      "priority": "p2",
+      "status": "candidate"
+    },
+    {
+      "id": "threejs",
+      "name": "three.js",
+      "url": "https://github.com/mrdoob/three.js",
+      "license": "MIT",
+      "stack": [
+        "webgl"
+      ],
+      "runtime": "browser-code",
+      "candidate_styles": [
+        "3d-product-reel",
+        "chrome-glass",
+        "particle-terrain"
+      ],
+      "priority": "p0",
+      "status": "candidate"
+    },
+    {
+      "id": "p5js",
+      "name": "p5.js",
+      "url": "https://github.com/processing/p5.js",
+      "license": "LGPL-2.1 (verify)",
+      "stack": [
+        "canvas"
+      ],
+      "runtime": "browser-code",
+      "candidate_styles": [
+        "generative-art",
+        "paper-collage",
+        "hand-drawn"
+      ],
+      "priority": "p0",
+      "status": "candidate"
+    },
+    {
+      "id": "roughjs",
+      "name": "Rough.js",
+      "url": "https://github.com/rough-stuff/rough",
+      "license": "MIT",
+      "stack": [
+        "canvas",
+        "svg"
+      ],
+      "runtime": "browser-code",
+      "candidate_styles": [
+        "whiteboard-explainer",
+        "sketch-diagram"
+      ],
+      "priority": "p0",
+      "status": "converted"
+    },
+    {
+      "id": "d3",
+      "name": "D3",
+      "url": "https://github.com/d3/d3",
+      "license": "ISC",
+      "stack": [
+        "svg",
+        "canvas"
+      ],
+      "runtime": "browser-code",
+      "candidate_styles": [
+        "data-chart-reel",
+        "animated-map"
+      ],
+      "priority": "p0",
+      "status": "candidate"
+    },
+    {
+      "id": "echarts",
+      "name": "Apache ECharts",
+      "url": "https://github.com/apache/echarts",
+      "license": "Apache-2.0",
+      "stack": [
+        "canvas",
+        "svg"
+      ],
+      "runtime": "browser-code",
+      "candidate_styles": [
+        "dashboard-reel",
+        "data-chart-reel"
+      ],
+      "priority": "p0",
+      "status": "candidate"
+    },
+    {
+      "id": "gsap",
+      "name": "GSAP",
+      "url": "https://github.com/greensock/GSAP",
+      "license": "check current GSAP license",
+      "stack": [
+        "dom",
+        "svg"
+      ],
+      "runtime": "browser-code",
+      "candidate_styles": [
+        "kinetic-typography",
+        "timeline-transition"
+      ],
+      "priority": "p1",
+      "status": "candidate"
+    },
+    {
+      "id": "lottie",
+      "name": "Lottie",
+      "url": "https://github.com/airbnb/lottie-web",
+      "license": "MIT runtime; animation assets licensed separately",
+      "stack": [
+        "svg",
+        "canvas"
+      ],
+      "runtime": "browser-code",
+      "candidate_styles": [
+        "icon-motion",
+        "illustration-loop"
+      ],
+      "priority": "p2",
+      "status": "candidate"
+    },
+    {
+      "id": "rive",
+      "name": "Rive",
+      "url": "https://github.com/rive-app/rive",
+      "license": "runtime license and asset licenses must be checked",
+      "stack": [
+        "canvas",
+        "webgl"
+      ],
+      "runtime": "browser-code",
+      "candidate_styles": [
+        "character-animation",
+        "ui-motion"
+      ],
+      "priority": "p2",
+      "status": "candidate"
+    },
+    {
+      "id": "polyhaven",
+      "name": "Poly Haven",
+      "url": "https://polyhaven.com",
+      "license": "CC0",
+      "stack": [
+        "textures",
+        "hdri",
+        "models"
+      ],
+      "runtime": "none",
+      "candidate_styles": [
+        "3d-materials",
+        "paper-textures"
+      ],
+      "priority": "p1",
+      "status": "asset-source"
+    },
+    {
+      "id": "fontsource",
+      "name": "Fontsource",
+      "url": "https://github.com/fontsource/fontsource",
+      "license": "per-font OFL/other; verify each font",
+      "stack": [
+        "fonts"
+      ],
+      "runtime": "none",
+      "candidate_styles": [
+        "typography-assets"
+      ],
+      "priority": "p1",
+      "status": "asset-source"
+    },
+    {
+      "id": "opus-video-skills",
+      "name": "opus-video-skills",
+      "url": "https://github.com/tuzhechen2005/opus-video-skills",
+      "license": "MIT",
+      "stack": [
+        "p5js",
+        "threejs",
+        "canvas"
+      ],
+      "runtime": "browser-code",
+      "candidate_styles": [
+        "kinetic-reel",
+        "painted-animation"
+      ],
+      "priority": "p0",
+      "status": "converted"
+    }
+  ]
+}

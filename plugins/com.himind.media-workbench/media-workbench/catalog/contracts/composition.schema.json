@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "composition data contract",
+  "type": "object",
+  "required": ["categories"],
+  "properties": {
+    "categories": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "required": ["label", "value"],
+        "properties": {
+          "label": {"type": "string"},
+          "value": {"type": "number", "minimum": 0},
+          "color": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "unit": {"type": "string"},
+    "total_label": {"type": "string"},
+    "decimals": {"type": "integer", "minimum": 0, "maximum": 3},
+    "insight": {"type": "string"}
+  },
+  "additionalProperties": true
+}

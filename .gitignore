@@ -6,9 +6,12 @@ test-output/
 # Plugin binaries are rebuilt before packaging
 plugins/**/bin/
 
+# Local render projects produced by the workbench (inputs, frames, exports)
+video-project-*/
+
 # Local Agent authoring state
 .extension-state/
-.himind-video/
+.himind-media/
 
 # Editor and operating-system files
 .vscode/
@@ -20,5 +23,15 @@ Thumbs.db
 node_modules/
 npm-debug.log*
 
-plugins/com.himind.short-video-creation/short-video-creation/renderer/remotion/package-lock.json
+plugins/com.himind.media-workbench/media-workbench/renderer/remotion/package-lock.json
 
+# Remotion/webpack build cache
+.cache/
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Browser-Code example generated media
+examples/**/out/
+examples/**/.cache/

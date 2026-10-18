@@ -1,0 +1,14 @@
+{
+  "name": "himind-transit-opening-timeline",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sheet": "node render.mjs --sheet=1,6,12,18,24,30,35,37 --cols=3 --w=540 --out=out/check/sheet.jpg",
+    "frames": "node render.mjs --frames --workers=1 --duration=38",
+    "encode": "node render.mjs --encode --out=out/video.mp4 --duration=38"
+  },
+  "dependencies": {
+    "puppeteer-core": "^25.11.0"
+  }
+}

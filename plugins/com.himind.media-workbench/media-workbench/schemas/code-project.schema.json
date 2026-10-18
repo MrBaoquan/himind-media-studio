@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://himind.local/schemas/code-project.schema.json",
+  "title": "HiMind Browser-Code Project",
+  "type": "object",
+  "required": ["id", "name", "mode", "renderer", "source_dir", "entry", "source_hash"],
+  "properties": {
+    "id": {"type": "string"},
+    "name": {"type": "string"},
+    "mode": {"type": "string", "const": "code"},
+    "renderer": {"type": "string", "const": "browser-code"},
+    "style_pack": {"type": "string"},
+    "style_version": {"type": "string"},
+    "source_dir": {"type": "string"},
+    "entry": {"type": "string"},
+    "source_hash": {"type": "string"},
+    "preview_status": {"type": "string", "enum": ["not_generated", "stale", "ready"]},
+    "preview_hash": {"type": "string"},
+    "determinism_status": {"type": "string", "enum": ["passed", "failed", "stale"]},
+    "determinism_hash": {"type": "string"},
+    "video_out": {"type": "string"},
+    "sheet_out": {"type": "string"},
+    "strip_out": {"type": "string"},
+    "stills_out": {"type": "string"},
+    "duration_seconds": {"type": "number"}
+  },
+  "additionalProperties": true
+}

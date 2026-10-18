@@ -1,0 +1,21 @@
+{
+  "schema": "himind.video.style-pack.v1",
+  "id": "transit-opening-timeline",
+  "version": "1.0.0",
+  "name": "线网开通时间轴",
+  "description": "白底线网开通时间轴动画：按开通日期逐条生长线路，底部同步滚动日期、区段和累计里程，突出合肥轨道交通对 12/26 的集体记忆。",
+  "renderer": "browser-code",
+  "entry": "render.mjs",
+  "video_out": "out/video.mp4",
+  "duration_seconds": 38,
+  "preview": {
+    "sheet_out": "out/check/sheet.jpg",
+    "strip_out": "out/check/strip.jpg",
+    "stills_out": "out/stills"
+  },
+  "license": "MIT",
+  "network": {"mode": "none", "allow": []},
+  "delivery": {"web": true, "web_width": 1280, "web_crf": 23, "max_master_mb": 80},
+  "attribution": "HiMind original transit-opening-timeline composition. The bundled Hefei data is a schematic subset for motion study, not an official map and not for navigation.",
+  "quality": {"banding_gate": false}
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://himind.local/schemas/brief.json",
+  "title": "HiMind Creative Brief",
+  "type": "object",
+  "required": ["version", "goal"],
+  "properties": {
+    "version": {"type": "string", "const": "himind.video.brief.v1"},
+    "goal": {"type": "string"},
+    "audience": {"type": "string"},
+    "platform": {"type": "string"},
+    "duration_seconds": {"type": "number", "minimum": 1, "maximum": 300},
+    "tone": {"type": "string"},
+    "must_include": {"type": "array", "items": {"type": "string"}},
+    "must_avoid": {"type": "array", "items": {"type": "string"}},
+    "data_refs": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

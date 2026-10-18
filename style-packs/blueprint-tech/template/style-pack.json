@@ -1,0 +1,28 @@
+{
+  "schema": "himind.video.style-pack.v1",
+  "id": "blueprint-tech",
+  "version": "1.0.0",
+  "name": "蓝图技术",
+  "description": "蓝图网格、技术制图线、尺寸标注与工程注释。",
+  "renderer": "browser-code",
+  "entry": "render.mjs",
+  "video_out": "out/video.mp4",
+  "duration_seconds": 10,
+  "preview": {
+    "sheet_out": "out/check/sheet.jpg",
+    "strip_out": "out/check/strip.jpg",
+    "stills_out": "out/stills"
+  },
+  "license": "MIT",
+  "network": {
+    "mode": "none",
+    "allow": []
+  },
+  "delivery": {
+    "web": true,
+    "web_width": 1280,
+    "web_crf": 23,
+    "max_master_mb": 50
+  },
+  "attribution": "HiMind original blueprint-tech style pack"
+}

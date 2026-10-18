@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "compare data contract",
+  "type": "object",
+  "required": ["left", "right"],
+  "properties": {
+    "unit": {"type": "string"},
+    "title": {"type": "string"},
+    "subtitle": {"type": "string"},
+    "left": {
+      "type": "object",
+      "required": ["label", "value"],
+      "properties": {
+        "label": {"type": "string"},
+        "value": {"type": "number"},
+        "note": {"type": "string"},
+        "decimals": {"type": "integer", "minimum": 0, "maximum": 4}
+      }
+    },
+    "right": {
+      "type": "object",
+      "required": ["label", "value"],
+      "properties": {
+        "label": {"type": "string"},
+        "value": {"type": "number"},
+        "note": {"type": "string"},
+        "decimals": {"type": "integer", "minimum": 0, "maximum": 4}
+      }
+    },
+    "verdict": {"type": "string", "description": "一句话结论"},
+    "source": {"type": "string"}
+  }
+}

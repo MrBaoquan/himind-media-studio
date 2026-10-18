@@ -1,0 +1,105 @@
+{
+  "schema": "himind.asset-pack.v1",
+  "id": "whiteboard-explainer",
+  "version": "1.0.0",
+  "name": "手绘白板讲解",
+  "description": "用手绘线条、箭头、图标与白板排版解释一个概念或流程，适合知识讲解、方法论拆解与产品说明。",
+  "license": "MIT",
+  "attribution": "HiMind original composition; Rough.js 4.6.6 by Preet Shihn (MIT) is vendored locally.",
+  "resources": [
+    {
+      "id": "template",
+      "type": "template",
+      "path": "template",
+      "role": "render-template",
+      "runtime": "browser-code",
+      "entry": "render.mjs",
+      "format": "directory"
+    },
+    {
+      "id": "preview",
+      "type": "image",
+      "path": "preview/sheet.jpg",
+      "role": "preview",
+      "mime": "image/jpeg"
+    },
+    {
+      "id": "storyboard",
+      "type": "docs",
+      "path": "template/STORYBOARD.md",
+      "role": "storyboard",
+      "mime": "text/markdown"
+    },
+    {
+      "id": "roughjs",
+      "type": "library",
+      "path": "template/reel/vendor/rough.esm.js",
+      "role": "render-dependency",
+      "mime": "text/javascript",
+      "description": "Rough.js 4.6.6 thin local vendor; MIT"
+    },
+    {
+      "id": "preview_loop",
+      "type": "image",
+      "path": "preview/loop.webp",
+      "role": "preview_loop",
+      "mime": "image/webp"
+    }
+  ],
+  "entrypoints": [
+    {
+      "id": "render",
+      "resource": "template",
+      "runtime": "browser-code",
+      "entry": "render.mjs",
+      "inputs": [
+        "brief.json",
+        "data.json"
+      ],
+      "outputs": [
+        "video.mp4",
+        "video-web.mp4"
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "https://github.com/rough-stuff/rough",
+    "commit": "roughjs@4.6.6",
+    "license": "MIT",
+    "adapted_files": [
+      "bundled/rough.esm.js"
+    ],
+    "changes": [
+      "local vendoring for offline deterministic Browser-Code rendering",
+      "new whiteboard composition"
+    ]
+  },
+  "permissions": {
+    "filesystem": "workspace",
+    "process": [
+      "node",
+      "chrome",
+      "ffmpeg"
+    ],
+    "network": {
+      "mode": "none",
+      "allow": []
+    }
+  },
+  "quality": {
+    "smoke": "preview/sheet.jpg",
+    "determinism": true
+  },
+  "consumers": [
+    "com.himind.media-workbench"
+  ],
+  "tags": [
+    "video",
+    "style",
+    "whiteboard",
+    "explainer",
+    "roughjs",
+    "hand-drawn",
+    "education"
+  ]
+}

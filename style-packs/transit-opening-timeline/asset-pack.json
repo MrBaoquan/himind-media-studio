@@ -1,0 +1,23 @@
+{
+  "schema": "himind.asset-pack.v1",
+  "id": "transit-opening-timeline",
+  "version": "1.0.0",
+  "name": "线网开通时间轴",
+  "description": "白底线网开通时间轴动画：按开通日期逐条生长线路，底部同步滚动日期、区段和累计里程，突出合肥轨道交通对 12/26 的集体记忆。",
+  "license": "MIT",
+  "attribution": "HiMind original transit-opening-timeline composition. The bundled Hefei data is a schematic subset for motion study, not an official map and not for navigation.",
+  "resources": [
+    {"id":"template","type":"template","path":"template","role":"render-template","runtime":"browser-code","entry":"render.mjs","format":"directory"},
+    {"id":"preview","type":"image","path":"preview/sheet.jpg","role":"preview","mime":"image/jpeg"},
+    {"id":"storyboard","type":"docs","path":"template/STORYBOARD.md","role":"storyboard","mime":"text/markdown"},
+    {"id":"preview_loop","type":"image","path":"preview/loop.webp","role":"preview_loop","mime":"image/webp"}
+  ],
+  "entrypoints": [
+    {"id":"render","resource":"template","runtime":"browser-code","entry":"render.mjs","inputs":["brief.json","data.json"],"outputs":["video.mp4","video-web.mp4"]}
+  ],
+  "permissions": {"filesystem":"workspace","process":["node","chrome","ffmpeg"],"network":{"mode":"none","allow":[]}},
+  "quality": {"smoke":"preview/sheet.jpg","determinism":true},
+  "consumers": ["com.himind.media-workbench"],
+  "tags": ["video","style","map","transit","metro","timeline","history","2d","white"]
+}
+

@@ -1,0 +1,119 @@
+{
+  "schema": "himind.asset-pack.v1",
+  "id": "painted-animation",
+  "version": "1.0.0",
+  "name": "手绘动画",
+  "description": "Hand-painted watercolour and ink animation with p5.js + p5.brush.",
+  "license": "MIT",
+  "attribution": "Adapted from tuzhechen2005/opus-video-skills (MIT); template derived from John Heibel's ClaudeAnimationBase (MIT).",
+  "resources": [
+    {
+      "id": "template",
+      "type": "template",
+      "path": "template",
+      "role": "render-template",
+      "runtime": "browser-code",
+      "entry": "render.mjs",
+      "format": "directory"
+    },
+    {
+      "id": "preview",
+      "type": "image",
+      "path": "preview/sheet.jpg",
+      "role": "preview",
+      "mime": "image/jpeg"
+    },
+    {
+      "id": "skill",
+      "type": "prompt",
+      "path": "SKILL.md",
+      "role": "authoring",
+      "mime": "text/markdown"
+    },
+    {
+      "id": "docs",
+      "type": "docs",
+      "path": "references",
+      "role": "reference",
+      "format": "directory"
+    },
+    {
+      "id": "examples",
+      "type": "template",
+      "path": "examples",
+      "role": "example",
+      "format": "directory"
+    },
+    {
+      "id": "license",
+      "type": "license",
+      "path": "LICENSE",
+      "mime": "text/plain"
+    },
+    {
+      "id": "preview_loop",
+      "type": "image",
+      "path": "preview/loop.webp",
+      "role": "preview_loop",
+      "mime": "image/webp"
+    }
+  ],
+  "entrypoints": [
+    {
+      "id": "render",
+      "resource": "template",
+      "runtime": "browser-code",
+      "entry": "render.mjs",
+      "inputs": [
+        "brief.json",
+        "data.json"
+      ],
+      "outputs": [
+        "video.mp4",
+        "video-web.mp4"
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "https://github.com/tuzhechen2005/opus-video-skills",
+    "commit": "main@2026-09-27",
+    "license": "MIT",
+    "adapted_files": [
+      "skills/painted-animation/template",
+      "skills/painted-animation/references",
+      "skills/painted-animation/examples"
+    ],
+    "changes": [
+      "added asset-pack.json",
+      "added STORYBOARD.md",
+      "added preview",
+      "integrated render.mjs CLI"
+    ]
+  },
+  "permissions": {
+    "filesystem": "workspace",
+    "process": [
+      "node",
+      "chrome",
+      "ffmpeg"
+    ],
+    "network": {
+      "mode": "none",
+      "allow": []
+    }
+  },
+  "quality": {
+    "smoke": "preview/sheet.jpg",
+    "determinism": true
+  },
+  "consumers": [
+    "com.himind.media-workbench"
+  ],
+  "tags": [
+    "video",
+    "style",
+    "painted",
+    "watercolour",
+    "animation"
+  ]
+}

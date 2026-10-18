@@ -1,0 +1,4 @@
+interface:
+  display_name: "短视频导演"
+  short_description: "先出叙事计划与分镜，再编译 Recipe"
+  default_prompt: "使用 $video-director，先把需求转成 NarrativePlan 与 StoryboardPlan，调用 plan.normalize/validate/estimate，再编译并校验 Recipe；确认计划后才交给 video-creator 预览和构建。"

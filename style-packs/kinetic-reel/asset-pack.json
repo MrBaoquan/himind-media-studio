@@ -1,0 +1,118 @@
+{
+  "schema": "himind.asset-pack.v1",
+  "id": "kinetic-reel",
+  "version": "1.0.0",
+  "name": "动态字体 Reel",
+  "description": "Condensed display type, HUD micro-type and three.js generative layers.",
+  "license": "MIT",
+  "attribution": "Adapted from tuzhechen2005/opus-video-skills (MIT).",
+  "resources": [
+    {
+      "id": "template",
+      "type": "template",
+      "path": "template",
+      "role": "render-template",
+      "runtime": "browser-code",
+      "entry": "render.mjs",
+      "format": "directory"
+    },
+    {
+      "id": "preview",
+      "type": "image",
+      "path": "preview/sheet.jpg",
+      "role": "preview",
+      "mime": "image/jpeg"
+    },
+    {
+      "id": "skill",
+      "type": "prompt",
+      "path": "SKILL.md",
+      "role": "authoring",
+      "mime": "text/markdown"
+    },
+    {
+      "id": "docs",
+      "type": "docs",
+      "path": "references",
+      "role": "reference",
+      "format": "directory"
+    },
+    {
+      "id": "examples",
+      "type": "template",
+      "path": "examples",
+      "role": "example",
+      "format": "directory"
+    },
+    {
+      "id": "license",
+      "type": "license",
+      "path": "LICENSE",
+      "mime": "text/plain"
+    },
+    {
+      "id": "preview_loop",
+      "type": "image",
+      "path": "preview/loop.webp",
+      "role": "preview_loop",
+      "mime": "image/webp"
+    }
+  ],
+  "entrypoints": [
+    {
+      "id": "render",
+      "resource": "template",
+      "runtime": "browser-code",
+      "entry": "render.mjs",
+      "inputs": [
+        "brief.json",
+        "data.json"
+      ],
+      "outputs": [
+        "video.mp4",
+        "video-web.mp4"
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "https://github.com/tuzhechen2005/opus-video-skills",
+    "commit": "main@2026-09-27",
+    "license": "MIT",
+    "adapted_files": [
+      "skills/kinetic-reel/template",
+      "skills/kinetic-reel/references",
+      "skills/kinetic-reel/examples"
+    ],
+    "changes": [
+      "added asset-pack.json",
+      "added preview",
+      "integrated render.mjs CLI"
+    ]
+  },
+  "permissions": {
+    "filesystem": "workspace",
+    "process": [
+      "node",
+      "chrome",
+      "ffmpeg"
+    ],
+    "network": {
+      "mode": "none",
+      "allow": []
+    }
+  },
+  "quality": {
+    "smoke": "preview/sheet.jpg",
+    "determinism": true
+  },
+  "consumers": [
+    "com.himind.media-workbench"
+  ],
+  "tags": [
+    "video",
+    "style",
+    "kinetic",
+    "typography",
+    "reel"
+  ]
+}

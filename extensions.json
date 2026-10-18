@@ -1,30 +1,54 @@
 {
   "schema_version": 1,
-  "name": "himind-short-video",
-  "display_name": "HiMind 短视频创作扩展源",
-  "distribution": {
-    "source": "github",
-    "default_mode": "independent",
-    "update_policy": "explicit",
-    "dashboard_required": false
-  },
-  "repository": "https://github.com/MrBaoquan/himind-short-video",
+  "repository": "https://github.com/MrBaoquan/himind-media-studio",
+  "distribution_id": "mrbaoquan/himind-media-studio",
+  "channel": "stable",
+  "catalog_id": "public",
+  "default_distribution_targets": [
+    "workbench",
+    "github"
+  ],
   "default_branch": "main",
   "extensions": [
     {
       "type": "plugin",
-      "id": "com.himind.short-video-creation",
-      "path": "plugins/com.himind.short-video-creation/short-video-creation"
+      "id": "com.himind.media-workbench",
+      "path": "plugins/com.himind.media-workbench/media-workbench"
     },
     {
       "type": "skill",
-      "id": "com.himind.short-video.creator",
+      "id": "com.himind.media.director",
+      "path": "skills/video-director"
+    },
+    {
+      "type": "skill",
+      "id": "com.himind.media.creator",
       "path": "skills/video-creator"
     },
     {
       "type": "skill",
-      "id": "com.himind.short-video.style-curator",
+      "id": "com.himind.media.style-curator",
       "path": "skills/video-style-curator"
+    },
+    {
+      "type": "workflow",
+      "id": "com.himind.media.workflow.generate-video",
+      "path": "workflows/generate-video"
+    },
+    {
+      "type": "skill",
+      "id": "com.himind.media.capability-author",
+      "path": "skills/video-capability-author"
+    },
+    {
+      "type": "workflow",
+      "id": "com.himind.media.workflow.author-remotion-capability",
+      "path": "workflows/author-remotion-capability"
+    },
+    {
+      "type": "skill",
+      "id": "com.himind.media.code-project",
+      "path": "skills/video-code-project"
     }
   ]
 }

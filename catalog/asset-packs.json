@@ -1,0 +1,387 @@
+{
+  "schema": "himind.asset-catalog.v1",
+  "name": "HiMind 自媒体创作资产",
+  "version": "1.0.0",
+  "repository": "https://github.com/MrBaoquan/himind-media-studio",
+  "release_prefix": "asset-pack",
+  "assets": [
+    {
+      "id": "kinetic-reel",
+      "name": "动态字体 Reel",
+      "version": "1.0.0",
+      "file_name": "kinetic-reel-1.0.0.hmpack",
+      "file_size": 2642201,
+      "sha256": "0707c41589dba6d0e97dfc95349084690fe21ecbac61417aa1743eeeb1c09c07",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-kinetic-reel-v1.0.0/kinetic-reel-1.0.0.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "kinetic",
+        "typography"
+      ]
+    },
+    {
+      "id": "painted-animation",
+      "name": "手绘动画",
+      "version": "1.0.0",
+      "file_name": "painted-animation-1.0.0.hmpack",
+      "file_size": 6240175,
+      "sha256": "2295c4a354962356fe98b5079d3239e95506c011929cfff75c6a9d1ebae36671",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-painted-animation-v1.0.0/painted-animation-1.0.0.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "painted",
+        "watercolour"
+      ]
+    },
+    {
+      "id": "data-kinetic",
+      "name": "数据动态字卡",
+      "version": "1.0.0",
+      "file_name": "data-kinetic-1.0.0.hmpack",
+      "file_size": 165778,
+      "sha256": "8e5f63e06e665b09564c2584dafa48e89ed99eb28032310011d400cb6e1b3453",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-data-kinetic-v1.0.0/data-kinetic-1.0.0.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "data",
+        "kinetic"
+      ]
+    },
+    {
+      "id": "paper-collage",
+      "name": "纸张拼贴",
+      "version": "1.0.1",
+      "file_name": "paper-collage-1.0.1.hmpack",
+      "file_size": 95314,
+      "sha256": "85b6978034591bfec27037cc2dde07565e690d56491d9c22d0fd5e98631480c4",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-paper-collage-v1.0.1/paper-collage-1.0.1.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "paper",
+        "collage"
+      ]
+    },
+    {
+      "id": "whiteboard-explainer",
+      "name": "手绘白板讲解",
+      "version": "1.0.0",
+      "file_name": "whiteboard-explainer-1.0.0.hmpack",
+      "file_size": 139193,
+      "sha256": "98662f76e5ab4b9f921f41a8ae72aec9c4716a35892a2e331d4546902d075eee",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-whiteboard-explainer-v1.0.0/whiteboard-explainer-1.0.0.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "whiteboard",
+        "explainer",
+        "roughjs"
+      ]
+    },
+    {
+      "id": "blueprint-tech",
+      "name": "蓝图技术",
+      "version": "1.0.0",
+      "file_name": "blueprint-tech-1.0.0.hmpack",
+      "file_size": 98661,
+      "sha256": "476705e4848c80c5f2a391576b69f4ca2750c886f1a5efc5076e64ac1fc96b8e",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-blueprint-tech-v1.0.0/blueprint-tech-1.0.0.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "blueprint",
+        "technical",
+        "diagram",
+        "engineering"
+      ]
+    },
+    {
+      "id": "comic-panel",
+      "name": "漫画分镜",
+      "version": "1.0.0",
+      "file_name": "comic-panel-1.0.0.hmpack",
+      "file_size": 147135,
+      "sha256": "2f45fe0664e5bd866fc63421373d3a39252dbb4780535a70e55120e25ce5e92a",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-comic-panel-v1.0.0/comic-panel-1.0.0.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "comic",
+        "halftone",
+        "panel",
+        "pop"
+      ]
+    },
+    {
+      "id": "data-chart-reel",
+      "name": "数据图表",
+      "version": "1.0.0",
+      "file_name": "data-chart-reel-1.0.0.hmpack",
+      "file_size": 88494,
+      "sha256": "76a9a338124e2ffce5ca5f8dd271b3f9c9c7cfcb8380c304196d8b86eddee389",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-data-chart-reel-v1.0.0/data-chart-reel-1.0.0.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "data",
+        "chart",
+        "bar",
+        "dashboard"
+      ]
+    },
+    {
+      "id": "editorial-minimal",
+      "name": "极简编辑",
+      "version": "1.0.0",
+      "file_name": "editorial-minimal-1.0.0.hmpack",
+      "file_size": 108154,
+      "sha256": "1a7b9439b66562bb230d9a6972151b41831a2c0a7abaa5eba763f51abe54adea",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-editorial-minimal-v1.0.0/editorial-minimal-1.0.0.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "editorial",
+        "minimal",
+        "serif",
+        "brand"
+      ]
+    },
+    {
+      "id": "lyric-karaoke",
+      "name": "歌词卡拉 OK",
+      "version": "1.0.0",
+      "file_name": "lyric-karaoke-1.0.0.hmpack",
+      "file_size": 171174,
+      "sha256": "41d18614fdae14c817c732957fd6318e2379a288267f681ace75c6d0ec14061e",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-lyric-karaoke-v1.0.0/lyric-karaoke-1.0.0.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "lyric",
+        "karaoke",
+        "music",
+        "typography"
+      ]
+    },
+    {
+      "id": "retro-vhs",
+      "name": "复古 VHS",
+      "version": "1.0.1",
+      "file_name": "retro-vhs-1.0.1.hmpack",
+      "file_size": 181123,
+      "sha256": "45e1960e1a8de208426b447703b517455a26afc99bdd1bf289c31462da762403",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-retro-vhs-v1.0.1/retro-vhs-1.0.1.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "retro",
+        "vhs",
+        "glitch",
+        "80s"
+      ]
+    },
+    {
+      "id": "brand-lookbook",
+      "name": "品牌手册",
+      "version": "1.0.0",
+      "file_name": "brand-lookbook-1.0.0.hmpack",
+      "file_size": 87886,
+      "sha256": "7754da8cf82ee5730bd61fcc66b339135df54c1ee6d9b2276661f6bf833d6668",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-brand-lookbook-v1.0.0/brand-lookbook-1.0.0.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "brand",
+        "lookbook",
+        "identity",
+        "palette"
+      ]
+    },
+    {
+      "id": "cinematic-map-route",
+      "name": "电影感地图路线",
+      "version": "1.0.0",
+      "file_name": "cinematic-map-route-1.0.0.hmpack",
+      "file_size": 92060,
+      "sha256": "bc834f7af2e576e6391b47933970956924844b3130dfe76c9e06768526bcf600",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-cinematic-map-route-v1.0.0/cinematic-map-route-1.0.0.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "map",
+        "route",
+        "cinematic",
+        "transit"
+      ]
+    },
+    {
+      "id": "isometric-infographic",
+      "name": "等距信息图",
+      "version": "1.0.0",
+      "file_name": "isometric-infographic-1.0.0.hmpack",
+      "file_size": 76591,
+      "sha256": "51219ce36dd728106a94dc7e8d425fbb8dfc52b9483a159076f136083d7fd70f",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-isometric-infographic-v1.0.0/isometric-infographic-1.0.0.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "isometric",
+        "infographic",
+        "diagram",
+        "flow"
+      ]
+    },
+    {
+      "id": "neon-arcade",
+      "name": "霓虹街机",
+      "version": "1.0.0",
+      "file_name": "neon-arcade-1.0.0.hmpack",
+      "file_size": 107098,
+      "sha256": "4297bbc4fb5012a07ccda0c7a90a9dcd02920bbf834e97048209aa7b5fc05e52",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-neon-arcade-v1.0.0/neon-arcade-1.0.0.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "neon",
+        "arcade",
+        "pixel",
+        "hud"
+      ]
+    },
+    {
+      "id": "3d-product-reel",
+      "name": "3D 产品展示",
+      "version": "1.0.0",
+      "file_name": "3d-product-reel-1.0.0.hmpack",
+      "file_size": 285542,
+      "sha256": "27e3ab51040382b7342205393f68c2bd6bf3bc043cf66814ad551cef78a84af2",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-3d-product-reel-v1.0.0/3d-product-reel-1.0.0.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "3d",
+        "threejs",
+        "product",
+        "studio"
+      ]
+    },
+    {
+      "id": "data-story-3d",
+      "name": "3D 数据故事",
+      "version": "1.0.0",
+      "file_name": "data-story-3d-1.0.0.hmpack",
+      "file_size": 162911,
+      "sha256": "4f02a09e8522efc7d43c840f2248d76f09c4026b11b0cadbbbf61adef7073db1",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-data-story-3d-v1.0.0/data-story-3d-1.0.0.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "3d",
+        "threejs",
+        "data",
+        "chart"
+      ]
+    },
+    {
+      "id": "celestial-seasons",
+      "name": "天体四季科普",
+      "version": "1.0.0",
+      "file_name": "celestial-seasons-1.0.0.hmpack",
+      "file_size": 1939129,
+      "sha256": "2da1beff9a142df4de29dab92dfe4c277533404b0a0830536e9b81f23cdabaa3",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-celestial-seasons-v1.0.0/celestial-seasons-1.0.0.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "3d",
+        "threejs",
+        "astronomy",
+        "science",
+        "education",
+        "space"
+      ]
+    },
+    {
+      "id": "transit-network",
+      "name": "线网地图动画",
+      "version": "1.0.0",
+      "file_name": "transit-network-1.0.0.hmpack",
+      "file_size": 243546,
+      "sha256": "704ea1edb544557be34566473d90460fb79fb19698d5eaf0cc613b93659ee860",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-transit-network-v1.0.0/transit-network-1.0.0.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "map",
+        "transit",
+        "metro",
+        "schematic",
+        "2d",
+        "white"
+      ]
+    },
+    {
+      "id": "transit-opening-timeline",
+      "name": "线网开通时间轴",
+      "version": "1.0.0",
+      "file_name": "transit-opening-timeline-1.0.0.hmpack",
+      "file_size": 1127701,
+      "sha256": "79cf2609b3f5c7bd15d5995311de681d12e077cbe2576d24a174e2794395a605",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-transit-opening-timeline-v1.0.0/transit-opening-timeline-1.0.0.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "map",
+        "transit",
+        "metro",
+        "timeline",
+        "history",
+        "2d",
+        "white"
+      ]
+    }
+  ]
+}

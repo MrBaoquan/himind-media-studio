@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://himind.local/schemas/video-plan.schema.json",
+  "title": "Generate Video Plan",
+  "type": "object",
+  "required": ["version", "brief", "narrative", "storyboard", "presentation"],
+  "properties": {
+    "version": {"type": "string", "const": "himind.video.plan.v1"},
+    "brief": {"type": "object"},
+    "narrative": {"type": "object"},
+    "storyboard": {"type": "object"},
+    "presentation": {"type": "object"}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,95 @@
+{
+  "schema": "himind.asset-pack.v1",
+  "id": "brand-lookbook",
+  "version": "1.0.0",
+  "name": "品牌手册",
+  "description": "品牌字体、色板、网格规范、原则与视觉识别卡片。",
+  "license": "MIT",
+  "attribution": "HiMind original brand-lookbook style pack.",
+  "resources": [
+    {
+      "id": "template",
+      "type": "template",
+      "path": "template",
+      "role": "render-template",
+      "runtime": "browser-code",
+      "entry": "render.mjs",
+      "format": "directory"
+    },
+    {
+      "id": "preview",
+      "type": "image",
+      "path": "preview/sheet.jpg",
+      "role": "preview",
+      "mime": "image/jpeg"
+    },
+    {
+      "id": "storyboard",
+      "type": "docs",
+      "path": "template/STORYBOARD.md",
+      "role": "storyboard",
+      "mime": "text/markdown"
+    },
+    {
+      "id": "preview_loop",
+      "type": "image",
+      "path": "preview/loop.webp",
+      "role": "preview_loop",
+      "mime": "image/webp"
+    }
+  ],
+  "entrypoints": [
+    {
+      "id": "render",
+      "resource": "template",
+      "runtime": "browser-code",
+      "entry": "render.mjs",
+      "inputs": [
+        "brief.json",
+        "data.json"
+      ],
+      "outputs": [
+        "video.mp4",
+        "video-web.mp4"
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "https://github.com/MrBaoquan/himind-media-studio",
+    "commit": "local",
+    "license": "MIT",
+    "adapted_files": [
+      "procedural Canvas 2D"
+    ],
+    "changes": [
+      "new style pack"
+    ]
+  },
+  "permissions": {
+    "filesystem": "workspace",
+    "process": [
+      "node",
+      "chrome",
+      "ffmpeg"
+    ],
+    "network": {
+      "mode": "none",
+      "allow": []
+    }
+  },
+  "quality": {
+    "smoke": "preview/sheet.jpg",
+    "determinism": true
+  },
+  "consumers": [
+    "com.himind.media-workbench"
+  ],
+  "tags": [
+    "video",
+    "style",
+    "brand",
+    "lookbook",
+    "identity",
+    "palette"
+  ]
+}

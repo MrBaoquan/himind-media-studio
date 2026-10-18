@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "sankey data contract",
+  "type": "object",
+  "required": [
+    "links"
+  ],
+  "properties": {
+    "links": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "required": [
+          "source",
+          "target",
+          "value"
+        ],
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number",
+            "minimum": 0.01
+          },
+          "color": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "unit": {
+      "type": "string"
+    },
+    "total_label": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,39 +1,211 @@
 {
-  "id": "com.himind.short-video.creator",
+  "id": "com.himind.media.creator",
   "name": "短视频创作助手",
   "author": "马宝全",
-  "categories": ["video-post", "content-production", "visual-design"],
-  "version": "0.3.2",
-  "scope": "user",
-  "description": "把对话需求转成模板化短视频项目，沿用既有风格和模板，只替换数据与定制字段，完成预览、反馈迭代和构建。",
-  "release_notes": "新增基于成熟项目的二次创作流程，优先继承模板、风格、Recipe 和质量规则，只替换本次数据与 brief；继续完善 Remotion 预览和真实 MP4 验证。",
-  "min_agent_version": "0.3.40",
-  "supported_clients": ["agent-skills"],
-  "capabilities": [
-    {"id": "short.video.catalog.list", "required": true, "min_version": "0.1.0", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.runtime.status", "required": true, "min_version": "0.3.0", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.style.list", "required": true, "min_version": "0.1.0", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.style.describe", "required": true, "min_version": "0.1.0", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.template.list", "required": true, "min_version": "0.1.0", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.template.describe", "required": true, "min_version": "0.1.0", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.project.create", "required": true, "min_version": "0.1.0", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.project.duplicate", "required": true, "min_version": "0.3.11", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.project.list", "required": true, "min_version": "0.2.0", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.project.get", "required": true, "min_version": "0.2.0", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.project.update", "required": true, "min_version": "0.2.0", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.recipe.validate", "required": true, "min_version": "0.1.0", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.preview.start", "required": true, "min_version": "0.1.0", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.preview.status", "required": true, "min_version": "0.1.0", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.feedback.record", "required": true, "min_version": "0.1.0", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.feedback.list", "required": true, "min_version": "0.2.0", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.quality.check", "required": true, "min_version": "0.1.0", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.render.start", "required": true, "min_version": "0.1.0", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.render.status", "required": true, "min_version": "0.1.0", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.render.complete", "required": true, "min_version": "0.2.0", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.artifact.export", "required": true, "min_version": "0.1.0", "provider": "com.himind.short-video-creation"},
-    {"id": "short.video.artifact.open", "required": true, "min_version": "0.3.0", "provider": "com.himind.short-video-creation"}
+  "categories": [
+    "video-post",
+    "content-production",
+    "visual-design"
   ],
-  "plugin_dependencies": [{"plugin_id": "com.himind.short-video-creation", "required": true, "min_version": "0.3.11"}],
+  "version": "0.4.2",
+  "scope": "user",
+  "description": "把对话需求转成模板化短视频项目，按叙事结构选择模板（含占比构成与流程链路），完成预览、反馈迭代和构建。",
+  "release_notes": "新增 Storyboard 画布式分镜编辑：镜头目录来自 storyboard_shot 声明，字段表单来自 template.schema，保存时执行嵌套镜头契约校验。",
+  "min_agent_version": "0.3.40",
+  "supported_clients": [
+    "agent-skills"
+  ],
+  "capabilities": [
+    {
+      "id": "media.workbench.catalog.list",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.runtime.status",
+      "required": true,
+      "min_version": "0.3.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.style.list",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.style.describe",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.template.list",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.template.describe",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.template.schema",
+      "required": true,
+      "min_version": "0.5.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.project.create",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.project.duplicate",
+      "required": true,
+      "min_version": "0.3.11",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.project.list",
+      "required": true,
+      "min_version": "0.2.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.project.get",
+      "required": true,
+      "min_version": "0.2.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.project.update",
+      "required": true,
+      "min_version": "0.2.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.recipe.validate",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.preview.start",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.preview.status",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.feedback.record",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.feedback.list",
+      "required": true,
+      "min_version": "0.2.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.quality.check",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.render.start",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.render.status",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.render.complete",
+      "required": true,
+      "min_version": "0.2.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.artifact.export",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.artifact.open",
+      "required": true,
+      "min_version": "0.3.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.route.repair",
+      "required": true,
+      "min_version": "0.4.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.route.validate",
+      "required": true,
+      "min_version": "0.4.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.label.place",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.label.validate",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.quality.banding",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.quality.visual",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    }
+  ],
+  "plugin_dependencies": [
+    {
+      "plugin_id": "com.himind.media-workbench",
+      "required": true,
+      "min_version": "0.5.0"
+    }
+  ],
   "risk_summary": "创建项目、预览和构建会写入调用方指定目录；内置 Remotion 只执行固定版本和固定参数，不接受任意命令。",
-  "contents": ["skill.json", "SKILL.md", "agents/openai.yaml"]
+  "contents": [
+    "skill.json",
+    "SKILL.md",
+    "agents/openai.yaml"
+  ],
+  "distribution_targets": [
+    "workbench",
+    "github"
+  ]
 }

@@ -1,0 +1,115 @@
+{
+  "id": "com.himind.media.capability-author",
+  "name": "视频能力作者",
+  "author": "马宝全",
+  "categories": [
+    "video-post",
+    "content-production",
+    "visual-design"
+  ],
+  "version": "0.1.1",
+  "scope": "user",
+  "description": "当现有 Shot 不足时，设计并实现新的 Remotion 视觉能力，完成契约、模板、黄金样例和门禁。",
+  "release_notes": "接入 capability.list/describe/audit：能力六件套可查询、可机械审计。",
+  "min_agent_version": "0.3.40",
+  "supported_clients": [
+    "agent-skills"
+  ],
+  "capabilities": [
+    {
+      "id": "media.workbench.catalog.list",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.capability.list",
+      "required": true,
+      "min_version": "0.5.1",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.capability.describe",
+      "required": true,
+      "min_version": "0.5.1",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.capability.audit",
+      "required": true,
+      "min_version": "0.5.1",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.template.list",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.template.describe",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.template.schema",
+      "required": true,
+      "min_version": "0.5.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.data.ingest",
+      "required": true,
+      "min_version": "0.5.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.data.bind",
+      "required": true,
+      "min_version": "0.5.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.recipe.compile",
+      "required": true,
+      "min_version": "0.5.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.recipe.validate",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.quality.check",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.render.start",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    }
+  ],
+  "plugin_dependencies": [
+    {
+      "plugin_id": "com.himind.media-workbench",
+      "required": true,
+      "min_version": "0.5.0"
+    }
+  ],
+  "risk_summary": "作者 Skill 会修改 Remotion Shot、Template、Contract 与 Fixture；新能力只有通过静帧、成片和确定性门禁后才能标记 ready。",
+  "contents": [
+    "skill.json",
+    "SKILL.md",
+    "agents/openai.yaml"
+  ],
+  "distribution_targets": [
+    "workbench",
+    "github"
+  ]
+}

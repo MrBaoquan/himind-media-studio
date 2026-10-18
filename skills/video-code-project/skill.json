@@ -1,0 +1,193 @@
+{
+  "id": "com.himind.media.code-project",
+  "name": "代码型视频项目",
+  "author": "马宝全",
+  "categories": [
+    "video-post",
+    "content-production",
+    "visual-design"
+  ],
+  "version": "0.2.1",
+  "scope": "user",
+  "description": "用 AI 写代码制作风格型短视频，并接入创作台的审查、反馈、同步与渲染闭环。",
+  "release_notes": "接入 Asset Pack 风格库、来源校验与一键创建项目。",
+  "min_agent_version": "0.3.40",
+  "supported_clients": [
+    "agent-skills"
+  ],
+  "capabilities": [
+    {
+      "id": "media.workbench.asset.list",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.asset.read",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.asset.validate",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.stylepack.scaffold",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.stylepack.validate",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.project.import",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.project.sync",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.project.data.write",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.project.context",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.preview.review",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.preview.determinism",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.quality.check",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.render.start",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.render.status",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.feedback.record",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.feedback.list",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.feedback.resolve",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.artifact.read",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.artifact.open",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.project.get",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.project.list",
+      "required": true,
+      "min_version": "0.7.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.label.place",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.label.validate",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.quality.banding",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.quality.visual",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.project.upgrade-style",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    }
+  ],
+  "plugin_dependencies": [
+    {
+      "plugin_id": "com.himind.media-workbench",
+      "required": true,
+      "min_version": "0.7.2"
+    }
+  ],
+  "risk_summary": "代码型项目会在工作区内运行 Style Pack 的 render.mjs，并生成预览与 MP4；首次渲染需要审批。",
+  "contents": [
+    "skill.json",
+    "SKILL.md",
+    "agents/openai.yaml"
+  ],
+  "distribution_targets": [
+    "workbench",
+    "github"
+  ]
+}

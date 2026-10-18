@@ -1,0 +1,28 @@
+{
+  "schema": "himind.video.style-pack.v1",
+  "id": "data-chart-reel",
+  "version": "1.0.0",
+  "name": "数据图表",
+  "description": "动画柱状图、数值滚动、坐标轴与来源标注。",
+  "renderer": "browser-code",
+  "entry": "render.mjs",
+  "video_out": "out/video.mp4",
+  "duration_seconds": 10,
+  "preview": {
+    "sheet_out": "out/check/sheet.jpg",
+    "strip_out": "out/check/strip.jpg",
+    "stills_out": "out/stills"
+  },
+  "license": "MIT",
+  "network": {
+    "mode": "none",
+    "allow": []
+  },
+  "delivery": {
+    "web": true,
+    "web_width": 1280,
+    "web_crf": 23,
+    "max_master_mb": 50
+  },
+  "attribution": "HiMind original data-chart-reel style pack"
+}

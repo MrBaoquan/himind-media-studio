@@ -1,0 +1,41 @@
+{
+  "version": "himind.video.plan.v1",
+  "brief": {
+    "goal": "解释 2025 年安徽文旅消费构成",
+    "audience": "短视频平台泛知识用户",
+    "platform": "douyin",
+    "duration_seconds": 10,
+    "tone": "克制、数据感",
+    "must_include": ["总消费", "五类构成"],
+    "data_refs": ["workspace:data/tourism-2025.json"]
+  },
+  "narrative": {
+    "thesis": "安徽文旅消费以交通和住宿为主",
+    "structure": "hook -> breakdown -> insight",
+    "key_points": [
+      {"claim": "交通是最大构成项", "evidence_ref": "data.categories[0]"},
+      {"claim": "前两类合计超过一半", "evidence_ref": "derived:top2_share"}
+    ],
+    "required_data": ["categories", "unit", "total_label"],
+    "constraints": ["百分比由系统推导", "来源必须标注"],
+    "risk_notes": []
+  },
+  "storyboard": {
+    "shots": [
+      {
+        "shot": "composition",
+        "role": "breakdown",
+        "duration_seconds": 10,
+        "data_binding": "data",
+        "transition": "fade",
+        "rationale": "占比结构最适合回答整体构成"
+      }
+    ]
+  },
+  "presentation": {
+    "title": "2025 年安徽文旅消费构成",
+    "subtitle": "按消费类型拆分",
+    "source": "数据来源：示例数据",
+    "style_id": "tech-blue"
+  }
+}

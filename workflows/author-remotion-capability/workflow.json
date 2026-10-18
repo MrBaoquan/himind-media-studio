@@ -1,0 +1,151 @@
+{
+  "schema_version": "workflow_package.v1",
+  "id": "com.himind.media.workflow.author-remotion-capability",
+  "version": "0.1.1",
+  "distribution_targets": ["workbench", "github"],
+  "name": "沉淀 Remotion 能力",
+  "description": "当现有能力不足时，先生成可审查的能力提案，再按 Shot、Technique、Contract、Template、Fixture 六件套实现并审计，最后沉淀为可复用能力。",
+  "release_notes": "修正 Runtime 网络契约；首个能力作者 Workflow：缺口 → 提案 → 确认 → 实现 → 审计。",
+  "min_agent_version": "0.3.47",
+  "local_requirements": {
+    "platform": "windows",
+    "workspace": "directory",
+    "required_tools": [],
+    "recommended_tools": ["node", "npm"]
+  },
+  "execution_policy": "segmented",
+  "entrypoints": [
+    {
+      "id": "gap",
+      "at_step": "AC-CATALOG",
+      "label": "从能力缺口开始",
+      "requires": ["request", "workspace_root"]
+    },
+    {
+      "id": "audit",
+      "at_step": "AC-AUDIT",
+      "label": "审计已有能力",
+      "requires": ["capability_id", "workspace_root"]
+    }
+  ],
+  "default_entrypoint": "gap",
+  "default_exitpoint": "audited",
+  "exits": [
+    {"id": "proposed", "at_step": "AC-GAP", "label": "能力提案已生成", "produces": []},
+    {"id": "approved", "at_step": "AC-CONFIRM", "label": "用户已确认方向", "produces": []},
+    {"id": "implemented", "at_step": "AC-IMPLEMENT", "label": "六件套已实现", "produces": []},
+    {"id": "audited", "at_step": "AC-AUDIT", "label": "能力审计通过", "produces": []}
+  ],
+  "capabilities": [
+    "media.workbench.catalog.list",
+    "media.workbench.capability.list",
+    "media.workbench.capability.describe",
+    "media.workbench.capability.audit",
+    "media.workbench.template.describe"
+  ],
+  "dependencies": {
+    "skills": [],
+    "plugins": ["com.himind.media-workbench"],
+    "connectors": [],
+    "runtimes": ["himind.builtin"]
+  },
+  "steps": [
+    {
+      "id": "AC-CATALOG",
+      "title": "读取模板目录",
+      "kind": "capability",
+      "capability_id": "media.workbench.catalog.list",
+      "execution_mode": "sync",
+      "risk_level": "read_only",
+      "input": {}
+    },
+    {
+      "id": "AC-CAPABILITIES",
+      "title": "读取能力目录",
+      "kind": "capability",
+      "capability_id": "media.workbench.capability.list",
+      "execution_mode": "sync",
+      "risk_level": "read_only",
+      "depends_on": ["AC-CATALOG"],
+      "input": {}
+    },
+    {
+      "id": "AC-GAP",
+      "title": "生成能力提案",
+      "kind": "runtime",
+      "execution_mode": "sync",
+      "risk_level": "read_only",
+      "depends_on": ["AC-CATALOG", "AC-CAPABILITIES"],
+      "runtime": {
+        "provider": "himind.builtin",
+        "prompt": "你是 Remotion 视频能力作者。根据 Workflow context 中的 request、AC-CATALOG 与 AC-CAPABILITIES 输出，判断现有能力是否足够。\n\n规则：\n1. 先检查现有 status=ready 的能力；如果只是风格、文案或数据不同，decision=reuse。\n2. 如果现有 Shot 结构接近、只缺一个可复用技法或插槽，decision=extend。\n3. 只有叙事结构确实不存在时才 decision=new_capability。\n4. 不要把高铁路线、排行榜、桑基图等题材写死；能力必须按叙事结构命名。\n5. data_contract 必须先定义 required_fields 与 source_mapping，不能先写画面再补字段。\n6. visual_direction 必须描述构图、层级、动效与标签避让，不得只写“科技感”。\n7. acceptance 必须包含数据正确性、标签不重叠、内容随帧推进、确定性渲染。\n8. approval_state 固定为 draft；本次只提案，不写代码。\n9. 只输出 JSON，不要 Markdown 代码块，不要解释。\n\n输出必须符合 himind.video.capability-proposal.v1。",
+        "workspace_path": "input.workspace_root",
+        "result_schema": "schemas/capability-proposal.schema.json",
+        "allow_network": true,
+        "tool_policy": "none",
+        "timeout_seconds": 180
+      }
+    },
+    {
+      "id": "AC-CONFIRM",
+      "title": "确认能力方向",
+      "kind": "manual",
+      "execution_mode": "sync",
+      "risk_level": "local_write",
+      "depends_on": ["AC-GAP"],
+      "approval_required": true,
+      "input": {
+        "instructions": "检查提案的 decision、structure、data_contract 与 acceptance。只有确认“这是一个可复用能力”后才继续。"
+      }
+    },
+    {
+      "id": "AC-CONTRACT",
+      "title": "确认数据契约",
+      "kind": "manual",
+      "execution_mode": "sync",
+      "risk_level": "local_write",
+      "depends_on": ["AC-CONFIRM"],
+      "approval_required": true,
+      "input": {
+        "instructions": "先写 catalog/contracts/<capability>.schema.json，并确认 data.ingest items 到契约字段的映射。契约未确认前不要写 Shot。"
+      }
+    },
+    {
+      "id": "AC-IMPLEMENT",
+      "title": "实现能力六件套",
+      "kind": "manual",
+      "execution_mode": "sync",
+      "risk_level": "local_write",
+      "depends_on": ["AC-CONTRACT"],
+      "approval_required": true,
+      "input": {
+        "instructions": "按提案实现 Shot + Technique，注册 shots/registry.js、index.jsx、templates.json、fixtures/manifest.json，并写 catalog/capabilities/<capability>.json。"
+      }
+    },
+    {
+      "id": "AC-AUDIT",
+      "title": "审计能力六件套",
+      "kind": "capability",
+      "capability_id": "media.workbench.capability.audit",
+      "execution_mode": "sync",
+      "risk_level": "read_only",
+      "depends_on": ["AC-IMPLEMENT"],
+      "when": {
+        "operator": "all",
+        "conditions": [
+          {"operator": "exists", "path": "input.capability_id"},
+          {"operator": "not_equals", "path": "input.capability_id", "value": ""}
+        ]
+      },
+      "input": {}
+    }
+  ],
+  "artifacts": [],
+  "ui": {
+    "mode": "declarative",
+    "surfaces": ["agent", "dashboard"],
+    "entry": "ui/workflow-view.json"
+  },
+  "supported_runtimes": ["himind.builtin"],
+  "created_at": "2026-10-17T00:00:00Z"
+}

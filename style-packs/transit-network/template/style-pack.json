@@ -1,0 +1,31 @@
+{
+  "schema": "himind.video.style-pack.v1",
+  "id": "transit-network",
+  "version": "1.0.0",
+  "name": "线网地图动画",
+  "description": "白底官方线网图风格的地铁 / 轨道交通网络生长动画：线路生长、站点出现、换乘脉冲、站名避让与年份轴。",
+  "renderer": "browser-code",
+  "entry": "render.mjs",
+  "video_out": "out/video.mp4",
+  "duration_seconds": 30,
+  "preview": {
+    "sheet_out": "out/check/sheet.jpg",
+    "strip_out": "out/check/strip.jpg",
+    "stills_out": "out/stills"
+  },
+  "license": "MIT",
+  "network": {
+    "mode": "none",
+    "allow": []
+  },
+  "delivery": {
+    "web": true,
+    "web_width": 1280,
+    "web_crf": 23,
+    "max_master_mb": 80
+  },
+  "attribution": "HiMind original transit-network composition. The bundled Hefei data is a schematic demo subset, not an official map and not for navigation.",
+  "quality": {
+    "banding_gate": false
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "himind.video.style-pack.v1",
+  "id": "kinetic-mini",
+  "version": "0.1.0",
+  "name": "动态字体 Mini",
+  "description": "用 Canvas 2D 逐帧绘制的动态字体短片，验证 Browser-Code 项目模式。",
+  "renderer": "browser-code",
+  "entry": "render.mjs",
+  "video_out": "out/video.mp4",
+  "duration_seconds": 10,
+  "preview": {
+    "sheet_out": "out/check/sheet.jpg",
+    "strip_out": "out/check/strip.jpg",
+    "stills_out": "out/stills"
+  },
+  "license": "MIT",
+  "network": {"mode": "none", "allow": []},
+  "delivery": {"web": true, "web_width": 1280, "web_crf": 23, "max_master_mb": 200},
+  "attribution": "HiMind sample style pack"
+}

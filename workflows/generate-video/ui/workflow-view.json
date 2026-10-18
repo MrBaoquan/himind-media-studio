@@ -1,0 +1,62 @@
+{
+  "schema_version": "workflow_view.v1",
+  "title": "对话生成短视频",
+  "sections": [
+    {
+      "id": "request",
+      "title": "创作需求",
+      "fields": [
+        {
+          "id": "request",
+          "label": "需求",
+          "type": "text",
+          "required": true,
+          "placeholder": "例如：请制作安徽省高铁路线动画示意图"
+        },
+        {
+          "id": "name",
+          "label": "项目名称",
+          "type": "text",
+          "required": true,
+          "placeholder": "例如：安徽高铁网络"
+        }
+      ]
+    },
+    {
+      "id": "output",
+      "title": "工作区与风格",
+      "fields": [
+        {
+          "id": "workspace_root",
+          "label": "工作区目录",
+          "type": "text",
+          "picker": "directory",
+          "required": true,
+          "placeholder": "选择视频项目工作区"
+        },
+        {
+          "id": "path",
+          "label": "数据文件",
+          "type": "text",
+          "required": false,
+          "placeholder": "工作区内的 CSV/JSON 路径（可选）",
+          "hint": "用于排名、地图等真实数据；留空则使用模板自带示例数据。"
+        },
+        {
+          "id": "style_id",
+          "label": "风格",
+          "type": "select",
+          "default": "tech-blue",
+          "options": [
+            "tech-blue",
+            "minimal-white",
+            "culture-ink"
+          ]
+        }
+      ]
+    }
+  ],
+  "actions": [
+    "plan"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "himind.video.style-pack.v1",
+  "id": "painted-animation",
+  "version": "1.0.0",
+  "name": "手绘动画",
+  "description": "Hand-painted watercolour and ink animation with p5.js + p5.brush.",
+  "renderer": "browser-code",
+  "entry": "render.mjs",
+  "video_out": "out/video.mp4",
+  "duration_seconds": 11,
+  "preview": {
+    "sheet_out": "out/check/sheet.jpg",
+    "strip_out": "out/check/strip.jpg",
+    "stills_out": "out/stills"
+  },
+  "license": "MIT",
+  "network": {"mode": "none", "allow": []},
+  "delivery": {"web": true, "web_width": 1280, "web_crf": 23, "max_master_mb": 200},
+  "attribution": "Adapted from tuzhechen2005/opus-video-skills (MIT); template derived from John Heibel's ClaudeAnimationBase (MIT)."
+}

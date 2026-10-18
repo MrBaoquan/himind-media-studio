@@ -1,0 +1,36 @@
+{
+  "schema": "himind.video.style-pack.v1",
+  "id": "whiteboard-explainer",
+  "version": "1.0.0",
+  "name": "手绘白板讲解",
+  "description": "Rough.js 手绘线条、白板卡片、箭头与图标，适合知识讲解和流程拆解。",
+  "renderer": "browser-code",
+  "entry": "render.mjs",
+  "video_out": "out/video.mp4",
+  "duration_seconds": 10,
+  "preview": {
+    "sheet_out": "out/check/sheet.jpg",
+    "strip_out": "out/check/strip.jpg",
+    "stills_out": "out/stills"
+  },
+  "license": "MIT",
+  "network": {
+    "mode": "none",
+    "allow": []
+  },
+  "delivery": {
+    "web": true,
+    "web_width": 1280,
+    "web_crf": 23,
+    "max_master_mb": 50
+  },
+  "attribution": "HiMind original whiteboard composition; Rough.js 4.6.6 (MIT) vendored locally",
+  "quality": {
+    "text_audit": {
+      "enabled": true,
+      "page": "reel/index.html",
+      "times": "1.5,5,8.5"
+    },
+    "banding_gate": false
+  }
+}

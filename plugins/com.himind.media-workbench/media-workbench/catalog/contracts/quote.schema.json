@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "quote data contract",
+  "type": "object",
+  "required": ["text"],
+  "properties": {
+    "text": {"type": "string", "description": "引语正文，建议 40 字以内"},
+    "author": {"type": "string"},
+    "role": {"type": "string", "description": "身份或来源说明"},
+    "source": {"type": "string"}
+  }
+}

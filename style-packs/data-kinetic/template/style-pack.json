@@ -1,0 +1,20 @@
+{
+  "schema": "himind.video.style-pack.v1",
+  "id": "data-kinetic",
+  "version": "1.0.0",
+  "name": "数据动态字卡",
+  "description": "数据驱动的动态字体与卡片动画，读取 input/data.json。",
+  "renderer": "browser-code",
+  "entry": "render.mjs",
+  "video_out": "out/video.mp4",
+  "duration_seconds": 10,
+  "preview": {
+    "sheet_out": "out/check/sheet.jpg",
+    "strip_out": "out/check/strip.jpg",
+    "stills_out": "out/stills"
+  },
+  "license": "MIT",
+  "network": {"mode": "none", "allow": []},
+  "delivery": {"web": true, "web_width": 1280, "web_crf": 23, "max_master_mb": 50},
+  "attribution": "HiMind data-kinetic style pack"
+}

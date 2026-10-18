@@ -1,0 +1,33 @@
+{
+  "version": "himind.video.plan.v1",
+  "brief": {
+    "goal": "解释一条短视频如何从想法走到发布",
+    "audience": "内容创作者",
+    "duration_seconds": 10,
+    "tone": "清晰、方法论"
+  },
+  "narrative": {
+    "thesis": "高质量短视频需要一条可复用的生产流程",
+    "structure": "process",
+    "required_data": ["steps", "conclusion"],
+    "constraints": ["步骤顺序即画面顺序"]
+  },
+  "storyboard": {
+    "shots": [
+      {
+        "shot": "flow",
+        "role": "process",
+        "duration_seconds": 10,
+        "data_binding": "data",
+        "transition": "cut",
+        "rationale": "流程结构最适合展示步骤"
+      }
+    ]
+  },
+  "presentation": {
+    "title": "内容生产流程",
+    "subtitle": "从选题到发布",
+    "source": "方法示例",
+    "style_id": "tech-blue"
+  }
+}

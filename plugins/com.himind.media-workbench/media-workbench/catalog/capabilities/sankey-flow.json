@@ -1,0 +1,51 @@
+{
+  "schema": "himind.video.capability-descriptor.v1",
+  "id": "sankey-flow",
+  "version": "1.0.0",
+  "name": "桑基流向图",
+  "status": "ready",
+  "structure": "flow-distribution",
+  "summary": "用节点与流向带展示总量如何分配到多个目标，适合产业结构、消费流向、流量分析。",
+  "tags": ["flow", "distribution", "sankey", "data-story"],
+  "reuse_for": ["产业结构", "收入分配", "消费流向", "流量分析", "预算分解"],
+  "template": {
+    "id": "sankey-flow",
+    "version": "1.0.0",
+    "composition": "SankeyFlow",
+    "data_contract": "catalog/contracts/sankey.schema.json"
+  },
+  "sources": {
+    "shot": "renderer/remotion/shots/SankeyFlow.jsx",
+    "registry": "renderer/remotion/shots/registry.js",
+    "techniques": ["renderer/remotion/techniques/sankey.js"]
+  },
+  "fixture": {
+    "manifest_id": "sankey-flow",
+    "recipe": "sankey-flow/recipe.json",
+    "frames": [30, 90, 180, 270]
+  },
+  "acceptance": [
+    "所有流向金额与来源一致，连线宽度按数值比例分配",
+    "节点和标签不重叠、不越界",
+    "内容随帧推进，不是静态图",
+    "同一 Recipe 两次渲染逐字节一致",
+    "ready 前必须通过 contract、fixture、静帧、成片与确定性门禁"
+  ],
+  "evidence": {
+    "path_basis": "repository_root",
+    "render": "dist/verify/plugin/sankey-flow.mp4",
+    "still": "dist/verify/plugin/sankey-flow-frame.png",
+    "qc": "verify-render.py 10/10 PASS",
+    "content_area": "1.22% -> 43.81% (+42.60pp)",
+    "sha256": "A3233E1ED6C1D28B568372B3E6E6ED639CFB44198A38107D5383DE8D07BE6BCA",
+    "resolution": "2160x3840",
+    "duration_seconds": 10.05
+  },
+  "authoring": {
+    "proposal_schema": "schemas/capability-proposal.schema.json",
+    "skill": "video-capability-author",
+    "workflow": "author-remotion-capability"
+  },
+  "created_at": "2026-10-17T00:00:00Z",
+  "updated_at": "2026-10-17T00:00:00Z"
+}

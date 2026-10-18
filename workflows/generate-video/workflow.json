@@ -1,0 +1,245 @@
+{
+  "schema_version": "workflow_package.v1",
+  "id": "com.himind.media.workflow.generate-video",
+  "version": "0.1.4",
+  "distribution_targets": [
+    "workbench",
+    "github"
+  ],
+  "name": "对话生成短视频",
+  "description": "从一句需求生成 Plan、校验 Recipe、创建项目、生成预览，并在审批后提交渲染。",
+  "release_notes": "加入 data.bind：把 CSV/JSON items 映射到目标模板契约。",
+  "min_agent_version": "0.3.47",
+  "local_requirements": {
+    "platform": "windows",
+    "workspace": "directory",
+    "required_tools": [],
+    "recommended_tools": []
+  },
+  "execution_policy": "segmented",
+  "entrypoints": [
+    {
+      "id": "plan",
+      "at_step": "GV-CATALOG",
+      "label": "从需求开始生成",
+      "requires": []
+    }
+  ],
+  "default_entrypoint": "plan",
+  "default_exitpoint": "render_started",
+  "exits": [
+    {
+      "id": "planned",
+      "at_step": "GV-ESTIMATE",
+      "label": "计划已校验",
+      "produces": []
+    },
+    {
+      "id": "generated",
+      "at_step": "GV-GENERATE",
+      "label": "项目与预览已生成",
+      "produces": []
+    },
+    {
+      "id": "render_started",
+      "at_step": "GV-RENDER",
+      "label": "渲染已提交",
+      "produces": []
+    }
+  ],
+  "capabilities": [
+    "media.workbench.catalog.list",
+    "media.workbench.data.ingest",
+    "media.workbench.data.bind",
+    "media.workbench.plan.normalize",
+    "media.workbench.plan.estimate",
+    "media.workbench.generate.run",
+    "media.workbench.quality.check",
+    "media.workbench.render.start"
+  ],
+  "dependencies": {
+    "skills": [],
+    "plugins": [
+      "com.himind.media-workbench"
+    ],
+    "connectors": [],
+    "runtimes": [
+      "himind.builtin"
+    ]
+  },
+  "steps": [
+    {
+      "id": "GV-CATALOG",
+      "title": "读取能力目录",
+      "kind": "capability",
+      "capability_id": "media.workbench.catalog.list",
+      "execution_mode": "sync",
+      "risk_level": "read_only",
+      "input": {}
+    },
+    {
+      "id": "GV-DATA",
+      "title": "读取数据文件",
+      "kind": "capability",
+      "capability_id": "media.workbench.data.ingest",
+      "execution_mode": "sync",
+      "risk_level": "read_only",
+      "depends_on": [
+        "GV-CATALOG"
+      ],
+      "when": {
+        "operator": "all",
+        "conditions": [
+          {
+            "operator": "exists",
+            "path": "input.path"
+          },
+          {
+            "operator": "not_equals",
+            "path": "input.path",
+            "value": ""
+          }
+        ]
+      },
+      "input": {}
+    },
+    {
+      "id": "GV-PLAN",
+      "title": "生成导演计划",
+      "kind": "runtime",
+      "execution_mode": "sync",
+      "risk_level": "read_only",
+      "depends_on": [
+        "GV-CATALOG",
+        "GV-DATA"
+      ],
+      "runtime": {
+        "provider": "himind.builtin",
+        "prompt": "你是短视频导演。根据 Workflow context 中的 request、name、style_id、GV-CATALOG 输出（以及可选的 GV-DATA 数据摘要），生成一份可执行的短视频 Plan。\n\n规则：\n1. 只使用 catalog 中 status=ready 的模板；不要编造模板 id。\n2. 先判断叙事结构：排行/变化用 leaderboard-tech 或 bar-race；单点数字用 big-number；对比用 compare；占比用 composition；流程用 flow；时间线用 timeline；地图/线路用 choropleth 或 route-growth；多镜头用 storyboard。\n3. 按 request 的叙事问题选择结构，不要因为示例里出现某个模板就优先它：\n   - 排名/榜单 -> leaderboard-tech（单年 TOP N）或 bar-race（多年变化）\n   - 单点数字 -> big-number\n   - 对比 -> compare\n   - 占比/构成 -> composition\n   - 流程/步骤 -> flow\n   - 时间顺序 -> timeline\n   - 地理分布/路径 -> choropleth 或 route-growth\n   - 多镜头 -> storyboard\n4. 如果 request 明确指定 ready 模板，或已有项目需要沿用结构，优先使用该模板；否则按上面的叙事结构选择。\n5. 某些模板可以自带随包示例数据；没有 data 时可以使用模板默认数据，但必须在 Plan 的风险说明中标注“示例数据”。用户要求真实数据时，必须使用提供的 data/path，不能编造数字或来源。\n6. 如果 request 涉及真实数据但 context 没有提供 data，不要编造；在 narrative.risk_notes 中写明需要数据。\n7. 生成 Plan JSON，必须包含 version、brief、narrative、storyboard、presentation；storyboard.shots 至少一个，包含 shot、role、duration_seconds、data_binding、rationale。\n8. presentation.style_id 使用 style_id 或 tech-blue。\n9. 只输出 JSON 本身，不要 Markdown 代码块，不要解释。\n\n输出结构参考：{\"version\":\"himind.video.plan.v1\",\"brief\":{\"goal\":\"...\"},\"narrative\":{\"thesis\":\"...\",\"structure\":\"...\",\"required_data\":[],\"risk_notes\":[]},\"storyboard\":{\"shots\":[{\"shot\":\"composition\",\"role\":\"breakdown\",\"duration_seconds\":10,\"data_binding\":\"data\",\"rationale\":\"...\"}]},\"presentation\":{\"title\":\"...\",\"subtitle\":\"...\",\"source\":\"...\",\"style_id\":\"tech-blue\"}}",
+        "workspace_path": "input.workspace_root",
+        "result_schema": "schemas/video-plan.schema.json",
+        "allow_network": true,
+        "tool_policy": "none",
+        "timeout_seconds": 180
+      }
+    },
+    {
+      "id": "GV-NORMALIZE",
+      "title": "校验并规范化计划",
+      "kind": "capability",
+      "capability_id": "media.workbench.plan.normalize",
+      "execution_mode": "sync",
+      "risk_level": "read_only",
+      "depends_on": [
+        "GV-PLAN"
+      ],
+      "input": {
+        "plan_step": "GV-PLAN"
+      }
+    },
+    {
+      "id": "GV-ESTIMATE",
+      "title": "估算时长与风险",
+      "kind": "capability",
+      "capability_id": "media.workbench.plan.estimate",
+      "execution_mode": "sync",
+      "risk_level": "read_only",
+      "depends_on": [
+        "GV-NORMALIZE"
+      ],
+      "input": {
+        "plan_step": "GV-PLAN"
+      }
+    },
+    {
+      "id": "GV-BIND",
+      "title": "映射数据契约",
+      "kind": "capability",
+      "capability_id": "media.workbench.data.bind",
+      "execution_mode": "sync",
+      "risk_level": "read_only",
+      "depends_on": [
+        "GV-NORMALIZE",
+        "GV-DATA"
+      ],
+      "when": {
+        "operator": "all",
+        "conditions": [
+          {
+            "operator": "exists",
+            "path": "input.path"
+          },
+          {
+            "operator": "not_equals",
+            "path": "input.path",
+            "value": ""
+          }
+        ]
+      },
+      "input": {
+        "plan_step": "GV-NORMALIZE",
+        "data_step": "GV-DATA"
+      }
+    },
+    {
+      "id": "GV-GENERATE",
+      "title": "创建项目并预览",
+      "kind": "capability",
+      "capability_id": "media.workbench.generate.run",
+      "execution_mode": "long_running",
+      "risk_level": "local_write",
+      "depends_on": [
+        "GV-ESTIMATE",
+        "GV-BIND"
+      ],
+      "approval_required": true,
+      "input": {
+        "plan_step": "GV-NORMALIZE",
+        "data_step": "GV-BIND",
+        "preview": true
+      }
+    },
+    {
+      "id": "GV-QUALITY",
+      "title": "运行质量门禁",
+      "kind": "capability",
+      "capability_id": "media.workbench.quality.check",
+      "execution_mode": "sync",
+      "risk_level": "read_only",
+      "depends_on": [
+        "GV-GENERATE"
+      ],
+      "input": {
+        "project_step": "GV-GENERATE"
+      }
+    },
+    {
+      "id": "GV-RENDER",
+      "title": "审批并提交渲染",
+      "kind": "capability",
+      "capability_id": "media.workbench.render.start",
+      "execution_mode": "long_running",
+      "risk_level": "local_write",
+      "depends_on": [
+        "GV-QUALITY"
+      ],
+      "approval_required": true,
+      "input": {
+        "project_step": "GV-GENERATE"
+      }
+    }
+  ],
+  "artifacts": [],
+  "ui": {
+    "mode": "declarative",
+    "surfaces": [
+      "agent",
+      "dashboard"
+    ],
+    "entry": "ui/workflow-view.json"
+  },
+  "supported_runtimes": [
+    "himind.builtin"
+  ],
+  "created_at": "2026-10-17T00:00:00Z"
+}

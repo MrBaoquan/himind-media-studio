@@ -11,13 +11,13 @@ description: 将短视频创作反馈沉淀为模板变体、Style Pack 和质�
 
 ## 沉淀流程
 
-1. 调用 `short.video.catalog.list` 获取当前模板族和风格包；用 `short.video.template.describe`、`short.video.style.describe` 读取基线版本。
-2. 调用 `short.video.project.get` 读取项目和当前 Recipe，再调用 `short.video.feedback.list` 读取 `.himind-video` 内的反馈。不要读取目录外文件，也不要把项目素材上传到外部服务。
+1. 调用 `media.workbench.catalog.list` 获取当前模板族和风格包；用 `media.workbench.template.describe`、`media.workbench.style.describe` 读取基线版本。
+2. 调用 `media.workbench.project.get` 读取项目和当前 Recipe，再调用 `media.workbench.feedback.list` 读取 `.himind-media` 内的反馈。不要读取目录外文件，也不要把项目素材上传到外部服务。
 3. 将反馈归类为 `style`、`layout`、`motion`、`data`、`narrative` 或 `quality`，区分单次偏好、重复问题和明确接受的改进。
 4. 只有 `accepted: true` 且至少有一个可复现的反馈证据，才提出沉淀候选。重复出现的同类反馈优先生成模板变体或质量规则，单次主观偏好只记录为待观察建议。
-5. 调用 `short.video.candidate.save` 保存候选变更：基线模板/风格及版本、变更字段、适用场景、反例、来源项目、预期收益和回滚方式。候选写入项目工作区，不直接修改扩展源目录；用 `short.video.candidate.list/get` 复核。
-6. 使用 `short.video.recipe.validate` 校验候选 Recipe，并用 `short.video.preview.start` 生成结构预览。将预览交给用户复核，必要时继续记录 `short.video.feedback.record`。
-7. 使用 `short.video.quality.check` 通过确定性门禁后，以内置 Remotion 或已接入 HyperFrames 生成 Golden Video；同时核对 `project.get` 返回的任务、成片和来源信息，再把候选文件提交到 `himind-short-video` 仓库并提升版本。
+5. 调用 `media.workbench.candidate.save` 保存候选变更：基线模板/风格及版本、变更字段、适用场景、反例、来源项目、预期收益和回滚方式。候选写入项目工作区，不直接修改扩展源目录；用 `media.workbench.candidate.list/get` 复核。
+6. 使用 `media.workbench.recipe.validate` 校验候选 Recipe，并用 `media.workbench.preview.start` 生成结构预览。将预览交给用户复核，必要时继续记录 `media.workbench.feedback.record`。
+7. 使用 `media.workbench.quality.check` 通过确定性门禁后，以内置 Remotion 或已接入 HyperFrames 生成 Golden Video；同时核对 `project.get` 返回的任务、成片和来源信息，再把候选文件提交到 `himind-media-studio` 仓库并提升版本。
 
 ## 输出格式
 
@@ -29,3 +29,4 @@ description: 将短视频创作反馈沉淀为模板变体、Style Pack 和质�
 - 核心渲染引擎只允许 Remotion 或 HyperFrames；Three.js、地图、图表等技术作为引擎内部模板实现。沉淀的是可移植的 Recipe、模板和规则。
 - 不伪造最终 MP4。结构预览不能替代 Golden Video，最终复核必须基于 Remotion 或 HyperFrames 的真实成片。
 - 独立模式可完成全部分析、校验和预览；Dashboard 仅在组织审核或分发时参与。
+- `quality/banding` 反馈必须留下可复现证据（PNG still 与 JPEG 中间帧的亮度级数、最大平坦段），并沉淀为 `catalog/constraints.json` 规则、Golden Fixture 和 Style Pack 版本；不要只修当前项目。

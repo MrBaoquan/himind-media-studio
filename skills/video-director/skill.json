@@ -1,0 +1,157 @@
+{
+  "id": "com.himind.media.director",
+  "name": "短视频导演",
+  "author": "马宝全",
+  "categories": [
+    "video-post",
+    "content-production",
+    "visual-design"
+  ],
+  "version": "0.1.0",
+  "scope": "user",
+  "description": "把短视频需求转成可验证的叙事计划与分镜计划，再编译成 Recipe；负责导演方案，不直接渲染。",
+  "release_notes": "新增 Plan 规划层：先出 NarrativePlan/StoryboardPlan，再调用 plan.validate 与 recipe.compile。",
+  "min_agent_version": "0.3.40",
+  "supported_clients": [
+    "agent-skills"
+  ],
+  "capabilities": [
+    {
+      "id": "media.workbench.catalog.list",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.style.list",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.template.list",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.template.describe",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.template.schema",
+      "required": true,
+      "min_version": "0.5.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.project.list",
+      "required": true,
+      "min_version": "0.2.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.project.get",
+      "required": true,
+      "min_version": "0.2.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.plan.normalize",
+      "required": true,
+      "min_version": "0.5.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.plan.validate",
+      "required": true,
+      "min_version": "0.5.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.plan.estimate",
+      "required": true,
+      "min_version": "0.5.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.plan.from-recipe",
+      "required": true,
+      "min_version": "0.5.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.recipe.compile",
+      "required": true,
+      "min_version": "0.5.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.recipe.validate",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.route.validate",
+      "required": true,
+      "min_version": "0.4.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.route.repair",
+      "required": true,
+      "min_version": "0.4.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.generate.run",
+      "required": true,
+      "min_version": "0.5.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.series.plan",
+      "required": true,
+      "min_version": "0.5.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.series.generate",
+      "required": true,
+      "min_version": "0.5.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.data.ingest",
+      "required": true,
+      "min_version": "0.5.0",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.data.bind",
+      "required": true,
+      "min_version": "0.5.0",
+      "provider": "com.himind.media-workbench"
+    }
+  ],
+  "plugin_dependencies": [
+    {
+      "plugin_id": "com.himind.media-workbench",
+      "required": true,
+      "min_version": "0.5.0"
+    }
+  ],
+  "risk_summary": "导演 Skill 只生成和校验计划，不执行渲染；Plan 校验通过后仍需由 video-creator 进行预览、审批和构建。",
+  "contents": [
+    "skill.json",
+    "SKILL.md",
+    "agents/openai.yaml"
+  ],
+  "distribution_targets": [
+    "workbench",
+    "github"
+  ]
+}

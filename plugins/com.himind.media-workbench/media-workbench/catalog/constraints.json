@@ -1,0 +1,529 @@
+{
+  "schema": "himind.video.constraints.v1",
+  "id": "media-workbench.standard",
+  "version": "1.0.0",
+  "description": "自媒体短视频创作的约束清单。每条规则都必须指向一个可执行的执行点。",
+  "note": "找不到执行点的约束不写进本清单 —— 否则 harness 会退化成一段劝导。标签重叠/越界暂只由渲染期求解器保证，待 layout.check 落地后再入册。",
+  "rules": [
+    {
+      "code": "INPUT_SCHEMA",
+      "level": "error",
+      "stage": "input",
+      "message": "能力入参必须通过 input_schema 校验",
+      "enforced_by": {
+        "kind": "schema",
+        "id": "capability.input_schema"
+      }
+    },
+    {
+      "code": "WORKSPACE_BOUNDARY",
+      "level": "error",
+      "stage": "input",
+      "message": "所有写入必须落在调用方指定的 workspace_root 内",
+      "enforced_by": {
+        "kind": "runtime",
+        "id": "workspace_file_guard"
+      }
+    },
+    {
+      "code": "TEMPLATE_EXISTS",
+      "level": "error",
+      "stage": "recipe",
+      "message": "recipe.template_id 必须是目录里存在的模板",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.recipe.validate"
+      }
+    },
+    {
+      "code": "STYLE_COMPATIBLE",
+      "level": "error",
+      "stage": "recipe",
+      "message": "模板必须声明支持该风格",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.recipe.validate"
+      }
+    },
+    {
+      "code": "ADAPTER_ALLOWED",
+      "level": "error",
+      "stage": "recipe",
+      "message": "adapter 只允许 remotion 或 hyperframes",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.recipe.validate"
+      }
+    },
+    {
+      "code": "CANVAS_VALID",
+      "level": "error",
+      "stage": "recipe",
+      "message": "canvas 宽高必须为正、fps 不超过 120",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.recipe.validate"
+      }
+    },
+    {
+      "code": "SAFE_AREA",
+      "level": "error",
+      "stage": "recipe",
+      "message": "安全区必须有效且左右/上下不重叠",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.recipe.validate"
+      }
+    },
+    {
+      "code": "DURATION_RANGE",
+      "level": "error",
+      "stage": "recipe",
+      "message": "时长必须在 1–300 秒之间",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.recipe.validate"
+      }
+    },
+    {
+      "code": "DATA_PRESENT",
+      "level": "error",
+      "stage": "recipe",
+      "message": "recipe 必须携带非空数据",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.recipe.validate"
+      }
+    },
+    {
+      "code": "DATA_INGEST_VALID",
+      "level": "error",
+      "stage": "input",
+      "message": "CSV/JSON 数据必须可解析、每行有名称和有效数值",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.data.ingest"
+      }
+    },
+    {
+      "code": "DATA_BIND_VALID",
+      "level": "error",
+      "stage": "recipe",
+      "message": "目标模板的数据必须能被 data.bind 映射并通过模板契约",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.data.bind"
+      }
+    },
+    {
+      "code": "DATA_CONTRACT",
+      "level": "error",
+      "stage": "recipe",
+      "message": "模板声明的 data_contract 必须通过（类型/必填/范围/数组长度/禁止字段）",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.recipe.validate"
+      }
+    },
+    {
+      "code": "COMPILE_REQUIRES_VALID_PLAN",
+      "level": "error",
+      "stage": "plan",
+      "message": "Recipe 编译前必须通过 Plan 校验",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.recipe.compile"
+      }
+    },
+    {
+      "code": "GENERATE_REQUIRES_VALID_PLAN",
+      "level": "error",
+      "stage": "plan",
+      "message": "一键生成必须先通过 Plan 校验与 Recipe 编译",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.generate.run"
+      }
+    },
+    {
+      "code": "SERIES_GENERATE_VALIDATED",
+      "level": "error",
+      "stage": "series",
+      "message": "批量创建前必须通过 series.plan 预检",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.series.generate"
+      }
+    },
+    {
+      "code": "SERIES_SINGLE_SHOT_ONLY",
+      "level": "error",
+      "stage": "series",
+      "message": "当前系列生成只支持单镜头 Plan",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.series.plan"
+      }
+    },
+    {
+      "code": "SERIES_ITEMS_UNIQUE",
+      "level": "error",
+      "stage": "series",
+      "message": "系列项目名必须唯一，且每项必须有数据",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.series.plan"
+      }
+    },
+    {
+      "code": "SERIES_PLAN_VALID",
+      "level": "error",
+      "stage": "series",
+      "message": "系列生成必须使用通过校验的单镜头 Plan",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.series.plan"
+      }
+    },
+    {
+      "code": "PLAN_DURATION_RANGE",
+      "level": "error",
+      "stage": "plan",
+      "message": "Plan 单镜头 1–60 秒、总时长 1–300 秒",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.plan.validate"
+      }
+    },
+    {
+      "code": "PLAN_STYLE_COMPATIBLE",
+      "level": "error",
+      "stage": "plan",
+      "message": "Plan 风格必须与每个镜头兼容",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.plan.validate"
+      }
+    },
+    {
+      "code": "PLAN_SHOT_READY",
+      "level": "error",
+      "stage": "plan",
+      "message": "Plan 只能使用 ready 的镜头模板",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.plan.validate"
+      }
+    },
+    {
+      "code": "PLAN_SHOTS_PRESENT",
+      "level": "error",
+      "stage": "plan",
+      "message": "Plan 至少包含一个镜头，且镜头必须存在",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.plan.validate"
+      }
+    },
+    {
+      "code": "PLAN_VERSION",
+      "level": "error",
+      "stage": "plan",
+      "message": "Plan 必须声明 himind.video.plan.v1 版本",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.plan.validate"
+      }
+    },
+    {
+      "code": "STATION_ANCHORED",
+      "level": "error",
+      "stage": "geometry",
+      "message": "每个站点到轨迹（点到线段）的距离必须 ≤ 5 km，>0.5 km 报警",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.route.validate"
+      }
+    },
+    {
+      "code": "NO_VISIBLE_SPIKE",
+      "level": "error",
+      "stage": "geometry",
+      "message": "不能有走出再原路返回的尖刺（转向角 >150° 且返回点距出发点 <250 m）",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.route.validate"
+      }
+    },
+    {
+      "code": "NO_LOOP",
+      "level": "error",
+      "stage": "geometry",
+      "message": "轨迹不能回到先前位置（地图上会出现闭合的结）",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.route.validate"
+      }
+    },
+    {
+      "code": "SEGMENT_RATIO",
+      "level": "error",
+      "stage": "geometry",
+      "message": "站间段长 / 直线距 ≤ 2.0，>1.5 报警（避免动画节奏被拉长）",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.route.validate"
+      }
+    },
+    {
+      "code": "ADJACENT_GAP",
+      "level": "warn",
+      "stage": "geometry",
+      "message": "相邻点间距不得超过 30 km（疑似数据缺口，需人工复核）",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.route.validate"
+      }
+    },
+    {
+      "code": "REPAIR_IDEMPOTENT",
+      "level": "error",
+      "stage": "geometry",
+      "message": "轨迹修复必须是几何不动点：重复调用不改变坐标",
+      "enforced_by": {
+        "kind": "test",
+        "id": "TestRepairIsGeometryIdempotent"
+      }
+    },
+    {
+      "code": "RENDER_APPROVAL",
+      "level": "gate",
+      "stage": "render",
+      "message": "渲染前必须由人确认（local_write 能力在内核里自动需要审批）",
+      "enforced_by": {
+        "kind": "runtime",
+        "id": "approval_center"
+      }
+    },
+    {
+      "code": "RENDER_TIMEOUT_DECLARED",
+      "level": "error",
+      "stage": "render",
+      "message": "首次需要准备运行时的能力必须声明足够的 timeout_seconds",
+      "enforced_by": {
+        "kind": "test",
+        "id": "TestManifestDeclaresNamespaceAndDistributionTargets"
+      }
+    },
+    {
+      "code": "DETERMINISTIC_OUTPUT",
+      "level": "error",
+      "stage": "render",
+      "message": "同一份 Recipe 两次渲染必须产出逐字节相同的 MP4",
+      "enforced_by": {
+        "kind": "script",
+        "id": "dev/verify-render.py"
+      }
+    },
+    {
+      "code": "ARTIFACT_IN_WORKSPACE",
+      "level": "error",
+      "stage": "output",
+      "message": "产物路径必须落在 workspace_root 内且为 video/*",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.render.complete"
+      }
+    },
+    {
+      "code": "FRAME_NOT_BLANK",
+      "level": "error",
+      "stage": "output",
+      "message": "成片不能是纯色或空白画面",
+      "enforced_by": {
+        "kind": "script",
+        "id": "dev/verify-render.py"
+      }
+    },
+    {
+      "code": "LOSSLESS_FINAL_FRAMES",
+      "level": "error",
+      "stage": "render",
+      "message": "暗部渐变、vignette、宽色域或高细节风格的最终帧必须使用 PNG 等无损帧格式，不得用 JPEG 中间帧",
+      "enforced_by": {
+        "kind": "test",
+        "id": "TestStylePacksUseLosslessFinalFrames"
+      }
+    },
+    {
+      "code": "DARK_GRADIENT_BANDING",
+      "level": "gate",
+      "stage": "output",
+      "message": "暗部渐变画面必须通过色带检查；默认修复路径是 PNG 帧 + dither，不得用 CSS contrast 压暗放大色带",
+      "enforced_by": {
+        "kind": "script",
+        "id": "dev/verify-banding.mjs"
+      }
+    },
+    {
+      "code": "VISUAL_QUALITY_GATE",
+      "level": "gate",
+      "stage": "output",
+      "message": "成片必须通过视觉 QA：黑帧/静帧/色带/帧数/音频响度",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.quality.visual"
+      }
+    },
+    {
+      "code": "LABEL_PLACEMENT_VALID",
+      "level": "gate",
+      "stage": "output",
+      "message": "地图/线网标签必须通过碰撞、越界、站点/线路障碍检查；带 leader 的标签允许引线跨线。",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.label.validate"
+      }
+    },
+    {
+      "code": "CONTENT_PROGRESSES",
+      "level": "error",
+      "stage": "output",
+      "message": "画面内容必须随叙事推进（不是静止图）",
+      "enforced_by": {
+        "kind": "script",
+        "id": "dev/verify-render.py"
+      }
+    },
+    {
+      "code": "CAPABILITY_NAMESPACE",
+      "level": "error",
+      "stage": "extension",
+      "message": "能力 ID 必须落在清单声明的 capability_namespace 下（ADR-0119）",
+      "enforced_by": {
+        "kind": "test",
+        "id": "TestManifestDeclaresNamespaceAndDistributionTargets"
+      }
+    },
+    {
+      "code": "DISTRIBUTION_TARGETS",
+      "level": "error",
+      "stage": "extension",
+      "message": "插件/技能/工作流必须显式声明 distribution_targets",
+      "enforced_by": {
+        "kind": "test",
+        "id": "TestManifestDeclaresNamespaceAndDistributionTargets"
+      }
+    },
+    {
+      "code": "TEMPLATE_STATUS_CONSISTENT",
+      "level": "error",
+      "stage": "extension",
+      "message": "模板的 status 必须与渲染器里是否注册了对应 composition 一致",
+      "enforced_by": {
+        "kind": "test",
+        "id": "TestRouteGrowthCompositionIsRegistered"
+      }
+    },
+    {
+      "code": "FALLBACK_MATCHES_CATALOG",
+      "level": "error",
+      "stage": "extension",
+      "message": "Go 兜底模板清单必须与 catalog/templates.json 一致",
+      "enforced_by": {
+        "kind": "test",
+        "id": "TestFallbackTemplatesMatchCatalog"
+      }
+    },
+    {
+      "code": "CAPABILITY_DESCRIPTOR_AUDIT",
+      "level": "error",
+      "stage": "extension",
+      "message": "能力声明的 Shot、Technique、Contract、Template、Fixture 与注册必须互相一致",
+      "enforced_by": {
+        "kind": "test",
+        "id": "TestCapabilityCatalogPassesAudit"
+      }
+    },
+    {
+      "code": "CODE_PROJECT_CONTRACT",
+      "level": "error",
+      "stage": "extension",
+      "message": "Browser-Code 项目必须声明 style-pack、source_dir、entry 与固定 CLI 契约",
+      "enforced_by": {
+        "kind": "schema",
+        "id": "schemas/code-project.schema.json"
+      }
+    },
+    {
+      "code": "CODE_PROJECT_PREVIEW_REQUIRED",
+      "level": "gate",
+      "stage": "render",
+      "message": "代码项目必须先完成并审查最新预览，才能最终渲染",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.render.start"
+      }
+    },
+    {
+      "code": "CODE_PROJECT_SOURCE_IN_SYNC",
+      "level": "error",
+      "stage": "preview",
+      "message": "源码 hash 与预览 hash 必须一致，旧预览不得当作最新结果",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.quality.check"
+      }
+    },
+    {
+      "code": "STYLE_PACK_CONTRACT",
+      "level": "error",
+      "stage": "extension",
+      "message": "Style Pack 必须通过清单、固定 CLI、分镜与输出路径校验",
+      "enforced_by": {
+        "kind": "test",
+        "id": "TestStylePackValidate"
+      }
+    },
+    {
+      "code": "CODE_PROJECT_DETERMINISM",
+      "level": "gate",
+      "stage": "render",
+      "message": "代码项目最终渲染前必须通过同帧集重复渲染哈希一致性检查",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.preview.determinism"
+      }
+    },
+    {
+      "code": "ASSET_PACK_CONTRACT",
+      "level": "error",
+      "stage": "extension",
+      "message": "Asset Pack 的 list/read/scaffold 必须可用，且模板能自动登记为项目",
+      "enforced_by": {
+        "kind": "test",
+        "id": "TestAssetPackListReadAndScaffold"
+      }
+    },
+    {
+      "code": "DELIVERY_QUALITY_GATE",
+      "level": "error",
+      "stage": "output",
+      "message": "视觉 QA 未通过的母版不得进入正式交付；调试导出必须显式传 allow_failed=true",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.artifact.export"
+      }
+    },
+    {
+      "code": "BROWSER_CODE_WORKER_CAP",
+      "level": "error",
+      "stage": "render",
+      "message": "Browser-Code 渲染并发必须收敛到 Style Pack 的 runtime.max_workers；重型 Canvas 不得用单浏览器多页面硬提并发",
+      "enforced_by": {
+        "kind": "test",
+        "id": "TestEffectiveWorkerCountRespectsStylePackLimit"
+      }
+    }
+  ]
+}

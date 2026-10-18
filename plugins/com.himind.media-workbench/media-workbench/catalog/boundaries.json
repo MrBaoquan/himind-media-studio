@@ -1,0 +1,75 @@
+{
+  "schema": "himind.video.boundaries.v1",
+  "version": "1.0.0",
+  "stage": "p0",
+  "stages": [
+    "p0",
+    "p1",
+    "p2"
+  ],
+  "current": {
+    "plugin_id": "com.himind.media-workbench",
+    "display_name": "自媒体创作台",
+    "owns": [
+      "media.workbench."
+    ]
+  },
+  "planned": [
+    {
+      "stage": "p1",
+      "plugin_id": "com.himind.video-tts",
+      "display_name": "语音合成能力包",
+      "prefixes": [
+        "media.voice."
+      ],
+      "rationale": "多 Provider、独立凭据与独立发版；可选安装，缺失时创作台降级"
+    },
+    {
+      "stage": "p1",
+      "plugin_id": "com.himind.video-subtitle",
+      "display_name": "字幕能力包",
+      "prefixes": [
+        "media.subtitle."
+      ],
+      "rationale": "字幕时间轴与样式可被其他视频应用复用；可选安装"
+    },
+    {
+      "stage": "p1",
+      "plugin_id": "com.himind.video-media",
+      "display_name": "素材能力包",
+      "prefixes": [
+        "media.source."
+      ],
+      "rationale": "库存素材、AI 素材与本地素材有独立 Provider 和凭据；可选安装"
+    },
+    {
+      "stage": "p1",
+      "plugin_id": "com.himind.video-publish",
+      "display_name": "发布能力包",
+      "prefixes": [
+        "media.publish."
+      ],
+      "rationale": "平台发布有独立授权、凭据和长任务；可选安装"
+    },
+    {
+      "stage": "p2",
+      "plugin_id": "com.himind.video-render-remotion",
+      "display_name": "Remotion 执行适配器",
+      "prefixes": [
+        "media.render.",
+        "media.artifact.",
+        "media.runtime."
+      ],
+      "rationale": "执行层可替换；技法代码随渲染器发版"
+    },
+    {
+      "stage": "p2",
+      "plugin_id": "com.himind.geo-pipeline",
+      "display_name": "轨迹与地理管线",
+      "prefixes": [
+        "media.geo."
+      ],
+      "rationale": "领域能力独立迭代，含 OSM 快照与校验"
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "schema": "himind.video.fixtures.v1",
+  "version": "1.0.0",
+  "description": "镜头回归基线。改完 Shot 后运行 dev/regress-stills.ps1 比对；-Update 重新生成。",
+  "size": {
+    "width": 540,
+    "height": 960
+  },
+  "ssimFloor": 0.97,
+  "fixtures": [
+    {
+      "id": "leaderboard-tech",
+      "template": "leaderboard-tech",
+      "composition": "LeaderboardTech",
+      "recipe": "leaderboard-tech/recipe.json",
+      "frames": [
+        200
+      ]
+    },
+    {
+      "id": "route-growth",
+      "template": "route-growth",
+      "composition": "RouteGrowth",
+      "recipe": "route-growth/recipe.json",
+      "frames": [
+        300
+      ]
+    },
+    {
+      "id": "big-number",
+      "template": "big-number",
+      "composition": "BigNumber",
+      "recipe": "big-number/recipe.json",
+      "frames": [
+        90
+      ]
+    },
+    {
+      "id": "compare",
+      "template": "compare",
+      "composition": "Compare",
+      "recipe": "compare/recipe.json",
+      "frames": [
+        160
+      ]
+    },
+    {
+      "id": "quote",
+      "template": "quote",
+      "composition": "Quote",
+      "recipe": "quote/recipe.json",
+      "frames": [
+        120
+      ]
+    },
+    {
+      "id": "storyboard",
+      "template": "storyboard",
+      "composition": "Storyboard",
+      "recipe": "storyboard/recipe.json",
+      "frames": [
+        45,
+        200,
+        420
+      ]
+    },
+    {
+      "id": "bar-race",
+      "template": "bar-race",
+      "composition": "BarRace",
+      "recipe": "bar-race/recipe.json",
+      "frames": [
+        240
+      ]
+    },
+    {
+      "id": "timeline",
+      "template": "timeline",
+      "composition": "Timeline",
+      "recipe": "timeline/recipe.json",
+      "frames": [
+        240
+      ]
+    },
+    {
+      "id": "choropleth",
+      "template": "choropleth",
+      "composition": "Choropleth",
+      "recipe": "choropleth/recipe.json",
+      "frames": [
+        200
+      ]
+    },
+    {
+      "id": "composition",
+      "template": "composition",
+      "composition": "ShareBreakdown",
+      "recipe": "composition/recipe.json",
+      "frames": [
+        30,
+        90,
+        180,
+        270
+      ]
+    },
+    {
+      "id": "flow",
+      "template": "flow",
+      "composition": "Flow",
+      "recipe": "flow/recipe.json",
+      "frames": [
+        60,
+        150,
+        270
+      ]
+    },
+    {
+      "id": "sankey-flow",
+      "template": "sankey-flow",
+      "composition": "SankeyFlow",
+      "recipe": "sankey-flow/recipe.json",
+      "frames": [
+        30,
+        90,
+        180,
+        270
+      ]
+    }
+  ],
+  "diffYAvgMax": 0.8,
+  "diffYMaxMax": 40,
+  "note": "ssimFloor 抓整体漂移；diffYAvgMax/diffYMaxMax 抓局部突变（SSIM 对小面积明显改动不敏感）。阈值按同机回归标定。"
+}

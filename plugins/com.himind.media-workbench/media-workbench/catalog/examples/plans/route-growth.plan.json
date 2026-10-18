@@ -1,0 +1,35 @@
+{
+  "version": "himind.video.plan.v1",
+  "brief": {
+    "goal": "展示安徽省高铁网络在 2008–2025 年的生长过程",
+    "audience": "关注区域发展的短视频用户",
+    "duration_seconds": 18,
+    "tone": "宏大、克制",
+    "data_refs": ["workspace:data/anhui-transit-lines.json"]
+  },
+  "narrative": {
+    "thesis": "安徽用十七年完成市市通高铁",
+    "structure": "geographic-growth",
+    "required_data": ["lines", "region", "totalMileage"],
+    "constraints": ["轨迹必须先通过 route.validate", "站点必须锚定到轨迹"],
+    "risk_notes": ["线路较多时注意标签避让"]
+  },
+  "storyboard": {
+    "shots": [
+      {
+        "shot": "route-growth",
+        "role": "map-growth",
+        "duration_seconds": 18,
+        "data_binding": "data",
+        "transition": "fade",
+        "rationale": "地理生长结构最适合展示线路扩展"
+      }
+    ]
+  },
+  "presentation": {
+    "title": "安徽省高铁网络",
+    "subtitle": "17 条线路 · 市市通高铁",
+    "source": "数据来源：中国铁路上海局集团 / OSM（示例数据）",
+    "style_id": "tech-blue"
+  }
+}

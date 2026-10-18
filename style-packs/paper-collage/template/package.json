@@ -1,0 +1,14 @@
+{
+  "name": "himind-kinetic-mini",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sheet": "node render.mjs --sheet=1,3,5,7,9 --cols=3 --w=540 --out=out/check/sheet.jpg",
+    "frames": "node render.mjs --frames --workers=4",
+    "encode": "node render.mjs --encode --out=out/video.mp4"
+  },
+  "dependencies": {
+    "puppeteer-core": "^25.11.0"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "himind.video.style-pack.v1",
+  "id": "retro-vhs",
+  "version": "1.0.1",
+  "name": "复古 VHS",
+  "description": "80 年代 VHS 录像带、扫描线、色差、霓虹日落与故障字效。",
+  "renderer": "browser-code",
+  "entry": "render.mjs",
+  "video_out": "out/video.mp4",
+  "duration_seconds": 10,
+  "preview": {
+    "sheet_out": "out/check/sheet.jpg",
+    "strip_out": "out/check/strip.jpg",
+    "stills_out": "out/stills"
+  },
+  "license": "MIT",
+  "network": {
+    "mode": "none",
+    "allow": []
+  },
+  "delivery": {
+    "web": true,
+    "web_width": 1280,
+    "web_crf": 23,
+    "max_master_mb": 50
+  },
+  "attribution": "HiMind original retro-vhs style pack",
+  "quality": {
+    "text_audit": {
+      "enabled": true,
+      "page": "reel/index.html",
+      "times": "1.5,5,6.5,8.5"
+    },
+    "banding_gate": true
+  },
+  "runtime": {
+    "max_workers": 1
+  }
+}

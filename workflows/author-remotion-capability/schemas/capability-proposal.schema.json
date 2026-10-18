@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://himind.local/schemas/capability-proposal.schema.json",
+  "title": "HiMind Video Capability Proposal",
+  "description": "能力缺口判断与提案。只有经过用户确认的提案才允许进入实现阶段。",
+  "type": "object",
+  "required": [
+    "version",
+    "id",
+    "name",
+    "decision",
+    "structure",
+    "rationale",
+    "reuse_for",
+    "data_contract",
+    "visual_direction",
+    "acceptance",
+    "approval_state"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "himind.video.capability-proposal.v1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,63}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["reuse", "extend", "new_capability"]
+    },
+    "structure": {
+      "type": "string",
+      "description": "叙事结构，例如 ranking、flow-distribution、route、timeline。"
+    },
+    "rationale": {
+      "type": "string",
+      "description": "为什么现有能力不足，或为什么复用现有能力。"
+    },
+    "existing_capabilities": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "已检查并排除的能力 id；复用方案必须给出至少一个。"
+    },
+    "reuse_for": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string"}
+    },
+    "data_contract": {
+      "type": "object",
+      "required": ["required_fields", "source_mapping"],
+      "properties": {
+        "required_fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string"}
+        },
+        "optional_fields": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "source_mapping": {
+          "type": "object",
+          "description": "从 data.ingest 的 items 字段到契约字段的映射。",
+          "additionalProperties": {"type": "string"}
+        },
+        "sample": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "visual_direction": {
+      "type": "object",
+      "required": ["composition", "hierarchy", "motion", "labels"],
+      "properties": {
+        "composition": {"type": "string"},
+        "hierarchy": {"type": "string"},
+        "colors": {"type": "string"},
+        "motion": {"type": "string"},
+        "labels": {"type": "string"},
+        "empty_state": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "acceptance": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string"}
+    },
+    "non_goals": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "risks": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "reuse_plan": {
+      "type": "object",
+      "properties": {
+        "shot": {"type": "string"},
+        "techniques": {"type": "array", "items": {"type": "string"}},
+        "style_tokens": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "approval_state": {
+      "type": "string",
+      "enum": ["draft", "approved", "rejected"]
+    }
+  },
+  "additionalProperties": false
+}

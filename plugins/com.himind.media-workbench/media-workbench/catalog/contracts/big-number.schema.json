@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "big-number data contract",
+  "type": "object",
+  "required": ["value", "label"],
+  "properties": {
+    "value": {"type": "number", "description": "主数值"},
+    "label": {"type": "string", "description": "数值说明，一句话"},
+    "unit": {"type": "string", "description": "单位，如 公里 / 亿元 / %"},
+    "delta": {"type": "string", "description": "变化量，如 +12.4%"},
+    "note": {"type": "string", "description": "补充说明，如统计口径"},
+    "decimals": {"type": "integer", "minimum": 0, "maximum": 4},
+    "source": {"type": "string"}
+  }
+}

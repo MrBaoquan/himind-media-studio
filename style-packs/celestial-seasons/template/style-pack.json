@@ -1,0 +1,36 @@
+{
+  "schema": "himind.video.style-pack.v1",
+  "id": "celestial-seasons",
+  "version": "1.0.0",
+  "name": "天体四季科普",
+  "description": "用 3D 天体运动解释四季成因：地轴倾斜、公转、太阳高度与昼夜长度。",
+  "renderer": "browser-code",
+  "entry": "render.mjs",
+  "video_out": "out/video.mp4",
+  "duration_seconds": 30,
+  "preview": {
+    "sheet_out": "out/check/sheet.jpg",
+    "strip_out": "out/check/strip.jpg",
+    "stills_out": "out/stills"
+  },
+  "license": "MIT",
+  "network": {
+    "mode": "none",
+    "allow": []
+  },
+  "delivery": {
+    "web": true,
+    "web_width": 1280,
+    "web_crf": 25,
+    "max_master_mb": 80
+  },
+  "attribution": "HiMind original celestial-seasons style pack",
+  "quality": {
+    "text_audit": {
+      "enabled": true,
+      "page": "reel/index.html",
+      "times": "1.2,3.5,9,16,23,28"
+    },
+    "banding_gate": true
+  }
+}
