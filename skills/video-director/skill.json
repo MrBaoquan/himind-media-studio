@@ -7,7 +7,7 @@
     "content-production",
     "visual-design"
   ],
-  "version": "0.3.0",
+  "version": "0.3.1",
   "scope": "user",
   "description": "把短视频需求转成可验证的叙事计划与分镜计划，再编译成 Recipe；负责导演方案，不直接渲染。",
   "release_notes": "新增 Script 与旁白/字幕约束：narration 作为 TTS/字幕唯一文本源，on_screen_text 与旁白分离。",

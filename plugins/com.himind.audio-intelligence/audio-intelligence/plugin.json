@@ -5,7 +5,7 @@
   "categories": ["audio", "testing-quality"],
   "description": "音频智能：逐词对齐、字幕同步检查与脚本可懂度评分；ASR 继续使用 media.ai.transcribe。",
   "release_notes": "首个音频智能 External Pack：audio.align 逐词对齐、audio.qa.sync 字幕同步、audio.qa.intelligibility 脚本可懂度。",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "entry": "bin/audio-intelligence.exe",
   "runtime": "process-jsonrpc-stdio",
   "platforms": ["windows-x64"],

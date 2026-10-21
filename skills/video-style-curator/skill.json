@@ -7,7 +7,7 @@
     "visual-design",
     "testing-quality"
   ],
-  "version": "0.3.1",
+  "version": "0.3.2",
   "scope": "user",
   "description": "从短视频预览反馈中提取可复用的模板变体、风格规则和质量门禁，推动风格资产持续演进。",
   "release_notes": "对齐 Remotion 主渲染架构，补充真实成片复核和浏览器复用后的稳定性证据，让模板与风格候选继续经过结构预览和最终视频验证。",

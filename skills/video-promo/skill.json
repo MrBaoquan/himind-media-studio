@@ -7,7 +7,7 @@
     "content-production",
     "visual-design"
   ],
-  "version": "0.1.1",
+  "version": "0.1.2",
   "scope": "user",
   "description": "把产品名、网址、仓库或一句话需求做成真实产品宣传片：调研、风格样帧、CreativePackage、promo-video 模板、旁白字幕、质量门禁、渲染与交付。",
   "release_notes": "0.1.1：补充 4K 真实界面采集、Remotion worker stdin/TEMP 修复、DOM 文字安全区、确定性三帧、artifact/revision/timeline 闭环与 HiMind 完整案例复盘。",

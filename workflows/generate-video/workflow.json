@@ -1,7 +1,7 @@
 {
   "schema_version": "workflow_package.v1",
   "id": "com.himind.media.workflow.generate-video",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "distribution_targets": [
     "workbench",
     "github"

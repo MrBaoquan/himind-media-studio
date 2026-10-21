@@ -7,7 +7,7 @@
     "content-production",
     "visual-design"
   ],
-  "version": "0.2.1",
+  "version": "0.2.2",
   "scope": "user",
   "description": "用 AI 写代码制作风格型短视频，并接入创作台的审查、反馈、同步与渲染闭环。",
   "release_notes": "接入 Asset Pack 风格库、来源校验与一键创建项目。",

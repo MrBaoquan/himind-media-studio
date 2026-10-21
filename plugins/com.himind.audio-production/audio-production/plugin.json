@@ -5,7 +5,7 @@
   "categories": ["audio", "content-production"],
   "description": "通用音频生成与组装：TTS、BGM、混音、响度 QA 与离线运行时安装；不接管项目、分镜和时间线。",
   "release_notes": "首个音频制作 External Pack：Piper 离线 TTS、逐 beat 旁白、程序化 BGM、ffmpeg 混音、音频 QA 与 manifest。",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "entry": "bin/audio-production.exe",
   "runtime": "process-jsonrpc-stdio",
   "platforms": ["windows-x64"],

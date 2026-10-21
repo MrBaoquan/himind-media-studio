@@ -8,7 +8,7 @@
   ],
   "description": "视觉制作：角色/参考图资产包、参考一致性校验、确定性图像相似度与画面质量检查（色带/色块/过曝/失焦）。图像/视频生成模型调用仍由 Agent Media Kernel 的 media.image.generate / media.video.generate 承担。",
   "release_notes": "0.6.0：新增 visual.upscale，图片/视频确定性 Lanczos 放大，支持 scale 或目标宽高、视频 CRF/preset、静音保留与输出 SHA。",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "entry": "bin/media-visual.exe",
   "runtime": "process-jsonrpc-stdio",
   "platforms": [

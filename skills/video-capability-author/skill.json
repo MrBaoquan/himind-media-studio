@@ -7,7 +7,7 @@
     "content-production",
     "visual-design"
   ],
-  "version": "0.1.1",
+  "version": "0.1.2",
   "scope": "user",
   "description": "当现有 Shot 不足时，设计并实现新的 Remotion 视觉能力，完成契约、模板、黄金样例和门禁。",
   "release_notes": "接入 capability.list/describe/audit：能力六件套可查询、可机械审计。",

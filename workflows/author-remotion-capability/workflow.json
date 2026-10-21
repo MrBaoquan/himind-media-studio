@@ -1,7 +1,7 @@
 {
   "schema_version": "workflow_package.v1",
   "id": "com.himind.media.workflow.author-remotion-capability",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "distribution_targets": ["workbench", "github"],
   "name": "沉淀 Remotion 能力",
   "description": "当现有能力不足时，先生成可审查的能力提案，再按 Shot、Technique、Contract、Template、Fixture 六件套实现并审计，最后沉淀为可复用能力。",

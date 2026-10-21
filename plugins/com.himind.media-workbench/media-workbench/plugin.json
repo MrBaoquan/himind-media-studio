@@ -10,7 +10,7 @@
   ],
   "description": "自媒体视频项目与资产中枢：管理项目与修订、解析模板与风格资产、校验配方与质量门禁，并把渲染交给可替换的适配器。",
   "release_notes": "0.83.0：新增产品宣传片模板、promo-cinema 风格、PromoVideo Remotion 组合、真实 HiMind 页面素材、promo intent 路由、video-promo Skill 与 generate-promo-video Workflow；剪辑工作台 UIP-04~17 与 OSS-01：三栏布局持久化、节目监视器联动、直接拖拽/修剪/刀片/右键菜单、多选批量、波形/缩略图、历史对比、素材市场、AI diff、文稿联动、语义检索、关键帧 lane、窗口化渲染；OTIO/EDL 交换；媒体库时长探测与 100 素材压测；时间轴转场手柄；OTIO/EDL format 参数修复；宽屏标题栏全宽、工具栏抗压缩、窄屏抽屉互斥；轨道 M/L 控制、增删轨道、视频轨隐藏与播放头复位；轨道头 128px 布局修正；视频轨静音参与主轨选择测试；五轨首屏适配、字幕轨标签与低高度窗口时间线优先；逐轨高度拖拽与紧凑/标准/高预设；音频 Solo 与时间线音频试听；轨道排序、重命名与自定义颜色；轨道音量与实时音频表；保存后 revision 同步修复；视觉基线：字号/对比度/设计 token；toolbar/章节标签特异性修正；轨道头 220px、VO/BGM/OVR 短角色与音频轨 56px；监视器/状态元数据补齐 11px；viewer 标签与 clip badge 收口；控件高度/圆角/间距统一；Tailwind 圆角归一；图标/素材徽章高度收口；全局头/页签带语法统一；根网格头部行高修正；窄屏全局头响应式收口；窄屏侧栏改覆盖抽屉；关闭态不占位；审阅页主 CTA 收敛；渲染 CTA 粘性可达；剪辑三模式各一主 CTA；审阅技术折叠/QA 摘要/缩略图；缩略图调用预算收敛；插件 UI 加载看门狗：资源失败/空 root 显示错误页与重试；新增 intent.plan 创作路由（快路径/故事路径、缺口、能力序列、CreativePackage 审批门禁；显式时长/默认时长分离；分镜色条改为目录顺序驱动（去除题材硬编码）；剪辑页对宿主调用配额拥塞自动重试一次）；Agent persona 覆盖脚本、分镜、镜头、音频、时间线与渲染轮询。",
-  "version": "0.83.0",
+  "version": "0.83.1",
   "entry": "bin/media-workbench.exe",
   "runtime": "process-jsonrpc-stdio",
   "platforms": [

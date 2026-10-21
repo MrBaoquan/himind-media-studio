@@ -7,7 +7,7 @@
     "content-production",
     "visual-design"
   ],
-  "version": "0.9.3",
+  "version": "0.9.4",
   "scope": "user",
   "description": "把对话需求转成模板化短视频项目，按叙事结构选择模板（含占比构成与流程链路），完成预览、反馈迭代和构建。",
   "release_notes": "新增 visual.video.qa：成片均匀/指定时间抽帧质检，worst_banding 阈值与 image.qa 一致。",
