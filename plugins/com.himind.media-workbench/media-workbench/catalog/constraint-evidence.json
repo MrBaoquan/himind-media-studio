@@ -1,6 +1,6 @@
 {
   "schema": "himind.video.constraint-evidence.v1",
-  "generated_at": "2026-10-18T14:13:56.499Z",
+  "generated_at": "2026-10-19T01:12:49.417Z",
   "source": "go test ./... in plugins/com.himind.media-workbench/media-workbench",
   "note": "The plugin package excludes Go source and *_test.go files. This manifest records which source tests back the packaged constraint rules; TestConstraintEvidenceCoversPackagedTests keeps it complete.",
   "tests": [
@@ -12,6 +12,7 @@
     "TestRepairIsGeometryIdempotent",
     "TestRouteGrowthCompositionIsRegistered",
     "TestStylePackValidate",
-    "TestStylePacksUseLosslessFinalFrames"
+    "TestStylePacksUseLosslessFinalFrames",
+    "TestCreativePackageLifecycleMaterializesCodeProject"
   ]
 }

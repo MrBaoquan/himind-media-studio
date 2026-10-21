@@ -314,5 +314,84 @@
         "$type": "color"
       }
     }
+  },
+  {
+    "id": "promo-cinema",
+    "version": "1.0.0",
+    "name": "产品宣传片 · Cinema",
+    "description": "16:9 深色电影感，青绿强调、真实产品界面与克制的大字叙事。",
+    "canvas": {
+      "width": 1920,
+      "height": 1080,
+      "fps": 30
+    },
+    "palette": {
+      "background": "#071018",
+      "background_secondary": "#0b1722",
+      "accent": "#4fd1c5",
+      "accent_secondary": "#5aa9ff",
+      "text": "#f5f7fa",
+      "muted": "#9aa7b4"
+    },
+    "typography": {
+      "font_family": "Microsoft YaHei",
+      "title_weight": 820,
+      "title_size": 96,
+      "body_size": 32,
+      "data_size": 40
+    },
+    "motion": {
+      "entrance": "cinematic-reveal",
+      "transition": "crossfade",
+      "duration_ms": 700
+    },
+    "quality_rules": [
+      "16:9 安全区",
+      "3 秒内给出核心卖点",
+      "真实产品界面优先于装饰",
+      "每屏一个主 CTA"
+    ],
+    "tokens": {
+      "color.bg": {
+        "$value": "#071018",
+        "$type": "color"
+      },
+      "color.bgSecondary": {
+        "$value": "#0b1722",
+        "$type": "color"
+      },
+      "color.panel": {
+        "$value": "rgba(255,255,255,.055)",
+        "$type": "color"
+      },
+      "color.line": {
+        "$value": "rgba(255,255,255,.11)",
+        "$type": "color"
+      },
+      "color.text": {
+        "$value": "#f5f7fa",
+        "$type": "color"
+      },
+      "color.muted": {
+        "$value": "#9aa7b4",
+        "$type": "color"
+      },
+      "color.accent": {
+        "$value": "#4fd1c5",
+        "$type": "color"
+      },
+      "color.accentBlue": {
+        "$value": "#5aa9ff",
+        "$type": "color"
+      },
+      "color.accentWarm": {
+        "$value": "#ffb86b",
+        "$type": "color"
+      },
+      "motion.entrance": {
+        "$value": "cinematic-reveal",
+        "$type": "other"
+      }
+    }
   }
 ]

@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo, useRef} from 'react';
 import {createRoot} from 'react-dom/client';
 import {Player} from '@remotion/player';
 import {COMPOSITIONS} from './index.jsx';
@@ -19,6 +19,15 @@ function resolveSpec() {
 
 function PlayerApp() {
   const spec = useMemo(resolveSpec, []);
+  const playerRef = useRef(null);
+  useEffect(() => {
+    window.__HIMIND_PLAYER__ = {
+      pause: () => playerRef.current?.pause(),
+      seekTo: (frame) => playerRef.current?.seekTo(frame),
+      getCurrentFrame: () => playerRef.current?.getCurrentFrame?.() ?? 0,
+    };
+    return () => { delete window.__HIMIND_PLAYER__; };
+  }, []);
   const canvas = (spec && spec.canvas) || {};
   const fps = clamp(canvas.fps || 30, 1, 60);
   const width = clamp(canvas.width || 1080, 240, 4096);
@@ -43,6 +52,7 @@ function PlayerApp() {
   return (
     <div style={{width: '100%', height: '100%', background: '#0a0f1f', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden'}}>
       <Player
+        ref={playerRef}
         component={component}
         inputProps={spec || {}}
         durationInFrames={duration}

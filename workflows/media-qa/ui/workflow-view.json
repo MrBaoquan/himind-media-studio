@@ -1,0 +1,68 @@
+{
+  "schema_version": "workflow_view.v1",
+  "title": "整片体检",
+  "sections": [
+    {
+      "id": "media",
+      "title": "待检媒体",
+      "fields": [
+        {
+          "id": "workspace_root",
+          "label": "工作区目录",
+          "type": "text",
+          "picker": "directory",
+          "required": true,
+          "placeholder": "选择包含媒体与项目的工作区"
+        },
+        {
+          "id": "video_path",
+          "label": "成片路径",
+          "type": "text",
+          "required": true,
+          "placeholder": "工作区内 MP4 路径"
+        },
+        {
+          "id": "times",
+          "label": "采样时间",
+          "type": "text",
+          "required": false,
+          "placeholder": "如 3,18,35,52,68；留空则均匀采样"
+        },
+        {
+          "id": "sample_count",
+          "label": "默认采样帧数",
+          "type": "number",
+          "default": 5
+        }
+      ]
+    },
+    {
+      "id": "extras",
+      "title": "可选检查",
+      "fields": [
+        {
+          "id": "project_id",
+          "label": "项目 ID",
+          "type": "text",
+          "required": false,
+          "placeholder": "用于项目级文字/音频 QA"
+        },
+        {
+          "id": "image_path",
+          "label": "关键帧/图片",
+          "type": "text",
+          "required": false,
+          "placeholder": "工作区内 PNG/JPG 路径"
+        },
+        {
+          "id": "pack_path",
+          "label": "参考包路径",
+          "type": "text",
+          "required": false,
+          "placeholder": "asset-packs/<id>/<version>"
+        }
+      ]
+    }
+  ],
+  "actions": ["qa"]
+}

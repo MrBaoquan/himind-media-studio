@@ -1,0 +1,31 @@
+export type TimelineTransform = {scale?: number; position_x?: number; position_y?: number; rotation?: number; fit?: 'cover' | 'contain' | string};
+export type TimelineTransition = {type: string; duration_frames?: number};
+export type TimelineColorKeyframe = {frame: number; brightness?: number; contrast?: number; saturation?: number; gamma?: number};
+export type TimelineColor = {brightness?: number; contrast?: number; saturation?: number; gamma?: number; lut?: string; keyframes?: TimelineColorKeyframe[]};
+export type TimelineClip = {
+  id: string; media_id?: string; track_id: string;
+  start_frame: number; duration_frames: number;
+  source_in_frame?: number; source_out_frame?: number;
+  speed?: number; linked_group?: string; locked?: boolean; text?: string;
+  transform?: TimelineTransform; color?: TimelineColor; transition_in?: TimelineTransition; transition_out?: TimelineTransition;
+  volume_db?: number; opacity?: number;
+};
+export type TimelineTrack = {id: string; kind: string; index: number; role?: string; muted?: boolean; locked?: boolean; height?: number; name?: string; color?: string; solo?: boolean; volume_db?: number; clips: TimelineClip[]};
+export type TimelineMediaRef = {id: string; kind: string; uri: string; duration_frames?: number; width?: number; height?: number; fps?: string; color_space?: string; sha256?: string};
+export type TimelineMarker = {id?: string; frame?: number; label?: string; kind?: string};
+export type Timeline = {
+  schema: string; revision: number;
+  timebase: {num: number; den: number};
+  duration_frames: number;
+  canvas: {width: number; height: number};
+  tracks: TimelineTrack[];
+  media?: TimelineMediaRef[];
+  markers?: TimelineMarker[];
+};
+export type StudioMode = 'easy' | 'pro' | 'deliver';
+export type TimelineTool = 'select' | 'blade' | 'trim' | 'ripple';
+export type Artifact = {artifact_id: string; kind: string; path: string; size?: number; created_at?: string; quality_status?: string; sha256?: string; ready?: boolean};
+export type DiffItem = {track_id: string; clip_id: string; kind: string};
+export type TimelineDiff = {from_revision: number; to_revision: number; added: DiffItem[]; removed: DiffItem[]; changed: DiffItem[]; summary: {added: number; removed: number; changed: number}};
+export type SemanticHit = {kind: string; clip_id?: string; track_id?: string; media_id?: string; start_frame?: number; duration_frames?: number; text?: string; score: number; reason: string};
+export type HistoryEntry = {id: string; label: string; revision: number; timeline: Timeline; createdAt: number; diff?: TimelineDiff | null};

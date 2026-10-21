@@ -1,0 +1,68 @@
+{
+  "schema_version": "workflow_view.v1",
+  "title": "生成产品宣传片",
+  "sections": [
+    {
+      "id": "creative",
+      "title": "已批准创作包",
+      "fields": [
+        {
+          "id": "workspace_root",
+          "label": "创作台工作区",
+          "type": "text",
+          "picker": "directory",
+          "required": true,
+          "placeholder": "选择自媒体创作台工作区"
+        },
+        {
+          "id": "creative_id",
+          "label": "创作包 ID",
+          "type": "text",
+          "required": true,
+          "placeholder": "先完成调研、脚本、分镜并批准 CreativePackage"
+        },
+        {
+          "id": "project_id",
+          "label": "已有项目 ID",
+          "type": "text",
+          "required": false,
+          "placeholder": "仅从“重新预览”入口时需要"
+        }
+      ]
+    },
+    {
+      "id": "delivery",
+      "title": "声音与交付",
+      "fields": [
+        {
+          "id": "audio_path",
+          "label": "混音音轨",
+          "type": "text",
+          "required": false,
+          "placeholder": "工作区内旁白+BGM 混音文件"
+        },
+        {
+          "id": "subtitle_path",
+          "label": "字幕文件",
+          "type": "text",
+          "required": false,
+          "placeholder": "工作区内 SRT/ASS 字幕"
+        },
+        {
+          "id": "burn_subtitles",
+          "label": "烧录字幕",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "id": "output_path",
+          "label": "成片输出路径",
+          "type": "text",
+          "required": false,
+          "placeholder": "工作区内 MP4 路径（可选）"
+        }
+      ]
+    }
+  ],
+  "actions": ["produce", "review"]
+}

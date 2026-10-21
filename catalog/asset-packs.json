@@ -382,6 +382,67 @@
         "2d",
         "white"
       ]
+    },
+    {
+      "id": "science-sketch",
+      "name": "科学手绘",
+      "version": "0.1.1",
+      "file_name": "science-sketch-0.1.1.hmpack",
+      "file_size": 168019,
+      "sha256": "2c29b41c51d3277234a3a59336b83fea892abc7d0ad173551510e8d468a31f62",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-science-sketch-v0.1.1/science-sketch-0.1.1.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "science",
+        "explainer",
+        "hand-drawn",
+        "education",
+        "diagram"
+      ]
+    },
+    {
+      "id": "science-fusion",
+      "name": "科学聚变",
+      "version": "0.1.0",
+      "file_name": "science-fusion-0.1.0.hmpack",
+      "file_size": 272593,
+      "sha256": "61220955b1b5feed764a0b3548798349a223580ff0d993a69510e817a3ec97e5",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-science-fusion-v0.1.0/science-fusion-0.1.0.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "style",
+        "science",
+        "fusion",
+        "tokamak",
+        "explainer",
+        "hand-drawn",
+        "ai-image"
+      ]
+    },
+    {
+      "id": "editing-kit",
+      "name": "剪辑交付基础包",
+      "version": "1.0.0",
+      "file_name": "editing-kit-1.0.0.hmpack",
+      "file_size": 13273,
+      "sha256": "7311cf7085c50f5c420b270e38c393c9ad567192aed8b522be97fd12c14b7c2e",
+      "download_url": "https://github.com/MrBaoquan/himind-media-studio/releases/download/asset-pack-editing-kit-v1.0.0/editing-kit-1.0.0.hmpack",
+      "license": "MIT",
+      "status": "prepared",
+      "tags": [
+        "video",
+        "editing",
+        "preset",
+        "caption",
+        "transition",
+        "delivery",
+        "template"
+      ]
     }
   ]
 }

@@ -153,9 +153,50 @@ export async function mockCapability<T>(id: string, input: Record<string, unknow
       };
       return {template, schema: null, default_data: defaults[templateId] ?? {}} as T;
     }
+    case 'audio.catalog':
+      return {
+        providers: [
+          {id: 'piper', name: 'Piper 离线神经 TTS', available: true, network: false, offline: true, license: 'MIT', runtime: {
+            id: 'piper', version: '2023.11.14-2', installed: true, license: 'MIT',
+            voices: [
+              {id: 'zh_CN-huayan-medium', name: '华言 · 女声', language: 'zh-CN', quality: 'medium', license: '数据集许可未知（仅开发/演示）', commercial_use: false, demo_only: true, available: true, note: 'mock'},
+              {id: 'zh_CN-chaowen-medium', name: '超文 · 男声', language: 'zh-CN', quality: 'medium', license: 'CC0', commercial_use: true, available: false, note: 'mock'},
+            ],
+          }},
+          {id: 'windows-sapi', name: 'Windows SAPI', available: false, network: false, offline: true, license: 'system'},
+        ],
+        voices: [],
+        bgm_presets: [
+          {id: 'documentary-drone', name: '纪录片低频', description: '克制的低频铺底', license: 'generated-original', loop: true},
+          {id: 'hopeful-pulse', name: '希望脉冲', description: '未来与能源主题', license: 'generated-original', loop: true},
+        ],
+        defaults: {provider: 'piper', voice: 'zh_CN-huayan-medium', rate: 4, volume: 100, bgm_preset: 'documentary-drone', voice_gain_db: 0, bgm_gain_db: -20, ducking: true},
+        warnings: [],
+      } as T;
+    case 'audio.manifest.get':
+      return {state: 'missing', creative_id: input.creative_id} as T;
+    case 'audio.runtime.install':
+      return {state: 'ready', runtime: {id: 'piper', version: '2023.11.14-2', installed: true, license: 'MIT', voices: []}} as T;
+    case 'audio.pipeline.render':
+      return {state: 'ready', warnings: [], manifest: {
+        version: 'himind.audio-manifest.v1', creative_id: input.creative_id, voice_provider: 'piper', voice: 'zh_CN-huayan-medium',
+        voice_license: '数据集许可未知（仅开发/演示）', commercial_voice: false, rate: 4, bgm_preset: 'documentary-drone',
+        bgm_gain_db: -20, voice_gain_db: 0, ducking: true, duration_seconds: Number(input.duration_seconds) || 72,
+        clips: [{beat_id: 'b1', voice: 'zh_CN-huayan-medium', duration_seconds: 4.8, effective_duration_seconds: 4.8}],
+        subtitles: [{start: 0, end: 4.8, text: 'mock 字幕', beat_id: 'b1'}],
+        bgm: {id: 'documentary-drone', name: '纪录片低频', license: 'generated-original', duration_seconds: 72},
+        mix_path: '.himind-media/creatives/mock/audio/mix.m4a',
+        qa: {ok: true, status: 'passed', duration_seconds: 72, integrated_lufs: -16.2, true_peak_dbtp: -2.4, max_volume_db: -2.5},
+      }} as T;
+    case 'media.workbench.audio.attach':
+      return {state: 'ready', attached_path: 'mock/input/data.json', subtitles: []} as T;
+    case 'audio.align':
+      return {state: 'ready', word_count: 0, words: []} as T;
+    case 'audio.subtitle.from-alignment':
+      return {state: 'ready', subtitles: []} as T;
+    case 'audio.qa.signal':
+      return {qa: {ok: true, status: 'passed', duration_seconds: 72, integrated_lufs: -16.2, true_peak_dbtp: -2.4, max_volume_db: -2.5}} as T;
     default:
       throw new Error(`mock 未实现能力: ${id}`);
   }
 }
-
-

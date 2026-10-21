@@ -1,6 +1,6 @@
 import http from 'node:http';
 import path from 'node:path';
-import {existsSync, statSync, createReadStream} from 'node:fs';
+import {existsSync, statSync, createReadStream, mkdirSync, rmSync} from 'node:fs';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 
@@ -57,7 +57,9 @@ if (!chrome) {
   process.exit(2);
 }
 const {server, port} = await serve(source);
-const browser = await puppeteer.launch({executablePath: chrome, headless: 'new', args: ['--no-sandbox', '--disable-dev-shm-usage', '--hide-scrollbars', '--force-device-scale-factor=1']});
+const chromeProfile = path.join(source, 'out', '.text-audit-chrome-profile-' + process.pid);
+mkdirSync(chromeProfile, {recursive: true});
+const browser = await puppeteer.launch({executablePath: chrome, userDataDir: chromeProfile, headless: 'new', args: ['--no-sandbox', '--disable-dev-shm-usage', '--hide-scrollbars', '--force-device-scale-factor=1']});
 try {
   const page = await browser.newPage();
   await page.setViewport({width: 1080, height: 1920, deviceScaleFactor: 1});
@@ -102,6 +104,5 @@ try {
 } finally {
   await browser.close();
   server.close();
+  rmSync(chromeProfile, {recursive: true, force: true});
 }
-
-

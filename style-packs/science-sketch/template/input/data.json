@@ -1,0 +1,18 @@
+{
+  "title": "天空为什么是蓝色的？",
+  "subtitle": "从阳光、空气分子到日落",
+  "source": "来源：NASA Space Place / NOAA JetStream",
+  "sources": [
+    {"id":"s1","publisher":"NASA Space Place","title":"Why Is the Sky Blue?","url":"https://spaceplace.nasa.gov/blue-sky/en/"},
+    {"id":"s2","publisher":"NOAA JetStream","title":"The Atmosphere","url":"https://www.noaa.gov/jetstream/atmosphere"}
+  ],
+  "accent": "#2b74b5",
+  "scenes": [
+    {"id":"hook","type":"title","start":0,"end":5,"kicker":"SCIENCE SKETCH 01","title":"天空为什么是蓝色的？","caption":"天空明明是空的，为什么抬头却是蓝色？","note":"先别急着说“反射海洋”"},
+    {"id":"spectrum","type":"spectrum","start":5,"end":12,"kicker":"01 / SUNLIGHT","title":"阳光不是只有白色","caption":"白光里藏着从红到紫的可见光谱。","labels":["红","橙","黄","绿","蓝","靛","紫"]},
+    {"id":"scatter","type":"scatter","start":12,"end":23,"kicker":"02 / SCATTERING","title":"空气分子把蓝光散开","caption":"短波长的蓝光更容易被空气分子改变方向。","note":"瑞利散射 ≈ 1/λ⁴","labels":["太阳光","空气分子","蓝光被散射"]},
+    {"id":"observer","type":"observer","start":23,"end":31,"kicker":"03 / YOUR EYES","title":"所以整片天空都在发蓝","caption":"蓝光从天空各处进入你的眼睛，而不只是来自太阳。","note":"紫光散射更强，但人眼对蓝更敏感"},
+    {"id":"sunset","type":"sunset","start":31,"end":40,"kicker":"04 / SUNSET","title":"日落时，蓝光先被散掉","caption":"光线穿过更厚的大气层，剩下的红橙色抵达眼睛。","note":"路径更长 → 蓝光被散掉更多"},
+    {"id":"takeaway","type":"takeaway","start":40,"end":45,"kicker":"TAKEAWAY","title":"你看到的蓝，是空气散射后的阳光。","caption":"不是天空被涂成蓝色，也不是海洋的反射。","source":"来源：NASA Space Place / NOAA JetStream"}
+  ]
+}

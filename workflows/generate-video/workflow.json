@@ -1,14 +1,14 @@
 {
   "schema_version": "workflow_package.v1",
   "id": "com.himind.media.workflow.generate-video",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "distribution_targets": [
     "workbench",
     "github"
   ],
   "name": "对话生成短视频",
   "description": "从一句需求生成 Plan、校验 Recipe、创建项目、生成预览，并在审批后提交渲染。",
-  "release_notes": "加入 data.bind：把 CSV/JSON items 映射到目标模板契约。",
+  "release_notes": "0.1.5：明确 allow_network 仅允许模型调用、工具策略仍为 none；补充单/多镜头与 Workflow 独立安装说明。",
   "min_agent_version": "0.3.47",
   "local_requirements": {
     "platform": "windows",

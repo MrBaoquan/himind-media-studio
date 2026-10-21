@@ -34,6 +34,29 @@ description: 通过对话创建模板化短视频项目。用户提出做排行�
 - `flow` 的步骤顺序就是画面顺序，不要为了“好看”打乱；`timeline` 才按年份/时间定位。
 - 一条片子需要多个结构时，用 `storyboard` 把 Shot 串起来，而不是把多个主题硬塞进一个模板。
 - 先调用 `template.describe` 读取 `data_contract`，按契约填数据；不要猜字段。
+## 消费已批准的 CreativePackage
+
+当项目来自创意开发时，先读取：
+
+```text
+media.workbench.creative.get
+```
+
+只消费：
+
+- `status=approved`
+- `approval.approved_revision === revision`
+- `validation.valid=true`
+
+然后调用：
+
+```text
+media.workbench.creative.materialize
+```
+
+materialize 成功后，项目会记录 `source_creative_id` 与 `source_creative_revision`。
+后续预览、反馈、渲染仍走普通项目链路。
+
 ## 标准闭环
 
 1. 调用 `media.workbench.catalog.list`，了解模板族、风格包和渲染引擎；需要筛选时使用 `media.workbench.template.list` 和 `media.workbench.style.list`。
@@ -68,6 +91,26 @@ description: 通过对话创建模板化短视频项目。用户提出做排行�
 7. 用 `media.workbench.project.update` 保存修订后的 Recipe，并传入上次 `project.get` 返回的 `updated_at` 做并发保护；然后调用 `media.workbench.preview.start` 生成 HTML 故事板，向用户返回 `artifact.path` 供浏览器预览。
 8. 根据用户反馈再次更新 Recipe、重新校验并预览。确认有效反馈后调用 `media.workbench.feedback.record`，分类使用 `style`、`layout`、`motion`、`data`、`narrative` 或 `quality`；需要分析历史反馈时调用 `media.workbench.feedback.list`。
 9. 调用 `media.workbench.quality.check`。只有 `passed: true` 才进入构建。
+9.1. **有旁白的视频必须先做音频底座。** 在最终预览/渲染前调用：
+
+   ```text
+   audio.catalog
+   → 如 Piper 未安装：audio.runtime.install
+   → audio.pipeline.render
+   → audio.align
+   → audio.subtitle.from-alignment
+   → media.workbench.audio.attach
+   → audio.qa.signal
+   → audio.qa.sync
+   ```
+
+   - `audio.pipeline.render` 会逐 beat 合成旁白、生成 BGM、混音并完成音频 QA，返回 manifest；
+   - `audio.align` + `audio.subtitle.from-alignment` 生成逐词对齐字幕；`audio.qa.sync` 检查字幕漂移；
+   - 受限 voice pack（如 `zh_CN-huayan-medium`）只能用于开发/演示，必须显式传 `allow_restricted_voice=true`；正式交付优先使用可商用 voice pack；
+   - 音频 QA 目标：-16±2 LUFS、真峰值 ≤ -1.5 dBTP、无削波、时长误差 ≤ 0.2s；
+   - 音频生成会改变项目源码哈希，必须重新 `preview.review` 与 `preview.determinism`；
+   - 项目已有字幕/旁白时，`render.start` 必须传有效的 `audio_path`，否则会被 `AUDIO_REQUIRED_FOR_NARRATION` 拦截。
+
 10. 调用 `media.workbench.runtime.status` 检查渲染运行时，再调用 `media.workbench.render.start`。默认 `remotion` 由插件内置后台任务生成真实 MP4；返回后轮询 `media.workbench.render.status`，不要因调用已返回就判断构建完成。
 11. `hyperframes` 与 Remotion 是同级可插拔引擎；Three.js、地图、图表等专业能力只能在两种引擎的模板内部组合。HyperFrames 适配器读取 `recipe_path` 后调用 `media.workbench.render.complete` 回写结果。任务完成后用 `media.workbench.artifact.export` 获取路径和 SHA-256，需要本机查看时调用 `media.workbench.artifact.open`。
 
@@ -99,3 +142,34 @@ description: 通过对话创建模板化短视频项目。用户提出做排行�
 - 需要量化时优先调用 `media.workbench.quality.banding`；本地开发可运行 `dev/verify-banding.mjs --image=<still>`。暗色/渐变风格的最大平坦段超过画面宽度 8% 或亮度级数少于 12 时不得直接交付；白底平面风格应在 Style Pack 声明 `quality.banding_gate=false`，不能把大面积纯白误判为色带。
 - 同类质量坑必须沉淀为 `catalog/constraints.json` 规则、Golden Fixture 和 Skill，而不是只修当前项目。
 - 成片后调用 `media.workbench.quality.visual`；黑帧、严重色带或响度失败时不得交付。
+
+## 视觉一致性与画面质量
+
+涉及角色、主体、场景复用，或用 AI 生成关键帧时，按下面的顺序做：
+
+1. **先沉淀参考包，再生成。** 调用 `visual.reference.pack` 把确认可用的参考图写成标准 Asset Pack（`asset-packs/<pack_id>/<version>/asset-pack.json`），记录 SHA-256、尺寸、许可证与商用标记。
+   - 许可证未知会返回 `REFERENCE_LICENSE_UNKNOWN`；商业发布前必须补齐 `license` / `license_url`。
+   - 参考包可被 `media.workbench.asset.list/read` 发现；Skill 不直接读文件。
+2. **生成前校验。** 调用 `visual.reference.validate`；`state=blocked` 时先修资源或哈希，不要把失效参考带进生成。
+3. **生成后检查一致性。** 调用 `visual.reference.character.consistency`，传入候选图列表与参考包路径：
+   - `state=drift`：更换候选，或把确认可用的角度补进参考包，再重新校验；
+   - `REFERENCE_NEAR_THRESHOLD` 是提醒，发布前人工复核主体细节。
+4. **关键帧画质门禁。** 调用 `visual.image.qa`：
+   - `banding_score ≥ 0.78`：加入确定性 dither/grain、提高色彩位深，或改用渐变噪声；
+   - `blockiness ≥ 1.8`：提高编码码率，中间帧使用 PNG；
+   - `clip_high_ratio > 0.30`：降低发光强度或使用 tone mapping；
+   - `sharpness` 过低：检查空帧、景深与降噪强度。
+5. **成片抽帧复检。** 调用 `visual.video.qa`，默认均匀采样 5 帧，或按场景边界传 `times`：
+   - `worst_banding ≥ 0.78`：回溯该时间点，按色带门禁处理；
+   - `0.60–0.78`：记录为待复核，纸张/平面风格结合 Style Pack 的 `banding_gate` 判断；
+   - 抽帧失败、空帧、未解码是 blocker，必须修复后再交付。
+6. 这些能力只做确定性检测，不做语义审美判断；最终是否采用仍由导演决策，但 blocker 不得静默跳过。
+
+## 约束库（踩坑记忆）
+
+跨项目复用的硬约束记录在 `catalog/constraints.json`（`himind.media.constraints.v1`）。
+每条规则包含 `stage`、`scope`、`statement`、`detection`、`remediation` 和 `evidence`。
+
+- 开始实现前先读与当前项目相关的规则；
+- 发现问题时，先修当前项目，再把可复用的部分追加为规则（必须带证据）；
+- 不要删除历史规则；失效时新增 `supersedes` 字段并说明原因。

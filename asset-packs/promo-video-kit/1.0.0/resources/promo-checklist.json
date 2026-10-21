@@ -1,0 +1,61 @@
+{
+  "schema": "himind.promo.checklist.v1",
+  "gates": [
+    {
+      "id": "facts",
+      "label": "事实有出处，无编造数字/URL/客户/奖项"
+    },
+    {
+      "id": "assets",
+      "label": "真实产品截图优先，敏感信息已隐藏，授权边界已记录"
+    },
+    {
+      "id": "hook",
+      "label": "3 秒内出现痛点或核心亮点，5 秒内出现第一个高能点"
+    },
+    {
+      "id": "contrast",
+      "label": "每屏只讲一件事，同一版式不连续使用超过 2 次"
+    },
+    {
+      "id": "safe-area",
+      "label": "主文案、字幕、CTA 均不越过 96px 安全区"
+    },
+    {
+      "id": "subtitle",
+      "label": "字幕与旁白同源，cue 不跨 beat，字号可读"
+    },
+    {
+      "id": "audio",
+      "label": "响度 -30..-12 LUFS，true peak <= -1 dBFS，BGM 有许可"
+    },
+    {
+      "id": "banding",
+      "label": "暗部渐变加确定性 dither，最小平坦段不触发严重色带"
+    },
+    {
+      "id": "determinism",
+      "label": "相同 Recipe 至少两次渲染的 3 帧 SHA 一致"
+    },
+    {
+      "id": "artifact",
+      "label": "真实 MP4 进入项目产物，有 artifact_id、大小与 SHA-256"
+    },
+    {
+      "id": "source-4k",
+      "label": "真实产品界面素材至少 1920x1080；4K 交付使用 1920x1080@2x 捕获"
+    },
+    {
+      "id": "worker-runtime",
+      "label": "Remotion worker 使用保持打开的 stdin 与工作区 TEMP/TMP"
+    },
+    {
+      "id": "render-spec",
+      "label": "母版 1920x1080 / 30fps / 35s / H.264 + AAC"
+    },
+    {
+      "id": "revision-loop",
+      "label": "反馈、项目新 revision、最终 artifact 与时间线保存均可追溯"
+    }
+  ]
+}

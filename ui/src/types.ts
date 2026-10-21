@@ -18,6 +18,8 @@ export interface ProjectSummary {
   updated_at: string;
   workspace_root?: string;
   status?: string;
+  source_creative_id?: string;
+  source_creative_revision?: number;
 }
 
 export interface ProjectList {
@@ -70,7 +72,12 @@ export interface Artifact {
   sha256: string;
   ready: boolean;
   quality_status?: string;
-  quality_report?: {ok?: boolean; warnings?: string[]};
+  quality_report?: {
+    ok?: boolean;
+    warnings?: string[];
+    checks?: Array<{id: string; status: string; level?: string; detail?: string}>;
+    findings?: Array<{code: string; message: string; remediation?: string; stage?: string}>;
+  };
   created_at: string;
 }
 
@@ -233,3 +240,128 @@ export interface AssetMarket {
   total: number;
 }
 
+
+/** 创意开发阶段的创作需求包。 */
+export interface CreativeSummary {
+  id: string;
+  title: string;
+  status: string;
+  revision: number;
+  updated_at: string;
+  project_id?: string;
+  approved_revision?: number;
+  production?: Record<string, any>;
+}
+
+export interface CreativePackage {
+  version: string;
+  id: string;
+  revision: number;
+  status: string;
+  title: string;
+  brief: Record<string, any>;
+  research: Record<string, any>;
+  script: Record<string, any>;
+  storyboard: Record<string, any>;
+  production: Record<string, any>;
+  approval: Record<string, any>;
+  links: Record<string, any>;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreativeList {
+  items: CreativeSummary[];
+  total: number;
+  workspace_root: string;
+}
+
+export interface CreativeValidation {
+  valid: boolean;
+  issues: Array<{code: string; stage: string; message: string; remediation?: string}>;
+}
+
+/** 镜头生产方式：程序化、AI 图片、AI 视频、素材库等。 */
+export interface ShotProvider {
+  id: string;
+  name: string;
+  kind: string;
+  source?: string;
+  description?: string;
+  cost_tier?: string;
+  latency_tier?: string;
+  network?: boolean;
+  builtin?: boolean;
+  available?: boolean;
+  requires_pack?: string;
+  capability?: string;
+  requires_service?: string;
+  async?: boolean;
+  inputs?: string[];
+  outputs?: string[];
+}
+
+export interface TimelinePlanShot {
+  id: string;
+  beat_id?: string;
+  duration_seconds: number;
+  provider: string;
+  provider_name?: string;
+  provider_kind?: string;
+  provider_source?: string;
+  capability?: string;
+  requires_service?: string;
+  async?: boolean;
+  available?: boolean;
+  technique?: string;
+  prompt?: string;
+  status?: string;
+  fallback_provider?: string;
+}
+
+export interface TimelinePlan {
+  creative_id: string;
+  revision: number;
+  title?: string;
+  duration_seconds: number;
+  target_duration_seconds?: number;
+  shots: TimelinePlanShot[];
+  coverage: Record<string, number>;
+  blockers: Array<{code: string; message: string; remediation?: string}>;
+  warnings: Array<{code: string; message: string; remediation?: string}>;
+  state: string;
+}
+
+export interface ShotProduceAsset {
+  shot_id: string;
+  provider: string;
+  path: string;
+  sha256?: string;
+  size?: number;
+  mock?: boolean;
+  preview_data_url?: string;
+}
+
+export interface ShotStatusItem {
+  shot_id: string;
+  provider?: string;
+  status?: string;
+  asset_refs?: string[];
+  assets?: Array<{path: string; exists: boolean; size?: number; preview_data_url?: string}>;
+  mock?: boolean;
+}
+
+export interface ShotStatusResult {
+  creative_id: string;
+  revision: number;
+  items: ShotStatusItem[];
+  total: number;
+}
+
+export interface ShotProduceResult {
+  state: string;
+  mode?: string;
+  assets?: ShotProduceAsset[];
+  blockers?: Array<{code: string; message: string; remediation?: string}>;
+  warnings?: Array<{code: string; message: string; remediation?: string}>;
+}

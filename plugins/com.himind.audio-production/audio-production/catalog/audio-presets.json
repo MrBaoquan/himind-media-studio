@@ -1,0 +1,84 @@
+{
+  "schema": "himind.audio-presets.v1",
+  "description": "通用程序化 BGM 预设。预设是音频资产，不绑定视频题材或 Style Pack；renderer 只消费混音后的音频轨。",
+  "presets": [
+    {
+      "id": "documentary-drone",
+      "name": "纪录片低频",
+      "description": "克制的低频铺底与极轻粉噪，适合知识解释、科技与历史叙事。",
+      "mood": ["documentary", "calm", "scientific"],
+      "license": "generated-original",
+      "loop": true,
+      "tones": [
+        {"frequency": 55, "volume": 0.09, "lowpass": 220},
+        {"frequency": 82.41, "volume": 0.055, "lowpass": 300},
+        {"frequency": 110, "volume": 0.035, "lowpass": 380}
+      ],
+      "noise": {"color": "pink", "amplitude": 0.035, "highpass": 45, "lowpass": 1100, "volume": 0.55},
+      "tremolo": {"frequency": 0.1, "depth": 0.28},
+      "echo": {"in_gain": 0.8, "out_gain": 0.55, "delays": "700|1100", "decays": "0.22|0.13"},
+      "gain": 0.58,
+      "fade_in": 2,
+      "fade_out": 2.5
+    },
+    {
+      "id": "hopeful-pulse",
+      "name": "希望脉冲",
+      "description": "大调五度铺底与缓慢呼吸感，适合科普收束、未来与能源主题。",
+      "mood": ["hopeful", "future", "inspirational"],
+      "license": "generated-original",
+      "loop": true,
+      "tones": [
+        {"frequency": 55, "volume": 0.075, "lowpass": 240},
+        {"frequency": 110, "volume": 0.045, "lowpass": 420},
+        {"frequency": 164.81, "volume": 0.028, "lowpass": 620},
+        {"frequency": 220, "volume": 0.018, "lowpass": 820}
+      ],
+      "noise": {"color": "pink", "amplitude": 0.022, "highpass": 80, "lowpass": 1600, "volume": 0.45},
+      "tremolo": {"frequency": 0.1, "depth": 0.22},
+      "echo": {"in_gain": 0.82, "out_gain": 0.52, "delays": "900|1400", "decays": "0.20|0.12"},
+      "gain": 0.54,
+      "fade_in": 2.5,
+      "fade_out": 3
+    },
+    {
+      "id": "minimal-tech",
+      "name": "极简科技",
+      "description": "干净的低频脉冲与轻微空气感，适合数据、产品与工程解释。",
+      "mood": ["technology", "minimal", "data"],
+      "license": "generated-original",
+      "loop": true,
+      "tones": [
+        {"frequency": 73.42, "volume": 0.065, "lowpass": 260},
+        {"frequency": 146.83, "volume": 0.035, "lowpass": 520},
+        {"frequency": 293.66, "volume": 0.014, "lowpass": 1200}
+      ],
+      "noise": {"color": "white", "amplitude": 0.012, "highpass": 200, "lowpass": 3200, "volume": 0.30},
+      "tremolo": {"frequency": 0.11, "depth": 0.18},
+      "echo": {"in_gain": 0.78, "out_gain": 0.45, "delays": "420|760", "decays": "0.16|0.09"},
+      "gain": 0.50,
+      "fade_in": 1.5,
+      "fade_out": 2
+    },
+    {
+      "id": "warm-memory",
+      "name": "温暖回忆",
+      "description": "柔和的三度叠置与低频暖意，适合人物、城市与人文故事。",
+      "mood": ["warm", "human", "reflective"],
+      "license": "generated-original",
+      "loop": true,
+      "tones": [
+        {"frequency": 82.41, "volume": 0.07, "lowpass": 260},
+        {"frequency": 123.47, "volume": 0.042, "lowpass": 420},
+        {"frequency": 164.81, "volume": 0.028, "lowpass": 620},
+        {"frequency": 246.94, "volume": 0.015, "lowpass": 900}
+      ],
+      "noise": {"color": "brown", "amplitude": 0.020, "highpass": 40, "lowpass": 900, "volume": 0.40},
+      "tremolo": {"frequency": 0.1, "depth": 0.24},
+      "echo": {"in_gain": 0.85, "out_gain": 0.58, "delays": "1000|1600", "decays": "0.22|0.14"},
+      "gain": 0.55,
+      "fade_in": 3,
+      "fade_out": 3
+    }
+  ]
+}

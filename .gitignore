@@ -7,7 +7,9 @@ test-output/
 plugins/**/bin/
 
 # Local render projects produced by the workbench (inputs, frames, exports)
+hefei-artificial-sun/
 video-project-*/
+science-sky-*/
 
 # Local Agent authoring state
 .extension-state/

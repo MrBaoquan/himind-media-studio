@@ -1,8 +1,8 @@
 {
   "schema": "himind.video.constraints.v1",
   "id": "media-workbench.standard",
-  "version": "1.0.0",
-  "description": "自媒体短视频创作的约束清单。每条规则都必须指向一个可执行的执行点。",
+  "version": "1.3.0",
+  "description": "自媒体短视频创作的约束清单。每条规则都必须指向一个可执行的执行点；外部可选能力通过 external_capabilities 声明，未安装时降级为警告。",
   "note": "找不到执行点的约束不写进本清单 —— 否则 harness 会退化成一段劝导。标签重叠/越界暂只由渲染期求解器保证，待 layout.check 落地后再入册。",
   "rules": [
     {
@@ -523,6 +523,156 @@
       "enforced_by": {
         "kind": "test",
         "id": "TestEffectiveWorkerCountRespectsStylePackLimit"
+      }
+    },
+    {
+      "code": "CREATIVE_VALID_BEFORE_APPROVE",
+      "level": "error",
+      "stage": "creative",
+      "message": "创作需求包必须通过 Brief、证据、脚本、分镜和制作规格校验后才能批准",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.creative.approve"
+      }
+    },
+    {
+      "code": "CREATIVE_APPROVED_BEFORE_MATERIALIZE",
+      "level": "gate",
+      "stage": "creative",
+      "message": "只有已批准的创作需求包 revision 才能 materialize 成视频项目",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.creative.materialize"
+      }
+    },
+    {
+      "code": "CREATIVE_REVISION_TRACEABLE",
+      "level": "error",
+      "stage": "creative",
+      "message": "创作包修订必须可追溯，项目必须记录来源 creative_id 与 revision",
+      "enforced_by": {
+        "kind": "test",
+        "id": "TestCreativePackageLifecycleMaterializesCodeProject"
+      }
+    },
+    {
+      "code": "MOTION_CONTINUITY",
+      "level": "warn",
+      "stage": "output",
+      "message": "成片不得出现非有意的 ≥1.5s 长静帧；手绘/白板风格需保留低频线条呼吸或纸张漂移",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.quality.visual"
+      }
+    },
+    {
+      "code": "AUDIO_RUNTIME_PINNED",
+      "level": "error",
+      "stage": "audio",
+      "message": "离线音频运行时与 voice pack 必须登记版本、来源与 SHA-256；安装后必须校验通过",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.audio.runtime.install"
+      }
+    },
+    {
+      "code": "AUDIO_VOICE_LICENSE",
+      "level": "error",
+      "stage": "audio",
+      "message": "许可受限的 voice pack 必须显式确认后才能用于演示；manifest 必须记录许可证与商用标记",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.audio.build"
+      }
+    },
+    {
+      "code": "AUDIO_REQUIRED_FOR_NARRATION",
+      "level": "error",
+      "stage": "render",
+      "message": "项目已有字幕/旁白时必须提供有效 audio_path，不能用无声成片冒充完成",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.render.start"
+      }
+    },
+    {
+      "code": "AUDIO_LOUDNESS",
+      "level": "error",
+      "stage": "audio",
+      "message": "混音目标 -16±2 LUFS，真峰值不超过 -1.5 dBTP，且不得削波",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.audio.qa"
+      }
+    },
+    {
+      "code": "SUBTITLE_CUE_BOUNDARY",
+      "level": "error",
+      "stage": "audio",
+      "message": "字幕 cue 不得跨 beat，且必须与旁白文本来自同一逐步脚本",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.subtitle.generate"
+      }
+    },
+    {
+      "code": "SUBTITLE_SAFE_BAND",
+      "level": "error",
+      "stage": "output",
+      "message": "1080×1920 字幕安全带 y=1500..1690 只允许字幕；场景说明卡与结论行必须整体位于 y<1490。",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "media.workbench.quality.visual"
+      }
+    },
+    {
+      "code": "BANDING_GRADIENT_GATE",
+      "level": "warn",
+      "stage": "output",
+      "message": "暗部渐变/3D/粒子画面 banding_score≥0.78 时必须加确定性 dither/grain 或提高位深，不得用 JPEG 中间帧。",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "visual.image.qa"
+      }
+    },
+    {
+      "code": "REFERENCE_PACK_LICENSE",
+      "level": "error",
+      "stage": "extension",
+      "message": "角色/主体参考包必须记录 SHA-256、license、license_url 与 commercial_use；license=unknown 不得商业发布。",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "visual.reference.validate"
+      }
+    },
+    {
+      "code": "REFERENCE_CONSISTENCY",
+      "level": "error",
+      "stage": "output",
+      "message": "角色/主体复用镜头必须通过参考包一致性校验；drift 候选不得进入主视觉。",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "visual.reference.character.consistency"
+      }
+    },
+    {
+      "code": "SUBTITLE_ALIGNMENT_DRIFT",
+      "level": "error",
+      "stage": "audio",
+      "message": "字幕必须从逐词时间戳生成；audio.qa.sync 的 max_drift 必须为 0。",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "audio.qa.sync"
+      }
+    },
+    {
+      "code": "VIDEO_BANDING_GATE",
+      "level": "warn",
+      "stage": "output",
+      "message": "成片抽帧质检：worst_banding≥0.78 时必须回溯该时间点并按 BANDING_GRADIENT_GATE 处理；0.60–0.78 记录为待复核。",
+      "enforced_by": {
+        "kind": "capability",
+        "id": "visual.video.qa"
       }
     }
   ]

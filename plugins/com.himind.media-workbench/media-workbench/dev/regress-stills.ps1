@@ -44,7 +44,7 @@ if ($SyncFrom) {
     foreach ($name in @('index.jsx', 'player.jsx', 'package.json')) {
         Copy-Item -LiteralPath (Join-Path $rendererSource $name) -Destination (Join-Path $Runtime $name) -Force
     }
-    foreach ($sub in @('foundation', 'shots', 'techniques', 'compositions')) {
+    foreach ($sub in @('foundation', 'shots', 'techniques', 'compositions', 'public')) {
         $sourceDir = Join-Path $rendererSource $sub
         if (-not (Test-Path -LiteralPath $sourceDir)) { continue }
         $targetDir = Join-Path $Runtime $sub
@@ -164,5 +164,3 @@ if ($failed -gt 0) {
 }
 Write-Host "全部通过（$($results.Count) 项，阈值 $floor）。" -ForegroundColor Green
 exit 0
-
-

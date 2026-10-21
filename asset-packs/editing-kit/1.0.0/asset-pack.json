@@ -1,0 +1,98 @@
+{
+  "schema": "himind.asset-pack.v1",
+  "id": "editing-kit",
+  "version": "1.0.0",
+  "name": "剪辑交付基础包",
+  "description": "与题材无关的字幕、转场、交付与模板预设，供自媒体创作台精修与交付使用。",
+  "license": "MIT",
+  "attribution": "HiMind",
+  "resources": [
+    {
+      "id": "resource-01",
+      "type": "preset",
+      "path": "resources/caption-styles.json",
+      "role": "caption-styles",
+      "mime": "application/json",
+      "sha256": "b0c5b734cb7056ad50db74631ebe2ebf036fd40bd4f17daf3c5c8fc7d744a19d",
+      "size": 699,
+      "description": "通用剪辑预设资源"
+    },
+    {
+      "id": "resource-02",
+      "type": "preset",
+      "path": "resources/delivery-presets.json",
+      "role": "delivery-presets",
+      "mime": "application/json",
+      "sha256": "1eb91054efe81602bbc43ad9a57bf275128aca736a92c9997ae3c0284af9a103",
+      "size": 582,
+      "description": "通用剪辑预设资源"
+    },
+    {
+      "id": "resource-03",
+      "type": "template",
+      "path": "resources/edit-templates.json",
+      "role": "edit-templates",
+      "mime": "application/json",
+      "sha256": "e020ba7ecc6334a7210b792b75881d6e89865e47065db2d47f0c35d7853abf6a",
+      "size": 533,
+      "description": "通用剪辑预设资源"
+    },
+    {
+      "id": "resource-04",
+      "type": "preset",
+      "path": "resources/transition-presets.json",
+      "role": "transition-presets",
+      "mime": "application/json",
+      "sha256": "fc23ab8e4a907f77941d07553a06e3b7633c1b97406b6b692f9d3c0879b2c669",
+      "size": 338,
+      "description": "通用剪辑预设资源"
+    },
+    {
+      "id": "preview",
+      "type": "image",
+      "path": "preview/sheet.jpg",
+      "role": "preview",
+      "mime": "image/jpeg",
+      "width": 1280,
+      "height": 720,
+      "sha256": "2d6d7a25cb1191b576ac775af51ed796c171fd600d56c52dbe2d272fbe8963a4",
+      "size": 14922,
+      "description": "剪辑预设包预览图"
+    }
+  ],
+  "metadata": {
+    "domains": [
+      "video",
+      "editing",
+      "delivery"
+    ],
+    "commercial_use": true,
+    "created_at": "2026-10-20T00:00:00Z"
+  },
+  "provenance": {
+    "commercial_use": true,
+    "license": "MIT",
+    "license_url": "",
+    "resources": 5,
+    "source": "HiMind-Original"
+  },
+  "permissions": {
+    "filesystem": "workspace",
+    "network": {
+      "allow": [],
+      "mode": "none"
+    },
+    "process": []
+  },
+  "consumers": [
+    "com.himind.media-workbench"
+  ],
+  "tags": [
+    "editing",
+    "preset",
+    "caption",
+    "transition",
+    "delivery",
+    "template"
+  ]
+}

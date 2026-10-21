@@ -22,6 +22,41 @@ description: 把短视频需求转成可验证的 NarrativePlan 与 StoryboardPl
 
 导演负责“讲什么、为什么这样讲、用哪些镜头”；实际项目保存、预览和构建交给 `video-creator`。
 
+## 0. 创意开发阶段（推荐起点）
+
+当用户从“我想做一个关于……的视频”开始，而不是直接给出数据时，先建立 CreativePackage：
+
+```text
+主题
+→ creative.create
+→ research.update
+→ script.update
+→ storyboard.update
+→ production.update
+→ creative.validate
+→ 用户批准
+→ creative.materialize
+```
+
+职责：
+
+- Director 负责 Brief、Research、Script、Storyboard、ProductionSpec；
+- Research 只在事实型内容中要求 evidence；
+- Script 说明“说什么、按什么顺序说”；
+- Storyboard 说明“怎么画、怎么动、持续多久”；
+- 用户批准后，再交给 `video-creator` materialize 成项目；
+- 不要在导演阶段直接创建可渲染项目。
+
+科普、新闻、数据解释类内容一律优先走 CreativePackage，不要跳过研究、脚本和分镜直接生成 Recipe。
+
+### Script 与旁白/字幕
+
+- `script.beats[].narration` 是 TTS 与字幕的唯一文本源；
+- `on_screen_text` 是画面标题/关键词，不要和旁白混用；
+- 每个 beat 的 `duration_seconds` 是镜头窗口；旁白超出时 `audio.build` 会在 1.5x 内压缩并记录 `fit_warning`；
+- 分镜阶段不要另写一份字幕文本，避免 TTS 与字幕漂移；
+- 需要影视级旁白时，在 Brief 中声明 voice 风格，但不要假设某个声音可商用；许可证由 voice pack 决定。
+
 ## 必须遵守的顺序
 
 1. 调用 `media.workbench.catalog.list`，查看当前 ready 模板与风格。
@@ -130,7 +165,7 @@ description: 把短视频需求转成可验证的 NarrativePlan 与 StoryboardPl
 
 ## 旧项目兼容
 
-如果用户是在已有项目上继续创作，先调用 `media.workbench.project.get` 读取 Recipe，再调用 `media.workbench.plan.from_recipe` 反推 Plan。  
+如果用户是在已有项目上继续创作，先调用 `media.workbench.project.get` 读取 Recipe，再调用 `media.workbench.plan.from_recipe` 反推 Plan。
 这样可以先解释“当前视频的结构”，再做增量修改，而不是从零重做。
 
 ## 输出给用户的内容
@@ -151,7 +186,3 @@ description: 把短视频需求转成可验证的 NarrativePlan 与 StoryboardPl
 - `data_contract_*`：按错误路径修正数据；
 - `compile_shot_data_missing`：为每个镜头补 data；
 - 其他 blocker：保留 `code`、`message`、`remediation`，不要吞掉。
-
-
-
-

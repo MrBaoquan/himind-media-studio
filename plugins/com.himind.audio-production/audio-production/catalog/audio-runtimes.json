@@ -1,0 +1,77 @@
+{
+  "schema": "himind.audio-runtimes.v1",
+  "description": "可校验、可替换的离线音频运行时。运行时与声音是资产，不属于某个视频题材。",
+  "runtimes": [
+    {
+      "id": "piper",
+      "name": "Piper 离线神经 TTS",
+      "version": "2023.11.14-2",
+      "license": "MIT",
+      "description": "Piper C++ 推理运行时，离线、CPU、无 API Key；中文声音以 voice pack 形式单独登记。",
+      "artifacts": [
+        {
+          "kind": "zip",
+          "url": "https://github.com/rhasspy/piper/releases/download/2023.11.14-2/piper_windows_amd64.zip",
+          "sha256": "f3c58906402b24f3a96d92145f58acba6d86c9b5db896d207f78dc80811efcea",
+          "dest": ".",
+          "size": 22477236
+        },
+        {
+          "kind": "file",
+          "url": "https://huggingface.co/rhasspy/piper-voices/resolve/main/zh/zh_CN/huayan/medium/zh_CN-huayan-medium.onnx",
+          "sha256": "9929917bf8cabb26fd528ea44d3a6699c11e87317a14765312420be230be0f3d",
+          "dest": "voices/zh_CN-huayan-medium.onnx",
+          "size": 63201294
+        },
+        {
+          "kind": "file",
+          "url": "https://huggingface.co/rhasspy/piper-voices/resolve/main/zh/zh_CN/huayan/medium/zh_CN-huayan-medium.onnx.json",
+          "sha256": "d521dc45504a8ccc99e325822b35946dd701840bfb07e3dbb31a40929ed6a82b",
+          "dest": "voices/zh_CN-huayan-medium.onnx.json"
+        },
+        {
+          "kind": "file",
+          "url": "https://huggingface.co/rhasspy/piper-voices/resolve/main/zh/zh_CN/chaowen/medium/zh_CN-chaowen-medium.onnx",
+          "sha256": "820d64ac16048fbcf38dd0823d37fab5f5e0c2bd71b01ca5a50f553fac19e746",
+          "dest": "voices/zh_CN-chaowen-medium.onnx",
+          "size": 63201294
+        },
+        {
+          "kind": "file",
+          "url": "https://huggingface.co/rhasspy/piper-voices/resolve/main/zh/zh_CN/chaowen/medium/zh_CN-chaowen-medium.onnx.json",
+          "sha256": "a6bb2caafa0645642f13cbf7e2f6fbbb16fded66e51109fc26d622f6472fa16f",
+          "dest": "voices/zh_CN-chaowen-medium.onnx.json"
+        }
+      ],
+      "voices": [
+        {
+          "id": "zh_CN-huayan-medium",
+          "name": "华言 · 女声",
+          "language": "zh-CN",
+          "quality": "medium",
+          "model": "voices/zh_CN-huayan-medium.onnx",
+          "config": "voices/zh_CN-huayan-medium.onnx.json",
+          "license": "数据集许可未知（仅开发/演示）",
+          "license_url": "https://huggingface.co/rhasspy/piper-voices/raw/main/zh/zh_CN/huayan/medium/MODEL_CARD",
+          "commercial_use": false,
+          "demo_only": true,
+          "available": true,
+          "note": "Piper C++ 运行时可直接合成；上游数据集许可未声明，正式商用前必须替换。"
+        },
+        {
+          "id": "zh_CN-chaowen-medium",
+          "name": "超文 · 男声",
+          "language": "zh-CN",
+          "quality": "medium",
+          "model": "voices/zh_CN-chaowen-medium.onnx",
+          "config": "voices/zh_CN-chaowen-medium.onnx.json",
+          "license": "CC0",
+          "license_url": "https://huggingface.co/rhasspy/piper-voices/raw/main/zh/zh_CN/chaowen/medium/MODEL_CARD",
+          "commercial_use": true,
+          "available": false,
+          "note": "CC0 可商用；当前 C++ Piper 对多码点音素不兼容，需 Python Piper 1.4+ 或更新运行时，暂标记不可用。"
+        }
+      ]
+    }
+  ]
+}

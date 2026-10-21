@@ -1,0 +1,34 @@
+{
+  "schema": "himind.caption-styles.v1",
+  "styles": [
+    {
+      "id": "documentary-safe",
+      "name": "纪录安全区",
+      "font": "Microsoft YaHei",
+      "size": 20,
+      "alignment": 2,
+      "margin_v": 60,
+      "outline": 2,
+      "shadow": 1
+    },
+    {
+      "id": "short-video-punch",
+      "name": "短视频强调",
+      "font": "Microsoft YaHei",
+      "size": 24,
+      "bold": true,
+      "alignment": 2,
+      "margin_v": 72,
+      "outline": 3
+    },
+    {
+      "id": "minimal-lower-third",
+      "name": "极简下三分之一",
+      "font": "Microsoft YaHei",
+      "size": 18,
+      "alignment": 2,
+      "margin_v": 84,
+      "background": "#00000088"
+    }
+  ]
+}

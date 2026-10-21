@@ -1,0 +1,184 @@
+{
+  "id": "com.himind.audio-production",
+  "name": "音频制作",
+  "author": "马宝全",
+  "categories": ["audio", "content-production"],
+  "description": "通用音频生成与组装：TTS、BGM、混音、响度 QA 与离线运行时安装；不接管项目、分镜和时间线。",
+  "release_notes": "首个音频制作 External Pack：Piper 离线 TTS、逐 beat 旁白、程序化 BGM、ffmpeg 混音、音频 QA 与 manifest。",
+  "version": "0.1.0",
+  "entry": "bin/audio-production.exe",
+  "runtime": "process-jsonrpc-stdio",
+  "platforms": ["windows-x64"],
+  "min_agent_version": "0.3.40",
+  "governance": "optional",
+  "plugin_dependencies": [],
+  "capabilities": [
+    {
+      "id": "audio.catalog",
+      "description": "列出 TTS provider、声音与 BGM 预设。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {"workspace_root": {"type": "string"}},
+        "required": ["workspace_root"],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 30
+    },
+    {
+      "id": "audio.runtime.install",
+      "description": "按锁定版本与 SHA-256 安装音频运行时。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {"type": "string"},
+          "runtime_id": {"type": "string"},
+          "dry_run": {"type": "boolean"},
+          "force": {"type": "boolean"}
+        },
+        "required": ["workspace_root"],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 1800
+    },
+    {
+      "id": "audio.speech",
+      "description": "逐 beat 合成旁白 WAV，保留许可证与哈希。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {"type": "string"},
+          "creative_id": {"type": "string"},
+          "voice_provider": {"type": "string"},
+          "voice": {"type": "string"},
+          "voice_rate": {"type": "integer", "minimum": -10, "maximum": 10},
+          "voice_volume": {"type": "integer", "minimum": 0, "maximum": 100},
+          "allow_restricted_voice": {"type": "boolean"},
+          "output": {"type": "string"},
+          "value": {"type": "object"}
+        },
+        "required": ["workspace_root"],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 600
+    },
+    {
+      "id": "audio.bgm.generate",
+      "description": "用通用预设生成原创 BGM，记录许可证。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {"type": "string"},
+          "creative_id": {"type": "string"},
+          "bgm_preset": {"type": "string"},
+          "duration_seconds": {"type": "number", "minimum": 1, "maximum": 600},
+          "output": {"type": "string"}
+        },
+        "required": ["workspace_root"],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 600
+    },
+    {
+      "id": "audio.mix.render",
+      "description": "旁白与 BGM 混音：定位、ducking、响度与限幅。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {"type": "string"},
+          "creative_id": {"type": "string"},
+          "voice_clips": {"type": "array", "items": {"type": "object"}},
+          "bgm_path": {"type": "string"},
+          "duration_seconds": {"type": "number", "minimum": 1, "maximum": 600},
+          "voice_gain_db": {"type": "number", "minimum": -30, "maximum": 30},
+          "bgm_gain_db": {"type": "number", "minimum": -60, "maximum": 10},
+          "ducking": {"type": "boolean"},
+          "output": {"type": "string"}
+        },
+        "required": ["workspace_root", "voice_clips"],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 900
+    },
+    {
+      "id": "audio.qa.signal",
+      "description": "检查音频时长、响度、真峰值与削波风险。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {"type": "string"},
+          "path": {"type": "string"},
+          "creative_id": {"type": "string"},
+          "expected_duration_seconds": {"type": "number", "minimum": 0}
+        },
+        "required": ["workspace_root"],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 300
+    },
+    {
+      "id": "audio.manifest.get",
+      "description": "读取音频 manifest、BGM、混音与 QA。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {"type": "string"},
+          "creative_id": {"type": "string"}
+        },
+        "required": ["workspace_root", "creative_id"],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 30
+    },
+    {
+      "id": "audio.pipeline.render",
+      "description": "生成旁白、BGM、混音与 QA，返回 manifest。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {"type": "string"},
+          "creative_id": {"type": "string"},
+          "project_id": {"type": "string"},
+          "voice_provider": {"type": "string"},
+          "voice": {"type": "string"},
+          "voice_rate": {"type": "integer", "minimum": -10, "maximum": 10},
+          "voice_volume": {"type": "integer", "minimum": 0, "maximum": 100},
+          "allow_restricted_voice": {"type": "boolean"},
+          "voice_gain_db": {"type": "number", "minimum": -30, "maximum": 30},
+          "bgm_preset": {"type": "string"},
+          "bgm_gain_db": {"type": "number", "minimum": -60, "maximum": 10},
+          "ducking": {"type": "boolean"},
+          "duration_seconds": {"type": "number", "minimum": 1, "maximum": 600},
+          "max_chars": {"type": "integer", "minimum": 6, "maximum": 60},
+          "min_cue_seconds": {"type": "number", "minimum": 0.4, "maximum": 5}
+        },
+        "required": ["workspace_root", "creative_id"],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 1200
+    }
+  ],
+  "permissions": [
+    "filesystem.workspace.read",
+    "filesystem.workspace.write",
+    "process.node",
+    "network.package-registry"
+  ],
+  "capability_namespace": "audio",
+  "distribution_targets": ["github"]
+}

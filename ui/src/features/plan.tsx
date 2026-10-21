@@ -1,6 +1,15 @@
+import {useMemo, useState} from 'react';
 import {AlertTriangle, CheckCircle2, Clapperboard, Database, Route, Target} from 'lucide-react';
 import type {VideoPlan} from '../types';
 import {Badge, Empty, SectionLabel} from '../components/ui';
+
+function shotTone(id?: string) {
+  if (!id) return 'var(--fg-dim)';
+  if (id.includes('quote')) return 'var(--warn)';
+  if (id.includes('map') || id.includes('route') || id.includes('choropleth')) return 'var(--ok)';
+  if (id.includes('big') || id.includes('compare') || id.includes('bar') || id.includes('leaderboard')) return 'var(--accent)';
+  return 'var(--accent-line)';
+}
 
 function tags(values?: string[]) {
   if (!values || values.length === 0) return null;
@@ -24,10 +33,34 @@ function kv(label: string, value?: string | number) {
 }
 
 export function PlanPane({plan}: {plan?: VideoPlan | null}) {
+  const shots = plan?.storyboard?.shots ?? [];
+  const [shotQuery, setShotQuery] = useState('');
+  const [shotFilter, setShotFilter] = useState('all');
+  const [jumpValue, setJumpValue] = useState('');
+  const shotTypes = useMemo(
+    () => Array.from(new Set(shots.map((shot) => shot.shot).filter(Boolean))),
+    [shots],
+  );
+  const visibleShots = useMemo(
+    () => shots.map((shot, index) => ({shot, index})).filter(({shot}) => {
+      const haystack = `${shot.title ?? ''} ${shot.shot ?? ''} ${shot.role ?? ''} ${shot.rationale ?? ''}`.toLowerCase();
+      if (shotQuery.trim() && !haystack.includes(shotQuery.trim().toLowerCase())) return false;
+      if (shotFilter !== 'all' && shot.shot !== shotFilter) return false;
+      return true;
+    }),
+    [shots, shotQuery, shotFilter],
+  );
+  function jumpToPlanShot() {
+    const target = Number(jumpValue);
+    if (!Number.isFinite(target) || target < 1 || target > shots.length) return;
+    setShotQuery('');
+    setShotFilter('all');
+    setJumpValue('');
+    requestAnimationFrame(() => document.getElementById(`plan-shot-${target - 1}`)?.scrollIntoView({block: 'center'}));
+  }
   if (!plan) {
     return <Empty title="还没有可审阅的 Plan" hint="让 AI 先产出叙事计划与分镜计划" />;
   }
-  const shots = plan.storyboard?.shots ?? [];
   const narrative = plan.narrative ?? {};
   const brief = plan.brief ?? {};
   const presentation = plan.presentation ?? {};
@@ -105,9 +138,21 @@ export function PlanPane({plan}: {plan?: VideoPlan | null}) {
 
       <section className="surface mt-3 p-3">
         <SectionLabel trailing={<span>{totalSeconds}s</span>}>Storyboard</SectionLabel>
+        <div className="mb-2 space-y-1.5">
+          <input className="field" value={shotQuery} onChange={(event) => setShotQuery(event.target.value)} placeholder="搜索镜头标题 / 类型" aria-label="搜索计划镜头" />
+          <div className="flex items-center gap-1.5">
+            <select className="field min-w-0 flex-1" value={shotFilter} onChange={(event) => setShotFilter(event.target.value)} aria-label="筛选计划镜头类型">
+              <option value="all">全部类型</option>
+              {shotTypes.map((type) => <option key={type} value={type}>{type}</option>)}
+            </select>
+            <input className="field w-14" type="number" min={1} max={shots.length} value={jumpValue} onChange={(event) => setJumpValue(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') jumpToPlanShot(); }} placeholder="#" aria-label="跳转到计划镜头序号" />
+            <button type="button" className="btn" onClick={jumpToPlanShot} disabled={!jumpValue}>跳转</button>
+          </div>
+          <div className="text-[11px]" style={{color: 'var(--fg-dim)'}}>显示 {visibleShots.length}/{shots.length}</div>
+        </div>
         <div className="space-y-2">
-          {shots.map((shot, index) => (
-            <div key={`${shot.shot}-${index}`} className="rounded-lg p-2.5" style={{background: 'var(--ink-950)', border: '1px solid var(--line)'}}>
+          {visibleShots.map(({shot, index}) => (
+            <div id={`plan-shot-${index}`} key={`${shot.shot}-${index}`} className="rounded-lg p-2.5" style={{background: 'var(--ink-950)', border: '1px solid var(--line)', borderLeft: `3px solid ${shotTone(shot.shot)}`}}>
               <div className="flex items-center gap-2">
                 <span className="flex h-5 w-5 items-center justify-center rounded text-[10px] font-semibold" style={{background: 'var(--accent-soft)', color: 'var(--accent)'}}>
                   {String(index + 1).padStart(2, '0')}
@@ -124,7 +169,7 @@ export function PlanPane({plan}: {plan?: VideoPlan | null}) {
               {shot.rationale ? <div className="mt-1 text-[10.5px] leading-relaxed" style={{color: 'var(--fg-muted)'}}>{shot.rationale}</div> : null}
             </div>
           ))}
-          {shots.length === 0 ? <div className="text-[11px]" style={{color: 'var(--fg-dim)'}}>没有镜头</div> : null}
+          {!visibleShots.length ? <div className="text-[11px]" style={{color: 'var(--fg-dim)'}}>{shots.length ? '没有匹配的镜头' : '没有镜头'}</div> : null}
         </div>
       </section>
 

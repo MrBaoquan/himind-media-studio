@@ -1,6 +1,7 @@
 import {useEffect, useMemo, useState} from 'react';
 import {CheckCircle2, ExternalLink, Film, Grid3X3, Image as ImageIcon, Loader2, MessageSquare, Play, RefreshCw, Rows3, Send, ShieldCheck} from 'lucide-react';
 import {callCapability} from '../api/capability';
+import {useArtifactBlob} from './timeline/hooks';
 import type {Artifact, FeedbackEntry, ProjectSummary} from '../types';
 
 
@@ -25,6 +26,13 @@ type RenderJob = {
 
 function previewArtifacts(items: Artifact[]): Artifact[] {
   return items.filter((item) => item.ready && item.kind.startsWith('preview/')).sort((a, b) => b.created_at.localeCompare(a.created_at));
+}
+
+function PreviewThumb({workspace, artifact, enabled}: {workspace: string; artifact: Artifact; enabled: boolean}) {
+  const {url} = useArtifactBlob(workspace, artifact.artifact_id, enabled);
+  return url
+    ? <img src={url} alt="" className="h-8 w-8 shrink-0 rounded-md object-cover" style={{border: '1px solid var(--line)'}} />
+    : <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md" style={{background: 'var(--ink-850)', border: '1px solid var(--line)'}}><ImageIcon size={12} style={{color: 'var(--fg-dim)'}} /></span>;
 }
 
 export function ReviewPane({
@@ -365,7 +373,7 @@ export function ReviewPane({
         <button type="button" className="btn" onClick={() => void generate('stills')} disabled={busy}>
           <ImageIcon size={12} />静帧
         </button>
-        <button type="button" className="btn btn-primary" onClick={() => void generate('sheet')} disabled={busy}>
+        <button type="button" className="btn" onClick={() => void generate('sheet')} disabled={busy}>
           <RefreshCw size={12} />重新生成
         </button>
       </div>
@@ -378,7 +386,7 @@ export function ReviewPane({
             <div className="flex flex-col items-center gap-3 text-center">
               <ImageIcon size={34} style={{color: 'var(--fg-dim)'}} />
               <div className="text-[12.5px]" style={{color: 'var(--fg-muted)'}}>还没有审查图</div>
-              <button type="button" className="btn btn-primary" onClick={() => void generate('sheet')} disabled={busy}>
+              <button type="button" className="btn" onClick={() => void generate('sheet')} disabled={busy}>
                 {busy ? <Loader2 size={12} className="animate-spin" /> : <Play size={12} />}
                 生成关键帧总览
               </button>
@@ -392,7 +400,7 @@ export function ReviewPane({
             <div className="px-1 py-2 text-[11px]" style={{color: 'var(--fg-dim)'}}>生成后可在这里切换</div>
           ) : (
             <div className="flex flex-col gap-1">
-              {previews.map((item) => (
+              {previews.map((item, index) => (
                 <button
                   key={item.artifact_id}
                   type="button"
@@ -401,7 +409,7 @@ export function ReviewPane({
                   onClick={() => setSelectedId(item.artifact_id)}
                   title={item.path}
                 >
-                  <ImageIcon size={12} className="shrink-0 opacity-70" />
+                  <PreviewThumb workspace={workspace} artifact={item} enabled={index < 3} />
                   <span className="min-w-0 flex-1 truncate text-left text-[10.5px]">{item.kind.replace('preview/', '')}</span>
                   <span className="text-[9.5px]" style={{color: 'var(--fg-dim)'}}>{Math.round(item.size / 1024)}k</span>
                 </button>
@@ -412,7 +420,7 @@ export function ReviewPane({
           <button type="button" className="btn w-full" onClick={() => void openArtifact(selected ?? previews[0])} disabled={!selected}>
             <ExternalLink size={11} />打开原图
           </button>
-          <button type="button" className="btn btn-primary mt-1 w-full" onClick={() => void openArtifact(latestVideo)} disabled={!latestVideo}>
+          <button type="button" className="btn mt-1 w-full" onClick={() => void openArtifact(latestVideo)} disabled={!latestVideo}>
             <Play size={11} />打开最新成片{videos.length ? ` (${videos.length})` : ''}
           </button>
           {qaVideo?.quality_status ? (
@@ -422,6 +430,7 @@ export function ReviewPane({
           ) : null}
           <div className="divider my-2" />
           <div className="mb-1 px-1 text-[10.5px] font-medium" style={{color: 'var(--fg-dim)'}}>成片渲染</div>
+          <div className="review-render-sticky">
           <button type="button" className="btn mt-1 w-full" onClick={() => void checkDeterminism()} disabled={detBusy || rendering || !previewReady || determinismPassed}>
             {detBusy ? <Loader2 size={11} className="animate-spin" /> : determinismPassed ? <CheckCircle2 size={11} /> : <ShieldCheck size={11} />}
             {determinismPassed ? '确定性已通过' : '检查确定性'}
@@ -430,6 +439,7 @@ export function ReviewPane({
             {rendering ? <Loader2 size={11} className="animate-spin" /> : detBusy ? <Loader2 size={11} className="animate-spin" /> : <Film size={11} />}
             {rendering ? `渲染中 ${renderJob?.progress ?? 0}%` : detBusy ? '正在检查确定性…' : determinismPassed ? '渲染成片' : '检查确定性并渲染'}
           </button>
+          </div>
           <button type="button" className="btn mt-1 w-full" onClick={() => void upgradeStyle()} disabled={upgradeBusy || rendering || detBusy}>
             {upgradeBusy ? <Loader2 size={11} className="animate-spin" /> : <RefreshCw size={11} />}
             {upgradeBusy ? '正在升级风格…' : '升级风格渲染器'}
@@ -497,7 +507,7 @@ export function ReviewPane({
             <option value="quality">质量</option>
             <option value="data">数据</option>
           </select>
-          <button type="button" className="btn btn-primary" onClick={() => void submitFeedback()} disabled={busy || !feedbackText.trim()}>
+          <button type="button" className="btn" onClick={() => void submitFeedback()} disabled={busy || !feedbackText.trim()}>
             <Send size={11} />记录反馈
           </button>
         </div>
@@ -514,20 +524,103 @@ export function ReviewPane({
   );
 }
 
+type StoryboardScene = {time: string; scene: string; description: string};
+type StoryboardSection = {title: string; body: string};
+
+function parseStoryboard(markdown: string): {scenes: StoryboardScene[]; sections: StoryboardSection[]} {
+  const scenes: StoryboardScene[] = [];
+  const sections: StoryboardSection[] = [];
+  let tableSeen = false;
+  let current: StoryboardSection | null = null;
+  for (const line of markdown.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (trimmed.startsWith('|')) {
+      const cells = trimmed.split('|').slice(1, -1).map((cell) => cell.trim());
+      if (cells.length >= 3 && cells[0].toLowerCase().includes('time')) { tableSeen = true; continue; }
+      if (tableSeen && cells.every((cell) => /^:?-{2,}:?$/.test(cell))) continue;
+      if (tableSeen && cells.length >= 3) {
+        scenes.push({time: cells[0], scene: cells[1], description: cells.slice(2).join(' ')});
+        continue;
+      }
+    } else {
+      tableSeen = false;
+    }
+    if (trimmed.startsWith('## ')) {
+      if (current) sections.push(current);
+      current = {title: trimmed.slice(3).trim(), body: ''};
+      continue;
+    }
+    if (current) current.body += line + '\n';
+  }
+  if (current) sections.push(current);
+  return {scenes, sections};
+}
+
 export function CodeStoryboardPane({storyboard}: {storyboard?: string}) {
+  const [selected, setSelected] = useState(0);
   if (!storyboard) {
     return <div className="flex h-full items-center justify-center text-[12px]" style={{color: 'var(--fg-dim)'}}>还没有 STORYBOARD.md</div>;
   }
+  const {scenes, sections} = parseStoryboard(storyboard);
+  if (!scenes.length) {
+    return (
+      <div className="h-full overflow-auto p-5">
+        <pre className="whitespace-pre-wrap font-sans text-[12px] leading-6" style={{color: 'var(--fg-muted)'}}>{storyboard}</pre>
+      </div>
+    );
+  }
+  const active = scenes[Math.min(selected, scenes.length - 1)];
   return (
-    <div className="h-full overflow-auto p-5">
-      <pre className="whitespace-pre-wrap font-sans text-[12px] leading-6" style={{color: 'var(--fg-muted)'}}>{storyboard}</pre>
+    <div className="grid h-full min-h-0" style={{gridTemplateColumns: '280px 1fr'}}>
+      <aside className="flex min-h-0 flex-col" style={{borderRight: '1px solid var(--line)', background: 'var(--ink-900)'}}>
+        <div className="px-3 py-2 text-[9.5px]" style={{color: 'var(--fg-dim)'}}>↑/↓ 切换场景 · Enter 定位</div>
+        <div
+          role="listbox"
+          aria-label="场景列表"
+          tabIndex={0}
+          className="min-h-0 flex-1 overflow-auto px-2 pb-2"
+          onKeyDown={(event) => {
+            if (!scenes.length) return;
+            if (event.key === 'ArrowDown') { event.preventDefault(); setSelected((value) => Math.min(scenes.length - 1, value + 1)); }
+            else if (event.key === 'ArrowUp') { event.preventDefault(); setSelected((value) => Math.max(0, value - 1)); }
+            else if (event.key === 'Home') { event.preventDefault(); setSelected(0); }
+            else if (event.key === 'End') { event.preventDefault(); setSelected(scenes.length - 1); }
+          }}
+        >
+          {scenes.map((scene, index) => (
+            <button
+              key={`${scene.time}-${index}`}
+              type="button"
+              role="option"
+              aria-selected={selected === index}
+              data-active={selected === index}
+              className="mb-1 w-full rounded-md border px-2 py-2 text-left"
+              style={{borderColor: selected === index ? 'var(--accent-line)' : 'transparent', background: selected === index ? 'var(--accent-soft)' : 'transparent', contentVisibility: 'auto', containIntrinsicSize: '52px'}}
+              onClick={() => setSelected(index)}
+            >
+              <span className="flex items-center gap-2">
+                <span className="badge">{scene.time}</span>
+                <span className="truncate text-[11.5px] font-medium">{scene.scene}</span>
+              </span>
+              <span className="mt-1 block truncate text-[10px]" style={{color: 'var(--fg-dim)'}}>{scene.description}</span>
+            </button>
+          ))}
+        </div>
+      </aside>
+      <section className="min-h-0 overflow-auto p-5">
+        <div className="flex items-center gap-2">
+          <span className="badge badge-accent">{active.time}</span>
+          <strong className="text-[15px]">{active.scene}</strong>
+          <span className="ml-auto text-[10px]" style={{color: 'var(--fg-dim)'}}>{selected + 1}/{scenes.length}</span>
+        </div>
+        <p className="mt-3 text-[12.5px] leading-6" style={{color: 'var(--fg-muted)'}}>{active.description}</p>
+        {sections.map((section) => (
+          <div key={section.title} className="mt-5 border-t pt-3" style={{borderColor: 'var(--line)'}}>
+            <div className="text-[10px] uppercase tracking-wide" style={{color: 'var(--fg-dim)'}}>{section.title}</div>
+            <pre className="mt-2 whitespace-pre-wrap font-sans text-[11.5px] leading-6" style={{color: 'var(--fg-muted)'}}>{section.body.trim()}</pre>
+          </div>
+        ))}
+      </section>
     </div>
   );
 }
-
-
-
-
-
-
-

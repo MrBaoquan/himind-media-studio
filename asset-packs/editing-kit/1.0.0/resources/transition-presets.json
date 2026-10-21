@@ -1,0 +1,20 @@
+{
+  "schema": "himind.transition-presets.v1",
+  "presets": [
+    {
+      "id": "soft-fade",
+      "type": "fade",
+      "duration_frames": 6
+    },
+    {
+      "id": "quick-cut",
+      "type": "cut",
+      "duration_frames": 0
+    },
+    {
+      "id": "documentary-dissolve",
+      "type": "fade",
+      "duration_frames": 12
+    }
+  ]
+}

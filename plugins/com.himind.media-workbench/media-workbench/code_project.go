@@ -644,6 +644,19 @@ func startCodeRender(root string, item project, in requestInput) (any, *himindjs
 	if item.DeterminismStatus != "passed" || item.DeterminismHash != hash {
 		return map[string]any{"state": "blocked", "blockers": []map[string]any{issue("code_determinism_required", "determinism", "最终渲染前必须通过同帧集重复渲染哈希检查", "调用 preview.determinism 后重试")}, "retryable": true}, nil
 	}
+	audioPath := strings.TrimSpace(in.AudioPath)
+	if audioPath != "" {
+		resolved, pathErr := workspaceFile(root, audioPath)
+		if pathErr != nil {
+			return map[string]any{"state": "blocked", "blockers": []map[string]any{issue("AUDIO_PATH_INVALID", "audio", "audio_path 必须位于 workspace_root 内: "+pathErr.Error(), "把混音文件放在工作区内后重试")}, "retryable": true}, nil
+		}
+		if info, statErr := os.Stat(resolved); statErr != nil || info.IsDir() || info.Size() == 0 {
+			return map[string]any{"state": "blocked", "blockers": []map[string]any{issue("AUDIO_PATH_MISSING", "audio", "audio_path 不存在或为空", "先调用 audio.build 或 audio.mix 生成混音")}, "retryable": true}, nil
+		}
+		in.AudioPath = resolved
+	} else if projectDataHasNarration(sourceRoot) {
+		return map[string]any{"state": "blocked", "blockers": []map[string]any{issue("AUDIO_REQUIRED_FOR_NARRATION", "audio", "项目已有字幕/旁白，但 render.start 未提供 audio_path", "调用 audio.build 生成 mix.m4a，并在 render.start 传 audio_path")}, "retryable": true}, nil
+	}
 	if _, err := exec.LookPath("node"); err != nil {
 		return rendererRuntimeBlocked("Node.js")
 	}
@@ -1061,4 +1074,32 @@ func projectDataWrite(in requestInput) (any, *himindjsonrpc.Error) {
 		"source_hash": hash, "preview_status": item.PreviewStatus,
 		"next": []string{"调用 preview.review 重新生成审查图", "调用 preview.determinism", "通过 quality.check 后 render.start"},
 	}, nil
+}
+func projectDataHasNarration(sourceRoot string) bool {
+	dataPath := filepath.Join(sourceRoot, "input", "data.json")
+	raw, err := os.ReadFile(dataPath)
+	if err != nil {
+		return false
+	}
+	var data map[string]any
+	if err := json.Unmarshal(raw, &data); err != nil {
+		return false
+	}
+	if cues, ok := data["subtitles"].([]any); ok && len(cues) > 0 {
+		return true
+	}
+	if audio, ok := data["audio"].(map[string]any); ok {
+		if hasVoice, _ := audio["has_voice"].(bool); hasVoice {
+			return true
+		}
+	}
+	if scenes, ok := data["scenes"].([]any); ok {
+		for _, rawScene := range scenes {
+			scene, _ := rawScene.(map[string]any)
+			if strings.TrimSpace(asString(scene["narration"])) != "" {
+				return true
+			}
+		}
+	}
+	return false
 }

@@ -30,7 +30,7 @@ func TestConstraintManifestRulesAreEnforced(t *testing.T) {
 		t.Fatal("constraint manifest is empty")
 	}
 
-	capabilities := declaredCapabilityIDs()
+	capabilities, external := declaredCapabilities()
 	tests := declaredTestNames()
 	seen := map[string]bool{}
 
@@ -49,7 +49,7 @@ func TestConstraintManifestRulesAreEnforced(t *testing.T) {
 			t.Errorf("%s: invalid level %q", rule.Code, rule.Level)
 		}
 
-		ok, detail := resolveEnforcement(rule, capabilities, tests)
+		ok, detail := resolveEnforcement(rule, capabilities, external, tests)
 		if !ok {
 			t.Errorf("%s: enforcement point is not real (%s/%s): %s",
 				rule.Code, rule.EnforcedBy.Kind, rule.EnforcedBy.ID, detail)
@@ -232,6 +232,23 @@ func TestConstraintEvidenceCoversPackagedTests(t *testing.T) {
 		}
 		if !available[rule.EnforcedBy.ID] {
 			t.Errorf("%s: packaged evidence is missing %s", rule.Code, rule.EnforcedBy.ID)
+		}
+	}
+}
+
+func TestExternalCapabilityPatterns(t *testing.T) {
+	patterns := []string{"audio.*", "visual.reference.validate", "media.job.*"}
+	cases := map[string]bool{
+		"audio.qa.sync":                true,
+		"visual.reference.validate":    true,
+		"visual.image.qa":              false,
+		"media.job.get":                true,
+		"media.workbench.render.start": false,
+		"system.health":                false,
+	}
+	for id, want := range cases {
+		if got := matchesExternalCapability(id, patterns); got != want {
+			t.Errorf("matchesExternalCapability(%q) = %v, want %v", id, got, want)
 		}
 	}
 }

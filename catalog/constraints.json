@@ -1,0 +1,191 @@
+{
+  "schema": "himind.media.constraints.v1",
+  "updated_at": "2026-10-19",
+  "description": "跨项目复用的创作约束与踩坑记录。Skill / Workflow / 模板作者在实现前先读本文件；新增规则必须带证据。",
+  "rules": [
+    {
+      "id": "caption-subtitle-safe-band",
+      "severity": "error",
+      "stage": "layout",
+      "scope": [
+        "browser-code",
+        "storyboard",
+        "subtitles"
+      ],
+      "statement": "1080×1920 画布中，y=1500..1690 是字幕专属安全带；场景说明卡、结论行、标注必须整体位于 y<1490，字幕最多 3 行。",
+      "detection": [
+        "media.workbench.quality.visual → text_overlap",
+        "renderer/browser-code/text-audit.mjs"
+      ],
+      "remediation": "把说明卡整体上移（如 1490→1320），或缩短字幕；不要把字幕压到说明卡上。",
+      "evidence": {
+        "project": "hefei-artificial-sun",
+        "times": [
+          62,
+          69
+        ],
+        "finding": "TEXT_OVERLAP 50%",
+        "fixed_by": "drawCompare y 1580→1500；drawImageScene cardY 1490→1320",
+        "verified": "text-audit fail=0 warn=0"
+      }
+    },
+    {
+      "id": "banding-gradient-gate",
+      "severity": "warn",
+      "stage": "quality",
+      "scope": [
+        "3d",
+        "particles",
+        "vignette",
+        "dark-gradient"
+      ],
+      "statement": "暗部渐变、3D、粒子与 vignette 风格不得用 JPEG 中间帧；banding_score ≥0.78 或最大平坦段超过画面宽度 8% 时必须加确定性 dither/grain 或提高色彩位深。",
+      "detection": [
+        "visual.image.qa",
+        "media.workbench.quality.banding"
+      ],
+      "remediation": "加入固定种子噪声（每帧可复现）、提高位深、避免大面积纯平滑色块。",
+      "evidence": {
+        "project": "hefei-artificial-sun",
+        "still": "still-0001.png",
+        "banding_score": 0.615,
+        "synthetic_banded": 0.8375
+      }
+    },
+    {
+      "id": "reference-pack-license",
+      "severity": "warn",
+      "stage": "reference",
+      "scope": [
+        "visual",
+        "asset-pack"
+      ],
+      "statement": "角色/主体参考包必须记录 SHA-256、尺寸、license、license_url 与 commercial_use；license=unknown 不得进入商业发布。",
+      "detection": [
+        "visual.reference.validate → REFERENCE_LICENSE_UNKNOWN",
+        "visual.reference.validate → REFERENCE_HASH_MISMATCH"
+      ],
+      "remediation": "补齐许可证字段，或换用可商用素材；哈希不一致时重新打包。",
+      "evidence": {
+        "pack": "asset-packs/hefei-tokamak-reference/1.0.0",
+        "resources": 3,
+        "commercial_use": true
+      }
+    },
+    {
+      "id": "subtitle-from-alignment",
+      "severity": "error",
+      "stage": "audio",
+      "scope": [
+        "tts",
+        "subtitle"
+      ],
+      "statement": "字幕必须从 audio.align 的逐词时间戳生成，禁止再用独立切分算法；audio.qa.sync 的 max_drift 必须为 0。",
+      "detection": [
+        "audio.qa.sync"
+      ],
+      "remediation": "调用 audio.subtitle.from-alignment 重新生成 cues，再挂载到项目。",
+      "evidence": {
+        "project": "hefei-artificial-sun",
+        "words": 244,
+        "cues": 12,
+        "max_drift": 0
+      }
+    },
+    {
+      "id": "narration-requires-audio-path",
+      "severity": "error",
+      "stage": "render",
+      "scope": [
+        "render",
+        "audio"
+      ],
+      "statement": "项目存在字幕/旁白时，render.start 必须显式传 audio_path；能力清单必须声明该字段，否则桥接调用会被契约拒绝。",
+      "detection": [
+        "media.workbench.render.start → AUDIO_REQUIRED_FOR_NARRATION"
+      ],
+      "remediation": "调用 audio.pipeline.render 生成 mix.m4a，并把 audio_path 作为 render.start 输入。",
+      "evidence": {
+        "workbench_version": "0.17.5",
+        "fix": "render.start input_schema 增加 audio_path"
+      }
+    },
+    {
+      "id": "determinism-before-final-render",
+      "severity": "error",
+      "stage": "render",
+      "scope": [
+        "browser-code",
+        "remotion"
+      ],
+      "statement": "最终渲染前必须通过 preview.review 与 preview.determinism；同帧集两次渲染哈希必须一致。",
+      "detection": [
+        "media.workbench.preview.determinism → valid"
+      ],
+      "remediation": "固定随机种子、避免跨帧状态与外部网络资源，然后重新预览。",
+      "evidence": {
+        "project": "hefei-artificial-sun",
+        "times": "2,17,34,52,62,69",
+        "valid": true
+      }
+    },
+    {
+      "id": "reference-consistency-gate",
+      "severity": "error",
+      "stage": "visual",
+      "scope": [
+        "character",
+        "ai-image",
+        "continuity"
+      ],
+      "statement": "角色/主体复用镜头必须用参考包做一致性校验；drift 候选不得进入主视觉，近阈值候选必须人工复核。",
+      "detection": [
+        "visual.reference.character.consistency"
+      ],
+      "remediation": "换候选，或把确认可用的角度补进参考包后重跑。",
+      "evidence": {
+        "pack": "hefei-tokamak-reference@1.0.0",
+        "candidates": 2,
+        "best_score": 1.0
+      }
+    },
+    {
+      "id": "scene-cuts-visual-only",
+      "severity": "info",
+      "stage": "analysis",
+      "scope": [
+        "video",
+        "scenes",
+        "storyboard"
+      ],
+      "statement": "ffmpeg 场景切点只反映视觉硬切；同风格/同背景的手绘场景可能检测不到，必须以 Plan/Storyboard 时间轴为真值。",
+      "detection": [
+        "visual.video.scenes"
+      ],
+      "remediation": "把 storyboard 的镜头时间轴作为切分依据；场景检测只用于素材检索、抽帧定位与硬切复核。",
+      "evidence": {
+        "project": "hefei-artificial-sun",
+        "detected": [
+          5,
+          21,
+          29,
+          66
+        ],
+        "storyboard": [
+          5,
+          12,
+          21,
+          29,
+          40,
+          48,
+          58,
+          66
+        ],
+        "threshold": [
+          0.15,
+          0.3
+        ]
+      }
+    }
+  ]
+}

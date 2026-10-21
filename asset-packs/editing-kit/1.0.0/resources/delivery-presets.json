@@ -1,0 +1,35 @@
+{
+  "schema": "himind.delivery-presets.v1",
+  "presets": [
+    {
+      "id": "master",
+      "name": "母版",
+      "lufs": -16
+    },
+    {
+      "id": "web",
+      "name": "Web",
+      "max_long_side": 1280,
+      "lufs": -16
+    },
+    {
+      "id": "douyin",
+      "name": "抖音竖屏",
+      "width": 1080,
+      "height": 1920,
+      "lufs": -14
+    },
+    {
+      "id": "bilibili",
+      "name": "B 站",
+      "max_long_side": 1920,
+      "lufs": -16
+    },
+    {
+      "id": "youtube",
+      "name": "YouTube",
+      "max_long_side": 1920,
+      "lufs": -14
+    }
+  ]
+}

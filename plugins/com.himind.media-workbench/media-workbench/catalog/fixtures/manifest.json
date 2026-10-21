@@ -125,6 +125,17 @@
         180,
         270
       ]
+    },
+    {
+      "id": "promo-video",
+      "template": "promo-video",
+      "composition": "PromoVideo",
+      "recipe": "promo-video/recipe.json",
+      "frames": [
+        30,
+        200,
+        500
+      ]
     }
   ],
   "diffYAvgMax": 0.8,

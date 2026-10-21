@@ -7,10 +7,10 @@
     "content-production",
     "visual-design"
   ],
-  "version": "0.1.0",
+  "version": "0.3.0",
   "scope": "user",
   "description": "把短视频需求转成可验证的叙事计划与分镜计划，再编译成 Recipe；负责导演方案，不直接渲染。",
-  "release_notes": "新增 Plan 规划层：先出 NarrativePlan/StoryboardPlan，再调用 plan.validate 与 recipe.compile。",
+  "release_notes": "新增 Script 与旁白/字幕约束：narration 作为 TTS/字幕唯一文本源，on_screen_text 与旁白分离。",
   "min_agent_version": "0.3.40",
   "supported_clients": [
     "agent-skills"
@@ -43,7 +43,7 @@
     {
       "id": "media.workbench.template.schema",
       "required": true,
-      "min_version": "0.5.0",
+      "min_version": "0.17.2",
       "provider": "com.himind.media-workbench"
     },
     {
@@ -61,31 +61,31 @@
     {
       "id": "media.workbench.plan.normalize",
       "required": true,
-      "min_version": "0.5.0",
+      "min_version": "0.17.2",
       "provider": "com.himind.media-workbench"
     },
     {
       "id": "media.workbench.plan.validate",
       "required": true,
-      "min_version": "0.5.0",
+      "min_version": "0.17.2",
       "provider": "com.himind.media-workbench"
     },
     {
       "id": "media.workbench.plan.estimate",
       "required": true,
-      "min_version": "0.5.0",
+      "min_version": "0.17.2",
       "provider": "com.himind.media-workbench"
     },
     {
       "id": "media.workbench.plan.from-recipe",
       "required": true,
-      "min_version": "0.5.0",
+      "min_version": "0.17.2",
       "provider": "com.himind.media-workbench"
     },
     {
       "id": "media.workbench.recipe.compile",
       "required": true,
-      "min_version": "0.5.0",
+      "min_version": "0.17.2",
       "provider": "com.himind.media-workbench"
     },
     {
@@ -109,31 +109,61 @@
     {
       "id": "media.workbench.generate.run",
       "required": true,
-      "min_version": "0.5.0",
+      "min_version": "0.17.2",
       "provider": "com.himind.media-workbench"
     },
     {
       "id": "media.workbench.series.plan",
       "required": true,
-      "min_version": "0.5.0",
+      "min_version": "0.17.2",
       "provider": "com.himind.media-workbench"
     },
     {
       "id": "media.workbench.series.generate",
       "required": true,
-      "min_version": "0.5.0",
+      "min_version": "0.17.2",
       "provider": "com.himind.media-workbench"
     },
     {
       "id": "media.workbench.data.ingest",
       "required": true,
-      "min_version": "0.5.0",
+      "min_version": "0.17.2",
       "provider": "com.himind.media-workbench"
     },
     {
       "id": "media.workbench.data.bind",
       "required": true,
-      "min_version": "0.5.0",
+      "min_version": "0.17.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.creative.create",
+      "required": true,
+      "min_version": "0.9.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.creative.list",
+      "required": true,
+      "min_version": "0.9.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.creative.get",
+      "required": true,
+      "min_version": "0.9.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.creative.update",
+      "required": true,
+      "min_version": "0.9.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.creative.validate",
+      "required": true,
+      "min_version": "0.9.2",
       "provider": "com.himind.media-workbench"
     }
   ],
@@ -141,7 +171,7 @@
     {
       "plugin_id": "com.himind.media-workbench",
       "required": true,
-      "min_version": "0.5.0"
+      "min_version": "0.17.2"
     }
   ],
   "risk_summary": "导演 Skill 只生成和校验计划，不执行渲染；Plan 校验通过后仍需由 video-creator 进行预览、审批和构建。",

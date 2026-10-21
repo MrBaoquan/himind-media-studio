@@ -7,10 +7,10 @@
     "content-production",
     "visual-design"
   ],
-  "version": "0.4.2",
+  "version": "0.9.3",
   "scope": "user",
   "description": "把对话需求转成模板化短视频项目，按叙事结构选择模板（含占比构成与流程链路），完成预览、反馈迭代和构建。",
-  "release_notes": "新增 Storyboard 画布式分镜编辑：镜头目录来自 storyboard_shot 声明，字段表单来自 template.schema，保存时执行嵌套镜头契约校验。",
+  "release_notes": "新增 visual.video.qa：成片均匀/指定时间抽帧质检，worst_banding 阈值与 image.qa 一致。",
   "min_agent_version": "0.3.40",
   "supported_clients": [
     "agent-skills"
@@ -55,7 +55,7 @@
     {
       "id": "media.workbench.template.schema",
       "required": true,
-      "min_version": "0.5.0",
+      "min_version": "0.17.2",
       "provider": "com.himind.media-workbench"
     },
     {
@@ -189,13 +189,130 @@
       "required": true,
       "min_version": "0.1.0",
       "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "audio.catalog",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.audio-production"
+    },
+    {
+      "id": "audio.runtime.install",
+      "required": false,
+      "min_version": "0.1.0",
+      "provider": "com.himind.audio-production"
+    },
+    {
+      "id": "audio.pipeline.render",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.audio-production"
+    },
+    {
+      "id": "audio.qa.signal",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.audio-production"
+    },
+    {
+      "id": "audio.manifest.get",
+      "required": true,
+      "min_version": "0.1.0",
+      "provider": "com.himind.audio-production"
+    },
+    {
+      "id": "audio.align",
+      "required": false,
+      "min_version": "0.1.0",
+      "provider": "com.himind.audio-intelligence"
+    },
+    {
+      "id": "audio.subtitle.from-alignment",
+      "required": false,
+      "min_version": "0.1.0",
+      "provider": "com.himind.audio-intelligence"
+    },
+    {
+      "id": "audio.qa.sync",
+      "required": false,
+      "min_version": "0.1.0",
+      "provider": "com.himind.audio-intelligence"
+    },
+    {
+      "id": "media.workbench.subtitle.generate",
+      "required": true,
+      "min_version": "0.17.3",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.audio.attach",
+      "required": true,
+      "min_version": "0.17.3",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.creative.get",
+      "required": true,
+      "min_version": "0.9.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "media.workbench.creative.materialize",
+      "required": true,
+      "min_version": "0.9.2",
+      "provider": "com.himind.media-workbench"
+    },
+    {
+      "id": "visual.reference.pack",
+      "required": false,
+      "min_version": "0.2.0",
+      "provider": "com.himind.media-visual"
+    },
+    {
+      "id": "visual.reference.validate",
+      "required": false,
+      "min_version": "0.2.0",
+      "provider": "com.himind.media-visual"
+    },
+    {
+      "id": "visual.reference.character.consistency",
+      "required": false,
+      "min_version": "0.2.0",
+      "provider": "com.himind.media-visual"
+    },
+    {
+      "id": "visual.image.qa",
+      "required": false,
+      "min_version": "0.2.0",
+      "provider": "com.himind.media-visual"
+    },
+    {
+      "id": "visual.video.qa",
+      "required": false,
+      "min_version": "0.3.0",
+      "provider": "com.himind.media-visual"
     }
   ],
   "plugin_dependencies": [
     {
       "plugin_id": "com.himind.media-workbench",
       "required": true,
-      "min_version": "0.5.0"
+      "min_version": "0.17.3"
+    },
+    {
+      "plugin_id": "com.himind.audio-production",
+      "required": true,
+      "min_version": "0.1.0"
+    },
+    {
+      "plugin_id": "com.himind.audio-intelligence",
+      "required": false,
+      "min_version": "0.1.0"
+    },
+    {
+      "plugin_id": "com.himind.media-visual",
+      "required": false,
+      "min_version": "0.2.0"
     }
   ],
   "risk_summary": "创建项目、预览和构建会写入调用方指定目录；内置 Remotion 只执行固定版本和固定参数，不接受任意命令。",

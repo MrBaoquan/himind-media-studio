@@ -1,0 +1,138 @@
+{
+  "schema": "himind.asset-pack.v1",
+  "id": "promo-video-kit",
+  "version": "1.0.0",
+  "name": "产品宣传片能力包",
+  "description": "把产品调研、真实素材、风格方向、旁白字幕、质量门禁与 Remotion 渲染沉淀为可复用宣传片资产。",
+  "license": "MIT",
+  "attribution": "HiMind",
+  "resources": [
+    {
+      "id": "recipe",
+      "type": "template",
+      "path": "resources/promo-video-recipe.json",
+      "role": "promo-recipe",
+      "mime": "application/json",
+      "sha256": "45428db06b7518838b8ae76fe32cfd6a8006ea3df94ac1ea21f2b88d3fe81921",
+      "size": 3340,
+      "description": "HiMind 产品宣传片 Recipe：6 场景、35 秒、1920x1080"
+    },
+    {
+      "id": "scene-presets",
+      "type": "preset",
+      "path": "resources/promo-scenes.json",
+      "role": "scene-presets",
+      "mime": "application/json",
+      "sha256": "0ab0832be115cc538594837d88b6ea8803cf994962374ef6c101dbc5904b5881",
+      "size": 1594,
+      "description": "hero / statement / screenshot / cta 四类场景数据预设"
+    },
+    {
+      "id": "checklist",
+      "type": "checklist",
+      "path": "resources/promo-checklist.json",
+      "role": "quality-checklist",
+      "mime": "application/json",
+      "sha256": "3141a3c8fd93f115b7a2379717a9f3ead16d1153ffd2c9bf3e75d25315752884",
+      "size": 1771,
+      "description": "宣传片事实、素材、安全区、音频、渲染规格与确定性门禁"
+    },
+    {
+      "id": "requirements",
+      "type": "document",
+      "path": "resources/requirements-questionnaire.md",
+      "role": "requirements-questionnaire",
+      "mime": "text/markdown",
+      "sha256": "6e45472a154919bc890d6b32fd24873a50d056bce869be280ef24eefa3b33656",
+      "size": 1438,
+      "description": "两轮需求问询模板"
+    },
+    {
+      "id": "lessons",
+      "type": "document",
+      "path": "resources/lessons-learned.md",
+      "role": "lessons-learned",
+      "mime": "text/markdown",
+      "sha256": "cc726c17132b1a52c33342f3e1d0adfca84a56f387ffbfe5b0c030e2e6b1ab7d",
+      "size": 2057,
+      "description": "宣传片制作踩坑、worker 环境和安全区修复记录"
+    },
+    {
+      "id": "style-directions",
+      "type": "preset",
+      "path": "resources/style-directions.json",
+      "role": "style-directions",
+      "mime": "application/json",
+      "sha256": "a26cd1961be87fb44b3792aa8eb01cb93e0e1aca4cbfb189e82e660ac2fc1c15",
+      "size": 1330,
+      "description": "四种风格方向与适用场景"
+    },
+    {
+      "id": "style-sheet",
+      "type": "image",
+      "path": "preview/style-sheet.jpg",
+      "role": "preview-sheet",
+      "mime": "image/jpeg",
+      "sha256": "08e8d0148517e270b9160a3d5a83f7cbe9654f95f3f41a561c2438379eac375b",
+      "size": 149735,
+      "description": "四种风格方向 2x2 联系表"
+    },
+    {
+      "id": "cinema-frame",
+      "type": "image",
+      "path": "preview/cinema-frame.png",
+      "role": "preview-frame",
+      "mime": "image/png",
+      "sha256": "405a3949d8ba57fc3979102aa363f7b67e59f00648af7b07a629de7070662d50",
+      "size": 2296120,
+      "description": "电影深色青绿主方向样帧"
+    },
+    {
+      "id": "case-himind-promo",
+      "type": "document",
+      "path": "resources/case-himind-promo.md",
+      "role": "case-study",
+      "mime": "text/markdown",
+      "sha256": "7e839eb268e61b527f42af274b8e9f3256486266d725c6177f51de727759ab17",
+      "size": 2163,
+      "description": "HiMind 35 秒宣传片完整案例复盘"
+    }
+  ],
+  "metadata": {
+    "domains": [
+      "video",
+      "content-production",
+      "brand"
+    ],
+    "commercial_use": true,
+    "created_at": "2026-10-20T00:00:00Z"
+  },
+  "provenance": {
+    "commercial_use": true,
+    "license": "MIT",
+    "license_url": "",
+    "resources": 9,
+    "source": "HiMind-Original"
+  },
+  "permissions": {
+    "filesystem": "workspace",
+    "network": {
+      "allow": [],
+      "mode": "none"
+    },
+    "process": []
+  },
+  "consumers": [
+    "com.himind.media-workbench",
+    "com.himind.media.promo"
+  ],
+  "tags": [
+    "video",
+    "promo",
+    "brand",
+    "recipe",
+    "style",
+    "checklist",
+    "knowledge"
+  ]
+}

@@ -21,7 +21,7 @@ export function StatusBar({
     >
       <span className="flex items-center gap-1.5">
         <Activity size={11} />
-        {job ? `${job.status} ${job.progress}%` : '无任务'}
+        {job ? `${job.status}${job.stage ? ' · ' + job.stage : ''} ${job.progress}%` : '无任务'}
       </span>
       <span className="flex items-center gap-1.5">
         <Boxes size={11} />

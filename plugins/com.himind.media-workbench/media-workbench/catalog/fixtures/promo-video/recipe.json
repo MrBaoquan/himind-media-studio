@@ -1,0 +1,130 @@
+{
+  "adapter": "remotion",
+  "canvas": {
+    "fps": 30,
+    "height": 1080,
+    "width": 1920
+  },
+  "data": {
+    "brand": "HiMind",
+    "tagline": "让 AI 成为你的创作团队",
+    "scenes": [
+      {
+        "kind": "hero",
+        "duration_seconds": 5,
+        "title": "HiMind",
+        "subtitle": "让 AI 成为你的创作团队"
+      },
+      {
+        "kind": "statement",
+        "duration_seconds": 5,
+        "title": "从一句话，到一条完整的片子",
+        "subtitle": "调研 · 脚本 · 分镜 · 素材 · 剪辑 · 渲染",
+        "points": [
+          "CreativePackage",
+          "Plan",
+          "Timeline"
+        ]
+      },
+      {
+        "kind": "screenshot",
+        "duration_seconds": 7,
+        "image": "creative.png",
+        "title": "一句话，长出完整的创作脉络",
+        "subtitle": "Brief → 证据链 → 脚本 → 分镜 → 制作规格",
+        "bullets": [
+          "AI 调研与脚本",
+          "可审阅的创作脉络",
+          "从创意直接落到项目"
+        ]
+      },
+      {
+        "kind": "screenshot",
+        "duration_seconds": 7,
+        "image": "timeline.png",
+        "title": "想改哪里，就改哪里",
+        "subtitle": "多轨时间线 · Inspector · 确定性渲染",
+        "bullets": [
+          "5 轨直接编辑",
+          "选中即调参",
+          "每次修改都有修订"
+        ]
+      },
+      {
+        "kind": "screenshot",
+        "duration_seconds": 6,
+        "image": "review.png",
+        "title": "每一步，都有人把关",
+        "subtitle": "审查图 · 质量门禁 · 确定性检查",
+        "bullets": [
+          "真实画面审查",
+          "67 项质量门禁",
+          "可追溯的产物"
+        ]
+      },
+      {
+        "kind": "cta",
+        "duration_seconds": 5,
+        "title": "HiMind",
+        "subtitle": "让 AI 和你一起，把作品做完",
+        "cta": "体验 HiMind 创作台"
+      }
+    ]
+  },
+  "duration_seconds": 35,
+  "safe_area": {
+    "bottom": 96,
+    "left": 96,
+    "right": 96,
+    "top": 96
+  },
+  "source": "HiMind 产品宣传片 · 示例",
+  "style_id": "promo-cinema",
+  "style_tokens": {
+    "color.bg": {
+      "$value": "#071018",
+      "$type": "color"
+    },
+    "color.bgSecondary": {
+      "$value": "#0b1722",
+      "$type": "color"
+    },
+    "color.panel": {
+      "$value": "rgba(255,255,255,.055)",
+      "$type": "color"
+    },
+    "color.line": {
+      "$value": "rgba(255,255,255,.11)",
+      "$type": "color"
+    },
+    "color.text": {
+      "$value": "#f5f7fa",
+      "$type": "color"
+    },
+    "color.muted": {
+      "$value": "#9aa7b4",
+      "$type": "color"
+    },
+    "color.accent": {
+      "$value": "#4fd1c5",
+      "$type": "color"
+    },
+    "color.accentBlue": {
+      "$value": "#5aa9ff",
+      "$type": "color"
+    },
+    "color.accentWarm": {
+      "$value": "#ffb86b",
+      "$type": "color"
+    },
+    "motion.entrance": {
+      "$value": "cinematic-reveal",
+      "$type": "other"
+    }
+  },
+  "style_version": "1.0.0",
+  "subtitle": "让创作成为可复用的能力",
+  "template_id": "promo-video",
+  "template_version": "1.0.0",
+  "title": "HiMind 产品宣传片"
+}

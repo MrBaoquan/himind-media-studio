@@ -16,17 +16,22 @@ import (
 const remotionVersion = "4.0.521"
 
 type remotionWorkerSpec struct {
-	WorkspaceRoot string `json:"workspace_root"`
-	JobPath       string `json:"job_path"`
-	RecipePath    string `json:"recipe_path"`
-	ArtifactID    string `json:"artifact_id"`
-	ArtifactPath  string `json:"artifact_path"`
-	RuntimeRoot   string `json:"runtime_root"`
-	ProjectID     string `json:"project_id"`
-	Composition   string `json:"composition"`
+	WorkspaceRoot  string  `json:"workspace_root"`
+	JobPath        string  `json:"job_path"`
+	RecipePath     string  `json:"recipe_path"`
+	ArtifactID     string  `json:"artifact_id"`
+	ArtifactPath   string  `json:"artifact_path"`
+	RuntimeRoot    string  `json:"runtime_root"`
+	ProjectID      string  `json:"project_id"`
+	Composition    string  `json:"composition"`
+	AudioPath      string  `json:"audio_path,omitempty"`
+	SubtitlePath   string  `json:"subtitle_path,omitempty"`
+	SubtitleStyle  string  `json:"subtitle_style,omitempty"`
+	BurnSubtitles  bool    `json:"burn_subtitles,omitempty"`
+	LoudnessTarget float64 `json:"loudness_target_lufs,omitempty"`
 }
 
-func startRemotionRender(root string, item *project, recipe map[string]any) (any, *himindjsonrpc.Error) {
+func startRemotionRender(root string, item *project, recipe map[string]any, in requestInput) (any, *himindjsonrpc.Error) {
 	if _, err := exec.LookPath("node"); err != nil {
 		return rendererRuntimeBlocked("Node.js")
 	}
@@ -43,6 +48,22 @@ func startRemotionRender(root string, item *project, recipe map[string]any) (any
 	}
 	jobID := newID("render")
 	recipePath := filepath.Join(jobRoot, jobID+".recipe.json")
+	audioPath := ""
+	if strings.TrimSpace(in.AudioPath) != "" {
+		resolved, resolveErr := workspaceFile(root, in.AudioPath)
+		if resolveErr != nil {
+			return nil, himindjsonrpc.InvalidParams("audio_path: " + resolveErr.Error())
+		}
+		audioPath = resolved
+	}
+	subtitlePath := ""
+	if strings.TrimSpace(in.SubtitlePath) != "" {
+		resolved, resolveErr := workspaceFile(root, in.SubtitlePath)
+		if resolveErr != nil {
+			return nil, himindjsonrpc.InvalidParams("subtitle_path: " + resolveErr.Error())
+		}
+		subtitlePath = resolved
+	}
 	if err := writeJSON(recipePath, recipe); err != nil {
 		return nil, himindjsonrpc.InternalError(err.Error())
 	}
@@ -62,7 +83,7 @@ func startRemotionRender(root string, item *project, recipe map[string]any) (any
 	if composition == "" {
 		composition = "LeaderboardTech"
 	}
-	spec := remotionWorkerSpec{WorkspaceRoot: root, JobPath: jobPath, RecipePath: recipePath, ArtifactID: artifactID, ArtifactPath: artifactPath, RuntimeRoot: filepath.Join(root, metadataDir, "runtime", "remotion-"+remotionVersion), ProjectID: item.ID, Composition: composition}
+	spec := remotionWorkerSpec{WorkspaceRoot: root, JobPath: jobPath, RecipePath: recipePath, ArtifactID: artifactID, ArtifactPath: artifactPath, RuntimeRoot: filepath.Join(root, metadataDir, "runtime", "remotion-"+remotionVersion), ProjectID: item.ID, Composition: composition, AudioPath: audioPath, SubtitlePath: subtitlePath, SubtitleStyle: in.SubtitleStyle, BurnSubtitles: in.BurnSubtitles, LoudnessTarget: in.LoudnessTarget}
 	specPath := filepath.Join(jobRoot, jobID+".worker.json")
 	if err := writeJSON(specPath, spec); err != nil {
 		return nil, himindjsonrpc.InternalError(err.Error())
@@ -138,8 +159,20 @@ func runRemotionWorker(specPath string) error {
 		return fail(err)
 	}
 	update("rendering", 35, "Remotion 正在生成视频")
-	if err := invokeRemotion(spec.RuntimeRoot, spec.RecipePath, spec.ArtifactPath, spec.Composition); err != nil {
+	renderOutput := spec.ArtifactPath
+	muxNeeded := spec.AudioPath != "" || spec.SubtitlePath != ""
+	if muxNeeded {
+		renderOutput = spec.ArtifactPath + ".render.mp4"
+	}
+	if err := invokeRemotion(spec.RuntimeRoot, spec.RecipePath, renderOutput, spec.Composition); err != nil {
 		return fail(err)
+	}
+	if muxNeeded {
+		update("muxing", 82, "正在混流旁白、音乐与字幕")
+		if err := muxRemotionOutput(spec, renderOutput); err != nil {
+			return fail(err)
+		}
+		_ = os.Remove(renderOutput)
 	}
 	artifactItem, err := makeArtifact(spec.ArtifactID, "video/mp4", spec.ArtifactPath, spec.ProjectID, "remotion", true)
 	if err != nil {
@@ -152,6 +185,63 @@ func runRemotionWorker(specPath string) error {
 	jobItem.Message = "Remotion 视频已生成"
 	jobItem.UpdatedAt = now()
 	return writeJSON(spec.JobPath, jobItem)
+}
+
+func muxRemotionOutput(spec remotionWorkerSpec, renderOutput string) error {
+	ffmpegPath, err := lookPathAny("ffmpeg", "ffmpeg.exe")
+	if err != nil {
+		return fmt.Errorf("混流需要 ffmpeg: %w", err)
+	}
+	args := []string{"-y", "-i", renderOutput}
+	audioInput := -1
+	subtitleInput := -1
+	nextInput := 1
+	if spec.AudioPath != "" {
+		audioInput = nextInput
+		nextInput++
+		args = append(args, "-i", spec.AudioPath)
+	}
+	if spec.SubtitlePath != "" && !spec.BurnSubtitles {
+		subtitleInput = nextInput
+		args = append(args, "-i", spec.SubtitlePath)
+	}
+	args = append(args, "-map", "0:v:0")
+	if audioInput >= 0 {
+		args = append(args, "-map", fmt.Sprintf("%d:a:0", audioInput), "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-ac", "2")
+		target := spec.LoudnessTarget
+		if target == 0 {
+			target = -16
+		}
+		args = append(args, "-af", fmt.Sprintf("loudnorm=I=%.1f:TP=-1.5:LRA=11", target))
+	} else {
+		args = append(args, "-an")
+	}
+	if subtitleInput >= 0 {
+		args = append(args, "-map", fmt.Sprintf("%d:s:0", subtitleInput), "-c:s", "mov_text")
+	}
+	if spec.BurnSubtitles && spec.SubtitlePath != "" {
+		subtitleFilterPath := strings.ReplaceAll(filepath.ToSlash(spec.SubtitlePath), ":", `\:`)
+		forceStyle := "FontName=Microsoft YaHei,FontSize=15,MarginV=28,Alignment=2,Outline=1,Shadow=0,PrimaryColour=&H00FFFFFF,OutlineColour=&H80000000"
+		args = append(args,
+			"-vf", "subtitles=\x27"+subtitleFilterPath+"\x27:force_style=\x27"+forceStyle+"\x27",
+			"-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420p",
+		)
+	} else {
+		args = append(args, "-c:v", "copy")
+	}
+	args = append(args, "-shortest", "-movflags", "+faststart", spec.ArtifactPath)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
+	defer cancel()
+	command := exec.CommandContext(ctx, ffmpegPath, args...)
+	output, err := command.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("ffmpeg mux: %s", conciseProcessOutput(output, err))
+	}
+	info, err := os.Stat(spec.ArtifactPath)
+	if err != nil || info.Size() == 0 {
+		return fmt.Errorf("ffmpeg 未生成有效 MP4")
+	}
+	return nil
 }
 
 // copyRendererSources 把插件自带的渲染器源码整棵树复制到工作区运行时目录。
@@ -237,13 +327,50 @@ func invokeRemotion(runtimeRoot, recipePath, outputPath, composition string) err
 	if browserPath := findRemotionBrowser(); browserPath != "" {
 		args = append(args, "--browser-executable="+browserPath)
 	}
+	logPath := outputPath + ".log"
+	logFile, err := os.Create(logPath)
+	if err != nil {
+		return fmt.Errorf("remotion log: %w", err)
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
 	defer cancel()
+	stdinReader, stdinWriter, pipeErr := os.Pipe()
+	if pipeErr != nil {
+		_ = logFile.Close()
+		return fmt.Errorf("remotion stdin: %w", pipeErr)
+	}
+	tempRoot := filepath.Join(filepath.Dir(outputPath), ".remotion-tmp")
+	if mkdirErr := os.MkdirAll(tempRoot, 0755); mkdirErr != nil {
+		_ = stdinReader.Close()
+		_ = stdinWriter.Close()
+		_ = logFile.Close()
+		return fmt.Errorf("remotion temp dir: %w", mkdirErr)
+	}
+	env := make([]string, 0, len(os.Environ())+2)
+	for _, entry := range os.Environ() {
+		upper := strings.ToUpper(entry)
+		if strings.HasPrefix(upper, "TEMP=") || strings.HasPrefix(upper, "TMP=") {
+			continue
+		}
+		env = append(env, entry)
+	}
+	env = append(env, "TEMP="+tempRoot, "TMP="+tempRoot)
 	command := exec.CommandContext(ctx, nodePath, args...)
 	command.Dir = runtimeRoot
-	output, err := command.CombinedOutput()
-	if err != nil {
-		return fmt.Errorf("remotion render: %s", conciseProcessOutput(output, err))
+	command.Env = env
+	command.Stdin = stdinReader
+	command.Stdout = logFile
+	command.Stderr = logFile
+	runErr := command.Run()
+	_ = stdinReader.Close()
+	_ = stdinWriter.Close()
+	_ = logFile.Close()
+	output, readErr := os.ReadFile(logPath)
+	if readErr != nil {
+		return fmt.Errorf("remotion log read: %w", readErr)
+	}
+	if runErr != nil {
+		return fmt.Errorf("remotion render: %s", conciseProcessOutput(output, runErr))
 	}
 	info, err := os.Stat(outputPath)
 	if err != nil || info.Size() == 0 {

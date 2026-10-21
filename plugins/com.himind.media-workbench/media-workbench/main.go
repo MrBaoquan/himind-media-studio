@@ -26,98 +26,170 @@ const (
 	jobDir      = "jobs"
 	projectDir  = "projects"
 	artifactDir = "artifacts"
+	creativeDir = "creatives"
 )
 
 var idPattern = regexp.MustCompile(`^[a-z0-9][a-z0-9_-]{1,63}$`)
 
 type requestInput struct {
-	WorkspaceRoot       string         `json:"workspace_root"`
-	ProjectID           string         `json:"project_id"`
-	Name                string         `json:"name"`
-	Description         string         `json:"description"`
-	ExpectedUpdatedAt   string         `json:"expected_updated_at"`
-	CreativeBrief       string         `json:"creative_brief"`
-	SourceProjectID     string         `json:"source_project_id"`
-	SourceWorkspaceRoot string         `json:"source_workspace_root"`
-	TemplateID          string         `json:"template_id"`
-	StyleID             string         `json:"style_id"`
-	Family              string         `json:"family"`
-	Version             string         `json:"version"`
-	Structure           string         `json:"structure"`
-	CapabilityID        string         `json:"capability_id"`
-	Title               string         `json:"title"`
-	Subtitle            string         `json:"subtitle"`
-	Unit                string         `json:"unit"`
-	Period              string         `json:"period"`
-	Source              string         `json:"source"`
-	Total               any            `json:"total"`
-	Average             any            `json:"average"`
-	Highlight           any            `json:"highlight"`
-	Recipe              map[string]any `json:"recipe"`
-	Plan                map[string]any `json:"plan"`
-	Preview             *bool          `json:"preview"`
-	Data                map[string]any `json:"data"`
-	Brief               map[string]any `json:"brief"`
-	NamePrefix          string         `json:"name_prefix"`
-	Items               []seriesItem   `json:"items"`
-	WorkflowContext     map[string]any `json:"workflow_context"`
-	PlanStep            string         `json:"plan_step"`
-	ProjectStep         string         `json:"project_step"`
-	DataStep            string         `json:"data_step"`
-	Path                string         `json:"path"`
-	NameColumn          string         `json:"name_column"`
-	ValueColumn         string         `json:"value_column"`
-	JobID               string         `json:"job_id"`
-	ArtifactID          string         `json:"artifact_id"`
-	Category            string         `json:"category"`
-	Feedback            string         `json:"feedback"`
-	FeedbackID          string         `json:"feedback_id"`
-	Note                string         `json:"note"`
-	Accepted            *bool          `json:"accepted"`
-	AcceptedOnly        bool           `json:"accepted_only"`
-	PreviewJobID        string         `json:"preview_job_id"`
-	CandidateID         string         `json:"candidate_id"`
-	CandidateType       string         `json:"candidate_type"`
-	BaseTemplateID      string         `json:"base_template_id"`
-	BaseTemplateVersion string         `json:"base_template_version"`
-	BaseStyleID         string         `json:"base_style_id"`
-	BaseStyleVersion    string         `json:"base_style_version"`
-	Changes             map[string]any `json:"changes"`
-	Evidence            []any          `json:"evidence"`
-	SourceFeedbackIDs   []string       `json:"source_feedback_ids"`
-	Status              string         `json:"status"`
-	ArtifactPath        string         `json:"artifact_path"`
-	ArtifactKind        string         `json:"artifact_kind"`
-	Renderer            string         `json:"renderer"`
-	Message             string         `json:"message"`
-	OpenMode            string         `json:"mode"`
+	WorkspaceRoot         string         `json:"workspace_root"`
+	ProjectID             string         `json:"project_id"`
+	Name                  string         `json:"name"`
+	Description           string         `json:"description"`
+	ExpectedUpdatedAt     string         `json:"expected_updated_at"`
+	CreativeBrief         string         `json:"creative_brief"`
+	SourceProjectID       string         `json:"source_project_id"`
+	SourceWorkspaceRoot   string         `json:"source_workspace_root"`
+	TemplateID            string         `json:"template_id"`
+	StyleID               string         `json:"style_id"`
+	Family                string         `json:"family"`
+	Version               string         `json:"version"`
+	Structure             string         `json:"structure"`
+	CapabilityID          string         `json:"capability_id"`
+	Title                 string         `json:"title"`
+	Subtitle              string         `json:"subtitle"`
+	Unit                  string         `json:"unit"`
+	Period                string         `json:"period"`
+	Source                string         `json:"source"`
+	Total                 any            `json:"total"`
+	Average               any            `json:"average"`
+	Highlight             any            `json:"highlight"`
+	Recipe                map[string]any `json:"recipe"`
+	Plan                  map[string]any `json:"plan"`
+	Preview               *bool          `json:"preview"`
+	Data                  map[string]any `json:"data"`
+	Brief                 map[string]any `json:"brief"`
+	NamePrefix            string         `json:"name_prefix"`
+	Items                 []seriesItem   `json:"items"`
+	WorkflowContext       map[string]any `json:"workflow_context"`
+	PlanStep              string         `json:"plan_step"`
+	ProjectStep           string         `json:"project_step"`
+	DataStep              string         `json:"data_step"`
+	Path                  string         `json:"path"`
+	Content               string         `json:"content,omitempty"`
+	NameColumn            string         `json:"name_column"`
+	ValueColumn           string         `json:"value_column"`
+	JobID                 string         `json:"job_id"`
+	ArtifactID            string         `json:"artifact_id"`
+	Category              string         `json:"category"`
+	Feedback              string         `json:"feedback"`
+	FeedbackID            string         `json:"feedback_id"`
+	Note                  string         `json:"note"`
+	Accepted              *bool          `json:"accepted"`
+	AcceptedOnly          bool           `json:"accepted_only"`
+	PreviewJobID          string         `json:"preview_job_id"`
+	CandidateID           string         `json:"candidate_id"`
+	CandidateType         string         `json:"candidate_type"`
+	BaseTemplateID        string         `json:"base_template_id"`
+	BaseTemplateVersion   string         `json:"base_template_version"`
+	BaseStyleID           string         `json:"base_style_id"`
+	BaseStyleVersion      string         `json:"base_style_version"`
+	Changes               map[string]any `json:"changes"`
+	Evidence              []any          `json:"evidence"`
+	SourceFeedbackIDs     []string       `json:"source_feedback_ids"`
+	Status                string         `json:"status"`
+	ArtifactPath          string         `json:"artifact_path"`
+	ArtifactKind          string         `json:"artifact_kind"`
+	Renderer              string         `json:"renderer"`
+	Message               string         `json:"message"`
+	OpenMode              string         `json:"mode"`
+	Request               string         `json:"request,omitempty"`
+	Platform              string         `json:"platform,omitempty"`
+	StyleHint             string         `json:"style_hint,omitempty"`
+	TargetDurationSeconds float64        `json:"target_duration_seconds,omitempty"`
+	HasDataSource         *bool          `json:"has_data_source,omitempty"`
+	WantsNarration        *bool          `json:"wants_narration,omitempty"`
 	// code project fields
-	SourceDir     string  `json:"source_dir,omitempty"`
-	Entry         string  `json:"entry,omitempty"`
-	StylePack     string  `json:"style_pack,omitempty"`
-	StyleVersion  string  `json:"style_version,omitempty"`
-	ReviewKind    string  `json:"kind,omitempty"`
-	Times         string  `json:"times,omitempty"`
-	Range         string  `json:"range,omitempty"`
-	Width         int     `json:"width,omitempty"`
-	Cols          int     `json:"cols,omitempty"`
-	Workers       int     `json:"workers,omitempty"`
-	AudioPath     string  `json:"audio_path,omitempty"`
-	ImagePath     string  `json:"image_path,omitempty"`
-	VideoPath     string  `json:"video_path,omitempty"`
-	TimeSeconds   float64 `json:"time,omitempty"`
-	MaxRunRatio   float64 `json:"max_run_ratio,omitempty"`
-	MinLevels     int     `json:"min_levels,omitempty"`
-	TargetVersion string  `json:"target_version,omitempty"`
-	DryRun        bool    `json:"dry_run,omitempty"`
-	PackID        string  `json:"pack_id"`
-	ResourceID    string  `json:"resource_id"`
-	TargetDir     string  `json:"target_dir"`
-	TypeFilter    string  `json:"type"`
-	Output        string  `json:"output,omitempty"`
-	PackagePath   string  `json:"package_path,omitempty"`
-	Force         bool    `json:"force,omitempty"`
-	AllowFailed   bool    `json:"allow_failed,omitempty"`
+	SourceDir            string                  `json:"source_dir,omitempty"`
+	Entry                string                  `json:"entry,omitempty"`
+	StylePack            string                  `json:"style_pack,omitempty"`
+	StyleVersion         string                  `json:"style_version,omitempty"`
+	ReviewKind           string                  `json:"kind,omitempty"`
+	Times                string                  `json:"times,omitempty"`
+	Range                string                  `json:"range,omitempty"`
+	Width                int                     `json:"width,omitempty"`
+	Cols                 int                     `json:"cols,omitempty"`
+	Workers              int                     `json:"workers,omitempty"`
+	AudioPath            string                  `json:"audio_path,omitempty"`
+	Timeline             timelineDoc             `json:"timeline,omitempty"`
+	Commands             []timelineCommand       `json:"commands,omitempty"`
+	History              timelineHistory         `json:"history,omitempty"`
+	MediaPaths           map[string]string       `json:"media_paths,omitempty"`
+	OutputPath           string                  `json:"output_path,omitempty"`
+	ExpectedRevision     int                     `json:"expected_revision,omitempty"`
+	MediaIDs             []string                `json:"media_ids,omitempty"`
+	MusicPath            string                  `json:"music_path,omitempty"`
+	NarrationPath        string                  `json:"narration_path,omitempty"`
+	Transition           string                  `json:"transition,omitempty"`
+	TransitionFrames     int                     `json:"transition_frames,omitempty"`
+	DeliveryPreset       string                  `json:"delivery_preset,omitempty"`
+	BurnSubtitles        bool                    `json:"burn_subtitles,omitempty"`
+	SubtitlePath         string                  `json:"subtitle_path,omitempty"`
+	SubtitleStyle        string                  `json:"subtitle_style,omitempty"`
+	LoudnessTarget       float64                 `json:"loudness_target_lufs,omitempty"`
+	ProxyWidth           int                     `json:"proxy_width,omitempty"`
+	Limit                int                     `json:"limit,omitempty"`
+	SkipQA               bool                    `json:"skip_qa,omitempty"`
+	Query                string                  `json:"query,omitempty"`
+	MatchMode            string                  `json:"match_mode,omitempty"`
+	CueIndexes           []int                   `json:"cue_indexes,omitempty"`
+	PaddingSeconds       float64                 `json:"padding_seconds,omitempty"`
+	NoiseDB              float64                 `json:"noise_db,omitempty"`
+	MinSilenceSeconds    float64                 `json:"min_silence_seconds,omitempty"`
+	FitMode              string                  `json:"fit_mode,omitempty"`
+	ClipID               string                  `json:"clip_id,omitempty"`
+	BaseTimeline         timelineDoc             `json:"base_timeline,omitempty"`
+	TargetTimeline       timelineDoc             `json:"target_timeline,omitempty"`
+	CommandText          string                  `json:"command_text,omitempty"`
+	SpeedKeyframes       []timelineSpeedKeyframe `json:"speed_keyframes,omitempty"`
+	VoiceProvider        string                  `json:"voice_provider,omitempty"`
+	Voice                string                  `json:"voice,omitempty"`
+	VoiceRate            *int                    `json:"voice_rate,omitempty"`
+	VoiceVolume          *int                    `json:"voice_volume,omitempty"`
+	AllowRestrictedVoice bool                    `json:"allow_restricted_voice,omitempty"`
+	VoiceGainDB          *float64                `json:"voice_gain_db,omitempty"`
+	BGMPreset            string                  `json:"bgm_preset,omitempty"`
+	BGMPath              string                  `json:"bgm_path,omitempty"`
+	BGMGainDB            *float64                `json:"bgm_gain_db,omitempty"`
+	Ducking              *bool                   `json:"ducking,omitempty"`
+	DurationSeconds      float64                 `json:"duration_seconds,omitempty"`
+	MaxChars             int                     `json:"max_chars,omitempty"`
+	MinCueSeconds        float64                 `json:"min_cue_seconds,omitempty"`
+	ExpectedSeconds      float64                 `json:"expected_duration_seconds,omitempty"`
+	VoiceClips           []voiceClipInput        `json:"voice_clips,omitempty"`
+	Subtitles            []subtitleCue           `json:"subtitles,omitempty"`
+	ImagePath            string                  `json:"image_path,omitempty"`
+	VideoPath            string                  `json:"video_path,omitempty"`
+	TimeSeconds          float64                 `json:"time,omitempty"`
+	MaxRunRatio          float64                 `json:"max_run_ratio,omitempty"`
+	MinLevels            int                     `json:"min_levels,omitempty"`
+	TargetVersion        string                  `json:"target_version,omitempty"`
+	CreativeID           string                  `json:"creative_id,omitempty"`
+	Section              string                  `json:"section,omitempty"`
+	Value                map[string]any          `json:"value,omitempty"`
+	ShotID               string                  `json:"shot_id,omitempty"`
+	ShotIDs              []string                `json:"shot_ids,omitempty"`
+	Provider             string                  `json:"provider,omitempty"`
+	Technique            string                  `json:"technique,omitempty"`
+	Prompt               string                  `json:"prompt,omitempty"`
+	ReferenceAssets      []string                `json:"reference_assets,omitempty"`
+	FallbackProvider     string                  `json:"fallback_provider,omitempty"`
+	MediaID              string                  `json:"media_id,omitempty"`
+	SHA256               string                  `json:"sha256,omitempty"`
+	Height               int                     `json:"height,omitempty"`
+	Model                string                  `json:"model,omitempty"`
+	Mock                 bool                    `json:"mock,omitempty"`
+	DryRun               bool                    `json:"dry_run,omitempty"`
+	PackID               string                  `json:"pack_id"`
+	RuntimeID            string                  `json:"runtime_id,omitempty"`
+	ResourceID           string                  `json:"resource_id"`
+	TargetDir            string                  `json:"target_dir"`
+	TypeFilter           string                  `json:"type"`
+	Format               string                  `json:"format,omitempty"`
+	Output               string                  `json:"output,omitempty"`
+	PackagePath          string                  `json:"package_path,omitempty"`
+	Force                bool                    `json:"force,omitempty"`
+	AllowFailed          bool                    `json:"allow_failed,omitempty"`
 
 	// route.* 技法资产入参：批量轨迹 + 策略覆盖。
 	Routes []routeInput `json:"routes"`
@@ -187,20 +259,22 @@ type project struct {
 	Template string `json:"template_id,omitempty"`
 	Style    string `json:"style_id,omitempty"`
 	// StylePack/SourceDir/Entry are used by code projects.
-	StylePack         string  `json:"style_pack,omitempty"`
-	StyleVersion      string  `json:"style_version,omitempty"`
-	SourceDir         string  `json:"source_dir,omitempty"`
-	Entry             string  `json:"entry,omitempty"`
-	SourceHash        string  `json:"source_hash,omitempty"`
-	PreviewStatus     string  `json:"preview_status,omitempty"`
-	PreviewHash       string  `json:"preview_hash,omitempty"`
-	VideoOut          string  `json:"video_out,omitempty"`
-	SheetOut          string  `json:"sheet_out,omitempty"`
-	StripOut          string  `json:"strip_out,omitempty"`
-	StillsOut         string  `json:"stills_out,omitempty"`
-	DurationSeconds   float64 `json:"duration_seconds,omitempty"`
-	DeterminismStatus string  `json:"determinism_status,omitempty"`
-	DeterminismHash   string  `json:"determinism_hash,omitempty"`
+	StylePack              string  `json:"style_pack,omitempty"`
+	StyleVersion           string  `json:"style_version,omitempty"`
+	SourceDir              string  `json:"source_dir,omitempty"`
+	Entry                  string  `json:"entry,omitempty"`
+	SourceHash             string  `json:"source_hash,omitempty"`
+	PreviewStatus          string  `json:"preview_status,omitempty"`
+	PreviewHash            string  `json:"preview_hash,omitempty"`
+	VideoOut               string  `json:"video_out,omitempty"`
+	SheetOut               string  `json:"sheet_out,omitempty"`
+	StripOut               string  `json:"strip_out,omitempty"`
+	StillsOut              string  `json:"stills_out,omitempty"`
+	DurationSeconds        float64 `json:"duration_seconds,omitempty"`
+	DeterminismStatus      string  `json:"determinism_status,omitempty"`
+	DeterminismHash        string  `json:"determinism_hash,omitempty"`
+	SourceCreativeID       string  `json:"source_creative_id,omitempty"`
+	SourceCreativeRevision int     `json:"source_creative_revision,omitempty"`
 	// WorkspaceRoot is response metadata populated by project.list. It is
 	// intentionally omitted from project.json so projects stay portable.
 	WorkspaceRoot string         `json:"workspace_root,omitempty"`
@@ -284,6 +358,8 @@ func handle(request himindjsonrpc.Request) (any, *himindjsonrpc.Error) {
 		return nil, rpcError
 	}
 	switch request.Method {
+	case "media.workbench.intent.plan":
+		return intentPlan(in)
 	case "media.workbench.catalog.list":
 		return catalogList(in)
 	case "media.workbench.capability.list":
@@ -350,6 +426,128 @@ func handle(request himindjsonrpc.Request) (any, *himindjsonrpc.Error) {
 		return stylePackScaffold(in)
 	case "media.workbench.project.context":
 		return projectContext(in)
+	case "media.workbench.creative.create":
+		return creativeCreate(in)
+	case "media.workbench.creative.list":
+		return creativeList(in)
+	case "media.workbench.creative.get":
+		return creativeGet(in)
+	case "media.workbench.creative.update":
+		return creativeUpdate(in)
+	case "media.workbench.creative.validate":
+		return creativeValidate(in)
+	case "media.workbench.creative.approve":
+		return creativeApprove(in)
+	case "media.workbench.creative.materialize":
+		return creativeMaterialize(in)
+	case "media.workbench.shot.providers":
+		return shotProvidersCapability(in)
+	case "media.workbench.shot.assign":
+		return shotAssign(in)
+	case "media.workbench.timeline.plan":
+		return timelinePlan(in)
+	case "media.workbench.shot.produce":
+		return shotProduce(in)
+	case "media.workbench.shot.status":
+		return shotStatus(in)
+	case "media.workbench.shot.attach-asset":
+		return shotAttachAsset(in)
+	case "media.workbench.audio.catalog":
+		return audioCatalogCapability(in)
+	case "media.workbench.audio.runtime.install":
+		return audioRuntimeInstallCapability(in)
+	case "media.workbench.audio.speech":
+		return audioSpeechCapability(in)
+	case "media.workbench.timeline.templates.list":
+		return editTemplateListCapability(), nil
+	case "media.workbench.timeline.template.apply":
+		return timelineTemplateApplyCapability(in)
+	case "media.workbench.timeline.transcript.search":
+		return timelineTranscriptSearchCapability(in), nil
+	case "media.workbench.timeline.roughcut":
+		return timelineRoughCutCapability(in)
+	case "media.workbench.timeline.beats.detect":
+		return timelineBeatDetectCapability(in)
+	case "media.workbench.timeline.beats.markers":
+		return timelineBeatMarkersCapability(in)
+	case "media.workbench.timeline.command.plan":
+		return timelineCommandPlanCapability(in), nil
+	case "media.workbench.timeline.speed.curve":
+		return timelineSpeedCurveCapability(in)
+	case "media.workbench.timeline.pip.apply":
+		return timelinePIPCapability(in)
+	case "media.workbench.timeline.reframe.auto":
+		return timelineAutoReframeCapability(in)
+	case "media.workbench.timeline.reframe":
+		return timelineReframeCapability(in)
+	case "media.workbench.timeline.silence.detect":
+		return timelineSilenceDetectCapability(in)
+	case "media.workbench.timeline.silence.trim":
+		return timelineSilenceTrimCapability(in)
+	case "media.workbench.timeline.autoedit":
+		return timelineAutoEditCapability(in)
+	case "media.workbench.timeline.subtitle.attach":
+		return timelineSubtitleAttachCapability(in)
+	case "media.workbench.timeline.media.catalog":
+		return timelineMediaCatalogCapability(in)
+	case "media.workbench.timeline.proxy.build":
+		return timelineProxyBuildCapability(in)
+	case "media.workbench.timeline.qa":
+		return timelineQACapability(in)
+	case "media.workbench.delivery.presets":
+		return deliveryPresetCatalogCapability(), nil
+	case "media.workbench.delivery.qa":
+		return deliveryQACapability(in)
+	case "media.workbench.timeline.get":
+		return timelineGetCapability(in)
+	case "media.workbench.timeline.save":
+		return timelineSaveCapability(in)
+	case "media.workbench.timeline.export":
+		return timelineExportCapability(in)
+	case "media.workbench.timeline.history.apply":
+		return timelineHistoryApplyCapability(in)
+	case "media.workbench.timeline.undo":
+		return timelineHistoryUndoCapability(in)
+	case "media.workbench.timeline.redo":
+		return timelineHistoryRedoCapability(in)
+	case "media.workbench.timeline.command.log":
+		return timelineCommandLogCapability(in)
+	case "media.workbench.timeline.apply":
+		return timelineApply(in)
+	case "media.workbench.timeline.diff":
+		return timelineDiffCapability(in)
+	case "media.workbench.timeline.interchange.export":
+		return timelineInterchangeExportCapability(in)
+	case "media.workbench.timeline.interchange.import":
+		return timelineInterchangeImportCapability(in)
+	case "media.workbench.timeline.semantic-search":
+		return timelineSemanticSearchCapability(in)
+	case "media.workbench.timeline.validate":
+		return timelineValidate(in)
+	case "media.workbench.timeline.comment.list":
+		return timelineCommentListCapability(in)
+	case "media.workbench.timeline.comment.add":
+		return timelineCommentAddCapability(in)
+	case "media.workbench.timeline.comment.resolve":
+		return timelineCommentResolveCapability(in)
+	case "media.workbench.subtitle.list":
+		return subtitleList(in)
+	case "media.workbench.subtitle.update":
+		return subtitleUpdate(in)
+	case "media.workbench.subtitle.generate":
+		return subtitleGenerateCapability(in)
+	case "media.workbench.audio.bgm":
+		return audioBGMCapability(in)
+	case "media.workbench.audio.mix":
+		return audioMixCapability(in)
+	case "media.workbench.audio.qa":
+		return audioQACapability(in)
+	case "media.workbench.audio.status":
+		return audioStatusCapability(in)
+	case "media.workbench.audio.build":
+		return audioBuildCapability(in)
+	case "media.workbench.audio.attach":
+		return audioAttachCapability(in)
 	case "media.workbench.preview.review":
 		return previewReview(in)
 	case "media.workbench.preview.determinism":
@@ -1392,6 +1590,9 @@ func renderStart(in requestInput) (any, *himindjsonrpc.Error) {
 	if err != nil {
 		return nil, himindjsonrpc.InvalidParams(err.Error())
 	}
+	if strings.TrimSpace(in.Timeline.Schema) != "" || len(in.Timeline.Tracks) > 0 {
+		return renderTimeline(root, in)
+	}
 	if item, loadErr := loadProject(root, in.ProjectID); loadErr == nil && projectMode(item) == "code" {
 		return startCodeRender(root, item, in)
 	}
@@ -1419,7 +1620,7 @@ func renderStart(in requestInput) (any, *himindjsonrpc.Error) {
 		adapter = "remotion"
 	}
 	if adapter == "remotion" {
-		return startRemotionRender(root, item, recipe)
+		return startRemotionRender(root, item, recipe, in)
 	}
 	jobID := newID("render")
 	jobRoot := filepath.Join(root, metadataDir, jobDir)
@@ -2139,6 +2340,12 @@ func defaultRecipe(templateID, styleID string, data map[string]any) map[string]a
 					map[string]any{"source": "文旅消费", "target": "购物", "value": 1020},
 				},
 			}
+		case ok && item.Family == "promo":
+			data = map[string]any{
+				"brand":   "HiMind",
+				"tagline": "让 AI 成为你的创作团队",
+				"cta":     map[string]any{"title": "HiMind", "subtitle": "让 AI 和你一起，把作品做完", "url": "himind.ai"},
+			}
 		case ok && item.Family == "choropleth":
 			values := map[string]any{
 				"合肥市": 14210, "芜湖市": 5290, "滁州市": 4230, "阜阳市": 3800,
@@ -2194,6 +2401,9 @@ func defaultRecipe(templateID, styleID string, data map[string]any) map[string]a
 			duration = item.DurationSeconds
 		case "flow":
 			title = "内容生产流程"
+			duration = item.DurationSeconds
+		case "promo":
+			title = "产品宣传片"
 			duration = item.DurationSeconds
 		case "flow-distribution":
 			title = "文旅消费流向"
@@ -2297,7 +2507,7 @@ func loadStyles() []style {
 	if err := readJSON(filepath.Join(pluginRoot(), "catalog", "styles.json"), &items); err == nil && len(items) > 0 {
 		return items
 	}
-	return []style{{ID: "tech-blue", Version: "1.1.0", Name: "科技蓝", Description: "深色科技蓝底、渐变强调和视频流式数据层级。", Canvas: map[string]any{"width": 2160, "height": 3840, "fps": 30}, Palette: map[string]any{"background": "#080c1a", "accent": "#ff6b6b", "accent_secondary": "#4fc3f7", "text": "#ffffff"}, Typography: map[string]any{"font_family": "Microsoft YaHei", "title_weight": 800}, Motion: map[string]any{"entrance": "spring-stagger", "duration_ms": 520}, Quality: []string{"使用 2160×3840 竖屏安全区", "前三名使用奖牌式层级"}}, {ID: "minimal-white", Version: "1.0.0", Name: "极简白", Description: "明亮留白、低噪声排版、突出数据和叙事。", Canvas: map[string]any{"width": 1080, "height": 1920, "fps": 30}, Palette: map[string]any{"background": "#f7f9fc", "accent": "#1769aa", "text": "#10233d"}, Typography: map[string]any{"font_family": "Microsoft YaHei", "title_weight": 700}, Motion: map[string]any{"entrance": "fade", "duration_ms": 360}, Quality: []string{"正文与背景有足够对比度", "保持四周留白"}}}
+	return []style{{ID: "tech-blue", Version: "1.1.0", Name: "科技蓝", Description: "深色科技蓝底、渐变强调和视频流式数据层级。", Canvas: map[string]any{"width": 2160, "height": 3840, "fps": 30}, Palette: map[string]any{"background": "#080c1a", "accent": "#ff6b6b", "accent_secondary": "#4fc3f7", "text": "#ffffff"}, Typography: map[string]any{"font_family": "Microsoft YaHei", "title_weight": 800}, Motion: map[string]any{"entrance": "spring-stagger", "duration_ms": 520}, Quality: []string{"使用 2160×3840 竖屏安全区", "前三名使用奖牌式层级"}}, {ID: "minimal-white", Version: "1.0.0", Name: "极简白", Description: "明亮留白、低噪声排版、突出数据和叙事。", Canvas: map[string]any{"width": 1080, "height": 1920, "fps": 30}, Palette: map[string]any{"background": "#f7f9fc", "accent": "#1769aa", "text": "#10233d"}, Typography: map[string]any{"font_family": "Microsoft YaHei", "title_weight": 700}, Motion: map[string]any{"entrance": "fade", "duration_ms": 360}, Quality: []string{"正文与背景有足够对比度", "保持四周留白"}}, {ID: "promo-cinema", Version: "1.0.0", Name: "产品宣传片 · Cinema", Description: "16:9 深色电影感，真实产品界面与克制的大字叙事。", Canvas: map[string]any{"width": 1920, "height": 1080, "fps": 30}, Palette: map[string]any{"background": "#071018", "accent": "#4fd1c5", "accent_secondary": "#5aa9ff", "text": "#f5f7fa"}, Typography: map[string]any{"font_family": "Microsoft YaHei", "title_weight": 820}, Motion: map[string]any{"entrance": "cinematic-reveal", "duration_ms": 700}, Quality: []string{"16:9 安全区", "3 秒内给出核心卖点", "真实产品界面优先"}}}
 }
 
 func loadTemplates() []videoTemplate {
@@ -2330,6 +2540,7 @@ func loadTemplatesFromFallback() []videoTemplate {
 		{ID: "composition", Version: "1.0.0", Family: "composition", Name: "占比构成", Description: "用环形图、百分比堆叠条与自动图例回答整体由什么组成。", Adapter: "remotion", Composition: "ShareBreakdown", Slots: []string{"title", "subtitle", "categories", "total_label", "unit", "source"}, CompatibleStyle: []string{"tech-blue", "minimal-white", "culture-ink"}, DurationSeconds: 10, Status: "ready", StoryboardShot: true, StoryboardOrder: 70, DataContract: "catalog/contracts/composition.schema.json"},
 		{ID: "flow", Version: "1.0.0", Family: "flow", Name: "流程链路", Description: "按步骤展示流程、链路与方法论，节点之间用生长的主轴连接。", Adapter: "remotion", Composition: "Flow", Slots: []string{"title", "subtitle", "steps", "conclusion", "source"}, CompatibleStyle: []string{"tech-blue", "minimal-white", "culture-ink"}, DurationSeconds: 10, Status: "ready", StoryboardShot: true, StoryboardOrder: 80, DataContract: "catalog/contracts/flow.schema.json"},
 		{ID: "sankey-flow", Version: "1.0.0", Family: "flow-distribution", Name: "桑基流向图", Description: "用节点与流向带展示总量如何分配到各个部分。", Adapter: "remotion", Composition: "SankeyFlow", Slots: []string{"title", "subtitle", "links", "unit", "total_label", "source"}, CompatibleStyle: []string{"tech-blue", "minimal-white", "culture-ink"}, DurationSeconds: 10, Status: "ready", StoryboardShot: true, StoryboardOrder: 85, DataContract: "catalog/contracts/sankey.schema.json"},
+		{ID: "promo-video", Version: "1.0.0", Family: "promo", Name: "产品宣传片", Description: "用真实产品界面、分镜与旁白把产品卖点讲成一支商业宣传片。", Adapter: "remotion", Composition: "PromoVideo", Slots: []string{"brand", "tagline", "scenes", "cta", "voiceover"}, CompatibleStyle: []string{"promo-cinema"}, DurationSeconds: 35, Status: "ready", DataContract: "catalog/contracts/promo-video.schema.json"},
 	}
 }
 

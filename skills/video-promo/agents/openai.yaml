@@ -1,0 +1,4 @@
+interface:
+  display_name: "产品宣传片导演"
+  short_description: "真实产品调研 → 风格样帧 → CreativePackage → promo-video 成片"
+  default_prompt: "使用 $video-promo，先调用 media.workbench.intent.plan；按产品宣传片十阶段流程完成真实调研、风格样帧、CreativePackage、promo-video 模板、旁白字幕、质量门禁和渲染，交付真实 MP4。"

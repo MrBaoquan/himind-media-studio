@@ -79,25 +79,61 @@ func loadConstraints() (constraintManifest, error) {
 	return manifest, nil
 }
 
-// declaredCapabilityIDs 从 plugin.json 读取能力 ID 集合。
+// declaredCapabilityIDs 从 plugin.json 读取本插件能力 ID 集合。
 func declaredCapabilityIDs() map[string]bool {
+	ids, _ := declaredCapabilities()
+	return ids
+}
+
+// declaredCapabilities 同时返回本插件能力与显式声明的外部可选能力模式
+// （external_capabilities，支持精确 ID 或尾部 .*）。
+func declaredCapabilities() (map[string]bool, []string) {
 	ids := map[string]bool{}
+	external := []string{}
 	raw, err := os.ReadFile(filepath.Join(pluginRoot(), "plugin.json"))
 	if err != nil {
-		return ids
+		return ids, external
 	}
 	var manifest struct {
 		Capabilities []struct {
 			ID string `json:"id"`
 		} `json:"capabilities"`
+		ExternalCapabilities []string `json:"external_capabilities"`
+		Contributes          struct {
+			ExternalCapabilities []string `json:"external_capabilities"`
+			Views                []struct {
+				ExternalCapabilities []string `json:"external_capabilities"`
+			} `json:"views"`
+		} `json:"contributes"`
 	}
 	if json.Unmarshal(raw, &manifest) != nil {
-		return ids
+		return ids, external
 	}
 	for _, cap := range manifest.Capabilities {
 		ids[cap.ID] = true
 	}
-	return ids
+	external = append(external, manifest.ExternalCapabilities...)
+	external = append(external, manifest.Contributes.ExternalCapabilities...)
+	for _, view := range manifest.Contributes.Views {
+		external = append(external, view.ExternalCapabilities...)
+	}
+	return ids, external
+}
+
+func matchesExternalCapability(id string, patterns []string) bool {
+	for _, pattern := range patterns {
+		pattern = strings.TrimSpace(pattern)
+		if pattern == "" {
+			continue
+		}
+		if pattern == id {
+			return true
+		}
+		if strings.HasSuffix(pattern, ".*") && strings.HasPrefix(id, strings.TrimSuffix(pattern, "*")) {
+			return true
+		}
+	}
+	return false
 }
 
 var testFuncPattern = regexp.MustCompile(`(?m)^func (Test[A-Za-z0-9_]+)\(`)
@@ -153,7 +189,7 @@ func declaredPackagedTestNames() map[string]bool {
 }
 
 // resolveEnforcement 判断某条规则的执行点是否真实存在。
-func resolveEnforcement(rule constraintRule, capabilities, tests map[string]bool) (bool, string) {
+func resolveEnforcement(rule constraintRule, capabilities map[string]bool, external []string, tests map[string]bool) (bool, string) {
 	if !enforcementKinds[rule.EnforcedBy.Kind] {
 		return false, fmt.Sprintf("未知的 enforced_by.kind: %q", rule.EnforcedBy.Kind)
 	}
@@ -161,6 +197,9 @@ func resolveEnforcement(rule constraintRule, capabilities, tests map[string]bool
 	case "capability":
 		if capabilities[rule.EnforcedBy.ID] {
 			return true, "能力已声明"
+		}
+		if matchesExternalCapability(rule.EnforcedBy.ID, external) {
+			return true, "外部可选能力：未安装时该约束降级为警告"
 		}
 		return false, "能力未在 plugin.json 中声明"
 	case "test":
@@ -196,7 +235,7 @@ func constraintList(in requestInput) (any, *himindjsonrpc.Error) {
 	if err != nil {
 		return nil, himindjsonrpc.InternalError("无法读取约束清单: " + err.Error())
 	}
-	capabilities := declaredCapabilityIDs()
+	capabilities, external := declaredCapabilities()
 	tests := declaredPackagedTestNames()
 
 	resolved := make([]resolvedConstraint, 0, len(manifest.Rules))
@@ -204,7 +243,7 @@ func constraintList(in requestInput) (any, *himindjsonrpc.Error) {
 	byLevel := map[string]int{}
 	byKind := map[string]int{}
 	for _, rule := range manifest.Rules {
-		ok, detail := resolveEnforcement(rule, capabilities, tests)
+		ok, detail := resolveEnforcement(rule, capabilities, external, tests)
 		byLevel[rule.Level]++
 		byKind[rule.EnforcedBy.Kind]++
 		if !ok {

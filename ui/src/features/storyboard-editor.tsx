@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useRef, useState} from 'react';
-import {AlertTriangle, ArrowDown, ArrowUp, Loader2, Play, Plus, Save, Trash2} from 'lucide-react';
+import {AlertTriangle, ArrowDown, ArrowUp, Loader2, Lock, Play, Plus, Save, Trash2, Unlock} from 'lucide-react';
 import {callCapability} from '../api/capability';
 import type {CatalogOption, ProjectDetail, Recipe, TemplateSchemaPayload} from '../types';
 import {Empty, SectionLabel} from '../components/ui';
@@ -18,6 +18,7 @@ interface StoryboardItem {
   title?: string;
   subtitle?: string;
   data?: Record<string, unknown>;
+  locked?: boolean;
 }
 
 interface SchemaBundle {
@@ -48,8 +49,16 @@ function readStoryboard(recipe: Recipe): StoryboardItem[] {
       data: item.data && typeof item.data === 'object' && !Array.isArray(item.data)
         ? (item.data as Record<string, unknown>)
         : {},
+      locked: Boolean(item.locked),
     };
   });
+}
+
+const SHOT_TONES = ['var(--warn)', 'var(--ok)', 'var(--accent)', 'var(--accent-line)'];
+
+function shotTone(order?: number) {
+  const index = Math.abs(Number(order) || 0) % SHOT_TONES.length;
+  return SHOT_TONES[index];
 }
 
 function sumDuration(items: StoryboardItem[]): number {
@@ -217,6 +226,11 @@ export function StoryboardEditor({
   );
   const [items, setItems] = useState<StoryboardItem[]>(() => readStoryboard(recipe));
   const [selected, setSelected] = useState(items.length ? 0 : -1);
+  const [checked, setChecked] = useState<Set<number>>(() => new Set());
+  const [bulkDuration, setBulkDuration] = useState(3);
+  const [shotQuery, setShotQuery] = useState('');
+  const [shotFilter, setShotFilter] = useState('all');
+  const [jumpValue, setJumpValue] = useState('');
   const [addShot, setAddShot] = useState(orderedShots[0]?.id ?? '');
   const [busy, setBusy] = useState(false);
   const [dirty, setDirty] = useState(false);
@@ -227,6 +241,30 @@ export function StoryboardEditor({
 
   const selectedItem = items[selected] ?? null;
   const total = sumDuration(items);
+
+  const shotTypes = useMemo(
+    () => Array.from(new Set(items.map((item) => item.shot).filter(Boolean))),
+    [items],
+  );
+  const visibleItems = useMemo(
+    () => items.map((item, index) => ({item, index})).filter(({item}) => {
+      const template = orderedShots.find((shot) => shot.id === item.shot);
+      const haystack = `${item.title ?? ''} ${template?.name ?? ''} ${item.shot ?? ''} ${(item as any).text ?? ''}`.toLowerCase();
+      if (shotQuery.trim() && !haystack.includes(shotQuery.trim().toLowerCase())) return false;
+      if (shotFilter !== 'all' && item.shot !== shotFilter) return false;
+      return true;
+    }),
+    [items, orderedShots, shotQuery, shotFilter],
+  );
+  function jumpToShot() {
+    const target = Number(jumpValue);
+    if (!Number.isFinite(target) || target < 1 || target > items.length) return;
+    setShotQuery('');
+    setShotFilter('all');
+    setSelected(target - 1);
+    setJumpValue('');
+    requestAnimationFrame(() => document.querySelector(`[data-shot-index="${target - 1}"]`)?.scrollIntoView({block: 'center'}));
+  }
 
   async function loadBundle(shotId: string): Promise<SchemaBundle | null> {
     if (cache.current.has(shotId)) return cache.current.get(shotId) ?? null;
@@ -264,8 +302,28 @@ export function StoryboardEditor({
   }
 
   function updateItem(index: number, patch: Partial<StoryboardItem>) {
-    setItems((current) => current.map((item, i) => (i === index ? {...item, ...patch} : item)));
+    setItems((current) => current.map((item, i) => {
+      if (i !== index) return item;
+      if (item.locked && !('locked' in patch)) return item;
+      return {...item, ...patch};
+    }));
     markDirty();
+  }
+
+  function toggleChecked(index: number) {
+    setChecked((prev) => {
+      const next = new Set(prev);
+      if (next.has(index)) next.delete(index); else next.add(index);
+      return next;
+    });
+  }
+
+  function applyBulkDuration() {
+    if (!checked.size) return;
+    const value = Math.max(1, Number(bulkDuration) || 3);
+    setItems((current) => current.map((item, index) => checked.has(index) ? {...item, duration_seconds: value} : item));
+    markDirty();
+    setNotice(`已更新 ${checked.size} 个镜头时长为 ${value}s`);
   }
 
   async function add() {
@@ -383,27 +441,47 @@ export function StoryboardEditor({
 
       <div className="grid min-h-0 flex-1" style={{gridTemplateColumns: '320px 1fr'}}>
         <aside className="flex min-h-0 flex-col" style={{borderRight: '1px solid var(--line)', background: 'var(--ink-900)'}}>
+          <div className="flex items-center gap-2 px-2 py-1.5" style={{borderBottom: '1px solid var(--line)'}}>
+            <span className="text-[9.5px]" style={{color: 'var(--fg-dim)'}}>已选 {checked.size}</span>
+            <input className="field h-6 w-16" type="number" min={1} max={60} value={bulkDuration} onChange={(event) => setBulkDuration(Number(event.target.value) || 1)} aria-label="批量时长" />
+            <button type="button" className="btn h-6" onClick={applyBulkDuration} disabled={!checked.size || busy}>应用时长</button>
+            <button type="button" className="btn btn-ghost h-6" onClick={() => setChecked(new Set())} disabled={!checked.size}>清除</button>
+          </div>
+          <div className="space-y-1.5 px-2 py-2" style={{borderBottom: '1px solid var(--line)'}}>
+            <input className="field" value={shotQuery} onChange={(event) => setShotQuery(event.target.value)} placeholder="搜索标题 / 类型 / 文本" aria-label="搜索镜头" />
+            <div className="flex items-center gap-1.5">
+              <select className="field min-w-0 flex-1" value={shotFilter} onChange={(event) => setShotFilter(event.target.value)} aria-label="筛选镜头类型">
+                <option value="all">全部类型</option>
+                {shotTypes.map((type) => <option key={type} value={type}>{type}</option>)}
+              </select>
+              <input className="field w-14" type="number" min={1} max={items.length} value={jumpValue} onChange={(event) => setJumpValue(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') jumpToShot(); }} placeholder="#" aria-label="跳转到镜头序号" />
+              <button type="button" className="btn" onClick={jumpToShot} disabled={!jumpValue}>跳转</button>
+            </div>
+            <div className="text-[11px]" style={{color: 'var(--fg-dim)'}}>显示 {visibleItems.length}/{items.length}</div>
+          </div>
           <div className="flex-1 overflow-auto p-2">
-            {items.length ? items.map((item, index) => {
+            {visibleItems.length ? visibleItems.map(({item, index}) => {
               const template = orderedShots.find((shot) => shot.id === item.shot);
               return (
                 <div
                   key={`${item.shot}-${index}`}
                   role="button"
                   tabIndex={0}
+                  data-shot-index={index}
                   className="mb-1 flex w-full items-start gap-2 rounded-md px-2 py-2 text-left"
                   data-active={selected === index}
-                  style={{background: selected === index ? 'var(--accent-soft)' : 'transparent', border: `1px solid ${selected === index ? 'rgba(90,169,255,.22)' : 'transparent'}`}}
+                  style={{background: selected === index ? 'var(--accent-soft)' : 'transparent', border: `1px solid ${selected === index ? 'rgba(90,169,255,.22)' : 'transparent'}`, borderLeft: `3px solid ${shotTone(index)}`}}
                   onClick={() => setSelected(index)}
                   onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') setSelected(index); }}
                 >
+                  <input type="checkbox" checked={checked.has(index)} onClick={(event) => event.stopPropagation()} onChange={() => toggleChecked(index)} aria-label={`选择镜头 ${index + 1}`} style={{marginTop: 3}} />
                   <span className="mt-[1px] flex h-5 w-5 shrink-0 items-center justify-center rounded-md text-[10px] font-semibold" style={{background: 'rgba(255,255,255,.07)', color: 'var(--fg-muted)'}}>
                     {index + 1}
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-[11.5px]">{item.title || template?.name || item.shot || '未命名镜头'}</span>
                     <span className="mt-[2px] block truncate font-mono text-[9.5px]" style={{color: 'var(--fg-dim)'}}>
-                      {item.shot || '未选择类型'} · {Number(item.duration_seconds) || 0}s
+                      {item.shot || '未选择类型'} · {Number(item.duration_seconds) || 0}s{item.locked ? ' · 已锁定' : ''}
                     </span>
                   </span>
                   <span className="flex shrink-0 flex-col gap-0.5">
@@ -415,13 +493,18 @@ export function StoryboardEditor({
                         <ArrowDown size={10} />
                       </button>
                     </span>
+                    <span className="flex gap-0.5">
+                    <button type="button" className="icon-btn h-5 w-5" title={item.locked ? '解锁镜头' : '锁定镜头'} onClick={(event) => { event.stopPropagation(); updateItem(index, {locked: !item.locked}); }}>{item.locked ? <Unlock size={10} /> : <Lock size={10} />}</button>
                     <button type="button" className="icon-btn h-5 w-5" title="删除镜头" onClick={(event) => { event.stopPropagation(); remove(index); }}>
                       <Trash2 size={10} />
                     </button>
+                    </span>
                   </span>
                 </div>
               );
-            }) : (
+            }) : items.length ? (
+              <div className="px-2 py-3 text-[11px]" style={{color: 'var(--fg-dim)'}}>没有匹配的镜头</div>
+            ) : (
               <Empty title="还没有镜头" hint="从下方选择镜头类型后添加" />
             )}
           </div>
@@ -517,9 +600,3 @@ export function StoryboardEditor({
     </div>
   );
 }
-
-
-
-
-
-

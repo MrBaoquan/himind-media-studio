@@ -1,0 +1,438 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://himind.local/schemas/creative-package.json",
+  "title": "HiMind Creative Package",
+  "type": "object",
+  "required": [
+    "version",
+    "id",
+    "revision",
+    "status",
+    "title",
+    "brief",
+    "research",
+    "script",
+    "storyboard",
+    "production"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "himind.video.creative-package.v1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^creative-[0-9]+$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "approved",
+        "materialized",
+        "archived"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "brief": {
+      "type": "object",
+      "required": [
+        "goal"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "topic": {
+          "type": "string"
+        },
+        "goal": {
+          "type": "string"
+        },
+        "audience": {
+          "type": "string"
+        },
+        "platform": {
+          "type": "string"
+        },
+        "duration_seconds": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 300
+        },
+        "tone": {
+          "type": "string"
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "success_criteria": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "research": {
+      "type": "object",
+      "required": [
+        "mode"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "none",
+            "optional",
+            "required"
+          ]
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "text"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              },
+              "evidence_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "confidence": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "title"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "published_at": {
+                "type": "string"
+              },
+              "publisher": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "uncertainties": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "script": {
+      "type": "object",
+      "required": [
+        "beats"
+      ],
+      "properties": {
+        "logline": {
+          "type": "string"
+        },
+        "structure": {
+          "type": "string"
+        },
+        "beats": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "duration_seconds"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "purpose": {
+                "type": "string"
+              },
+              "duration_seconds": {
+                "type": "number",
+                "minimum": 0.1
+              },
+              "narration": {
+                "type": "string"
+              },
+              "on_screen_text": {
+                "type": "string"
+              },
+              "visual_intent": {
+                "type": "string"
+              },
+              "data_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "storyboard": {
+      "type": "object",
+      "required": [
+        "shots"
+      ],
+      "properties": {
+        "shots": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "shot",
+              "duration_seconds"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "beat_id": {
+                "type": "string"
+              },
+              "shot": {
+                "type": "string"
+              },
+              "role": {
+                "type": "string"
+              },
+              "duration_seconds": {
+                "type": "number",
+                "minimum": 0.1
+              },
+              "data_binding": {
+                "type": "string"
+              },
+              "visual": {
+                "type": "string"
+              },
+              "motion": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              },
+              "transition": {
+                "type": "string"
+              },
+              "style_overrides": {
+                "type": "object"
+              },
+              "rationale": {
+                "type": "string"
+              },
+              "scene_id": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "string",
+                "description": "programmatic.browser-code / programmatic.remotion / ai.image / ai.video / stock.video"
+              },
+              "technique": {
+                "type": "string"
+              },
+              "camera": {
+                "type": "string"
+              },
+              "prompt": {
+                "type": "string"
+              },
+              "negative_prompt": {
+                "type": "string"
+              },
+              "reference_assets": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "asset_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "planned",
+                  "ready",
+                  "generated",
+                  "approved",
+                  "failed"
+                ]
+              },
+              "fallback_provider": {
+                "type": "string"
+              },
+              "audio_cue": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "production": {
+      "type": "object",
+      "required": [
+        "mode",
+        "duration_seconds"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "code",
+            "template"
+          ]
+        },
+        "style_pack": {
+          "type": "string"
+        },
+        "style_version": {
+          "type": "string"
+        },
+        "template_id": {
+          "type": "string"
+        },
+        "style_id": {
+          "type": "string"
+        },
+        "renderer": {
+          "type": "string"
+        },
+        "duration_seconds": {
+          "type": "number",
+          "minimum": 1
+        },
+        "aspect": {
+          "type": "string"
+        },
+        "platform": {
+          "type": "string"
+        },
+        "required_data": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "required_assets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "quality_gates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "data": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": true
+    },
+    "approval": {
+      "type": "object",
+      "properties": {
+        "approved_revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "approved_at": {
+          "type": "string"
+        },
+        "approved_by": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "links": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "string"
+        },
+        "materialized_revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": true
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "updated_at": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

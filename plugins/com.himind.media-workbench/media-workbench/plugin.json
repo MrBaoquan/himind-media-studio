@@ -9,8 +9,8 @@
     "testing-quality"
   ],
   "description": "自媒体视频项目与资产中枢：管理项目与修订、解析模板与风格资产、校验配方与质量门禁，并把渲染交给可替换的适配器。",
-  "release_notes": "全面更名：仓库 himind-media-studio、插件 com.himind.media-workbench、能力命名空间 media.workbench；工作区迁移到 .himind-media。",
-  "version": "0.9.1",
+  "release_notes": "0.83.0：新增产品宣传片模板、promo-cinema 风格、PromoVideo Remotion 组合、真实 HiMind 页面素材、promo intent 路由、video-promo Skill 与 generate-promo-video Workflow；剪辑工作台 UIP-04~17 与 OSS-01：三栏布局持久化、节目监视器联动、直接拖拽/修剪/刀片/右键菜单、多选批量、波形/缩略图、历史对比、素材市场、AI diff、文稿联动、语义检索、关键帧 lane、窗口化渲染；OTIO/EDL 交换；媒体库时长探测与 100 素材压测；时间轴转场手柄；OTIO/EDL format 参数修复；宽屏标题栏全宽、工具栏抗压缩、窄屏抽屉互斥；轨道 M/L 控制、增删轨道、视频轨隐藏与播放头复位；轨道头 128px 布局修正；视频轨静音参与主轨选择测试；五轨首屏适配、字幕轨标签与低高度窗口时间线优先；逐轨高度拖拽与紧凑/标准/高预设；音频 Solo 与时间线音频试听；轨道排序、重命名与自定义颜色；轨道音量与实时音频表；保存后 revision 同步修复；视觉基线：字号/对比度/设计 token；toolbar/章节标签特异性修正；轨道头 220px、VO/BGM/OVR 短角色与音频轨 56px；监视器/状态元数据补齐 11px；viewer 标签与 clip badge 收口；控件高度/圆角/间距统一；Tailwind 圆角归一；图标/素材徽章高度收口；全局头/页签带语法统一；根网格头部行高修正；窄屏全局头响应式收口；窄屏侧栏改覆盖抽屉；关闭态不占位；审阅页主 CTA 收敛；渲染 CTA 粘性可达；剪辑三模式各一主 CTA；审阅技术折叠/QA 摘要/缩略图；缩略图调用预算收敛；插件 UI 加载看门狗：资源失败/空 root 显示错误页与重试；新增 intent.plan 创作路由（快路径/故事路径、缺口、能力序列、CreativePackage 审批门禁；显式时长/默认时长分离；分镜色条改为目录顺序驱动（去除题材硬编码）；剪辑页对宿主调用配额拥塞自动重试一次）；Agent persona 覆盖脚本、分镜、镜头、音频、时间线与渲染轮询。",
+  "version": "0.83.0",
   "entry": "bin/media-workbench.exe",
   "runtime": "process-jsonrpc-stdio",
   "platforms": [
@@ -18,8 +18,53 @@
   ],
   "min_agent_version": "0.3.40",
   "governance": "optional",
-  "plugin_dependencies": [],
+  "plugin_dependencies": [
+    {
+      "plugin_id": "com.himind.audio-production",
+      "required": false,
+      "min_version": "0.1.0"
+    },
+    {
+      "plugin_id": "com.himind.audio-intelligence",
+      "required": false,
+      "min_version": "0.1.0"
+    }
+  ],
   "capabilities": [
+    {
+      "id": "media.workbench.intent.plan",
+      "description": "把创作请求分流为快路径或故事路径，并列出缺口与能力序列。",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "string"
+          },
+          "workspace_root": {
+            "type": "string"
+          },
+          "platform": {
+            "type": "string"
+          },
+          "style_hint": {
+            "type": "string"
+          },
+          "target_duration_seconds": {
+            "type": "number"
+          },
+          "has_data_source": {
+            "type": "boolean"
+          },
+          "wants_narration": {
+            "type": "boolean"
+          }
+        },
+        "required": ["request"],
+        "additionalProperties": false
+      },
+      "risk_level": "read_only",
+      "availability": "local"
+    },
     {
       "id": "media.workbench.catalog.list",
       "description": "列出可用的短视频模板、风格包和渲染适配器。",
@@ -721,6 +766,12 @@
           "project_id": {
             "type": "string"
           },
+          "project_step": {
+            "type": "string"
+          },
+          "workflow_context": {
+            "type": "object"
+          },
           "recipe": {
             "type": "object"
           }
@@ -1180,6 +1231,38 @@
           },
           "workflow_context": {
             "type": "object"
+          },
+          "audio_path": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "media_paths": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "output_path": {
+            "type": "string"
+          },
+          "delivery_preset": {
+            "type": "string"
+          },
+          "burn_subtitles": {
+            "type": "boolean"
+          },
+          "subtitle_path": {
+            "type": "string"
+          },
+          "subtitle_style": {
+            "type": "string"
+          },
+          "skip_qa": {
+            "type": "boolean"
+          },
+          "loudness_target_lufs": {
+            "type": "number"
           }
         },
         "required": [
@@ -2132,6 +2215,1930 @@
       "risk_level": "local_write",
       "availability": "local",
       "timeout_seconds": 300
+    },
+    {
+      "id": "media.workbench.creative.create",
+      "description": "创建创作需求包",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "creative_brief": {
+            "type": "string"
+          },
+          "brief": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "workspace_root"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.creative.list",
+      "description": "列出创作需求包",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.creative.get",
+      "description": "读取创作需求包",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "creative_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "creative_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.creative.update",
+      "description": "按分区更新创作需求包",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "creative_id": {
+            "type": "string"
+          },
+          "section": {
+            "type": "string",
+            "enum": [
+              "brief",
+              "research",
+              "script",
+              "storyboard",
+              "production"
+            ]
+          },
+          "value": {
+            "type": "object"
+          },
+          "expected_updated_at": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "creative_id",
+          "section",
+          "value"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.creative.validate",
+      "description": "校验创作需求包",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "creative_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "creative_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.creative.approve",
+      "description": "批准创作需求包",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "creative_id": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "creative_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.creative.materialize",
+      "description": "将创作包落成视频项目",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "creative_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "creative_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.shot.providers",
+      "description": "列出镜头生产方式：程序化、AI 图片、AI 视频、素材库，以及所需 External Pack。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "timeout_seconds": 30
+    },
+    {
+      "id": "media.workbench.shot.assign",
+      "description": "为某个分镜指定生成方式、技法、提示词与回退生成方式。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "creative_id": {
+            "type": "string"
+          },
+          "shot_id": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string"
+          },
+          "technique": {
+            "type": "string"
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "fallback_provider": {
+            "type": "string"
+          },
+          "reference_assets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "workspace_root",
+          "creative_id",
+          "shot_id"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 30
+    },
+    {
+      "id": "media.workbench.timeline.plan",
+      "description": "把创作包的分镜编译成镜头制作计划，检查 provider 可用性、prompt、时长与能力覆盖。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "creative_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "creative_id"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 30
+    },
+    {
+      "id": "media.workbench.shot.produce",
+      "description": "生成镜头资产；ai.image 使用模拟图，ai.video 暂未接入。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "creative_id": {
+            "type": "string"
+          },
+          "shot_id": {
+            "type": "string"
+          },
+          "shot_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "mode": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "creative_id"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 120
+    },
+    {
+      "id": "media.workbench.shot.status",
+      "description": "查看镜头资产状态、asset_refs 与预览。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "creative_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "creative_id"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 30
+    },
+    {
+      "id": "media.workbench.shot.attach-asset",
+      "description": "把已生成的图片/视频登记到指定镜头 asset_refs。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "creative_id": {
+            "type": "string"
+          },
+          "shot_id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "media_id": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string"
+          },
+          "width": {
+            "type": "integer"
+          },
+          "height": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string"
+          },
+          "mock": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "creative_id",
+          "shot_id",
+          "path"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 60
+    },
+    {
+      "id": "media.workbench.audio.runtime.install",
+      "description": "安装并校验离线音频运行时与声音；dry_run 只返回计划。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "runtime_id": {
+            "type": "string"
+          },
+          "dry_run": {
+            "type": "boolean"
+          },
+          "force": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "workspace_root"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 1800
+    },
+    {
+      "id": "media.workbench.audio.catalog",
+      "description": "列出 TTS provider、系统语音与通用 BGM 预设。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 30
+    },
+    {
+      "id": "media.workbench.audio.speech",
+      "description": "逐 beat 合成旁白 WAV；保留时长、哈希与许可证。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "creative_id": {
+            "type": "string"
+          },
+          "voice_provider": {
+            "type": "string"
+          },
+          "voice": {
+            "type": "string"
+          },
+          "voice_rate": {
+            "type": "integer",
+            "minimum": -10,
+            "maximum": 10
+          },
+          "voice_volume": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "allow_restricted_voice": {
+            "type": "boolean"
+          },
+          "output": {
+            "type": "string"
+          },
+          "value": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "workspace_root"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 600
+    },
+    {
+      "id": "media.workbench.subtitle.generate",
+      "description": "按 beat 旁白与时长生成时间轴字幕 cues；cue 不跨 beat，并按标点和长度切分。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "creative_id": {
+            "type": "string"
+          },
+          "max_chars": {
+            "type": "integer",
+            "minimum": 6,
+            "maximum": 60
+          },
+          "min_cue_seconds": {
+            "type": "number",
+            "minimum": 0.4,
+            "maximum": 5
+          },
+          "output": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "creative_id"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 60
+    },
+    {
+      "id": "media.workbench.audio.bgm",
+      "description": "用通用预设程序化生成原创 BGM；记录许可证与循环信息。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "creative_id": {
+            "type": "string"
+          },
+          "bgm_preset": {
+            "type": "string"
+          },
+          "duration_seconds": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 600
+          },
+          "output": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 600
+    },
+    {
+      "id": "media.workbench.audio.mix",
+      "description": "旁白与 BGM 混音：定位、ducking、响度归一化与限幅。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "creative_id": {
+            "type": "string"
+          },
+          "voice_clips": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "bgm_path": {
+            "type": "string"
+          },
+          "duration_seconds": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 600
+          },
+          "voice_gain_db": {
+            "type": "number",
+            "minimum": -30,
+            "maximum": 30
+          },
+          "bgm_gain_db": {
+            "type": "number",
+            "minimum": -60,
+            "maximum": 10
+          },
+          "ducking": {
+            "type": "boolean"
+          },
+          "output": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "voice_clips"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 900
+    },
+    {
+      "id": "media.workbench.audio.qa",
+      "description": "检查音频流、时长、整体响度、真峰值、采样峰值与削波风险。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "creative_id": {
+            "type": "string"
+          },
+          "expected_duration_seconds": {
+            "type": "number",
+            "minimum": 0
+          },
+          "duration_seconds": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "workspace_root"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 300
+    },
+    {
+      "id": "media.workbench.audio.status",
+      "description": "读取创作包的音频 manifest、字幕、BGM、混音与 QA 状态。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "creative_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "creative_id"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 30
+    },
+    {
+      "id": "media.workbench.audio.attach",
+      "description": "把音频 mix 与字幕轨挂载到项目数据。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "creative_id": {
+            "type": "string"
+          },
+          "audio_path": {
+            "type": "string"
+          },
+          "subtitles": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "workspace_root",
+          "project_id",
+          "creative_id",
+          "audio_path"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 60
+    },
+    {
+      "id": "media.workbench.audio.build",
+      "description": "一键完成旁白、字幕、BGM、混音与 QA，并把字幕轨写回指定项目数据。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "creative_id": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "voice_provider": {
+            "type": "string"
+          },
+          "voice": {
+            "type": "string"
+          },
+          "voice_rate": {
+            "type": "integer",
+            "minimum": -10,
+            "maximum": 10
+          },
+          "voice_volume": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "allow_restricted_voice": {
+            "type": "boolean"
+          },
+          "voice_gain_db": {
+            "type": "number",
+            "minimum": -30,
+            "maximum": 30
+          },
+          "bgm_preset": {
+            "type": "string"
+          },
+          "bgm_gain_db": {
+            "type": "number",
+            "minimum": -60,
+            "maximum": 10
+          },
+          "ducking": {
+            "type": "boolean"
+          },
+          "duration_seconds": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 600
+          },
+          "max_chars": {
+            "type": "integer",
+            "minimum": 6,
+            "maximum": 60
+          },
+          "min_cue_seconds": {
+            "type": "number",
+            "minimum": 0.4,
+            "maximum": 5
+          }
+        },
+        "required": [
+          "workspace_root",
+          "creative_id"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 1200
+    },
+    {
+      "id": "media.workbench.subtitle.list",
+      "description": "读取项目字幕 cues、时长与重叠/空档问题。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "project_id"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 30
+    },
+    {
+      "id": "media.workbench.subtitle.update",
+      "description": "保存字幕 cues 到项目 data.json。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "subtitles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "start": {
+                  "type": "number"
+                },
+                "end": {
+                  "type": "number"
+                },
+                "text": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "start",
+                "end",
+                "text"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "workspace_root",
+          "project_id",
+          "subtitles"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 60
+    },
+    {
+      "id": "media.workbench.timeline.apply",
+      "description": "应用时间轴命令批次，返回新 revision、timeline 与 blockers。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "timeline": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "commands": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "workspace_root": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "timeline",
+          "commands"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 60
+    },
+    {
+      "id": "media.workbench.timeline.validate",
+      "description": "校验时间轴结构、重叠、越界与 clip 字段。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "timeline": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "timeline"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 30
+    },
+    {
+      "id": "media.workbench.timeline.history.apply",
+      "description": "在带 undo/redo 栈的历史上应用命令。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "history": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "commands": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        },
+        "required": [
+          "history",
+          "commands"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 60
+    },
+    {
+      "id": "media.workbench.timeline.undo",
+      "description": "撤销一步时间轴命令。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "history": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "history"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 30
+    },
+    {
+      "id": "media.workbench.timeline.redo",
+      "description": "重做一步时间轴命令。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "history": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "history"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 30
+    },
+    {
+      "id": "media.workbench.timeline.export",
+      "description": "将 Timeline 单视频轨导出为 MP4（ffmpeg 拼接，确定性输出）。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "media_paths": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "output_path": {
+            "type": "string"
+          },
+          "delivery_preset": {
+            "type": "string"
+          },
+          "burn_subtitles": {
+            "type": "boolean"
+          },
+          "subtitle_path": {
+            "type": "string"
+          },
+          "subtitle_style": {
+            "type": "string"
+          },
+          "skip_qa": {
+            "type": "boolean"
+          },
+          "loudness_target_lufs": {
+            "type": "number"
+          },
+          "subtitles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        },
+        "required": [
+          "workspace_root",
+          "timeline",
+          "media_paths"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 600
+    },
+    {
+      "id": "media.workbench.timeline.get",
+      "description": "读取项目持久化的 Timeline。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "project_id"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 30
+    },
+    {
+      "id": "media.workbench.timeline.save",
+      "description": "保存 Timeline 到项目 metadata，支持 revision 冲突校验。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "expected_revision": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "project_id",
+          "timeline"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 60
+    },
+    {
+      "id": "media.workbench.timeline.autoedit",
+      "description": "把一组媒体按目标时长确定性地编排为可精修的 Timeline。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 60,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "media_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "media_paths": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "duration_seconds": {
+            "type": "number"
+          },
+          "transition": {
+            "type": "string"
+          },
+          "transition_frames": {
+            "type": "integer"
+          },
+          "music_path": {
+            "type": "string"
+          },
+          "narration_path": {
+            "type": "string"
+          },
+          "subtitles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "timeline": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "workspace_root",
+          "media_ids"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.subtitle.attach",
+      "description": "从项目字幕或显式 cues 生成/替换 S1 字幕轨。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 60,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "subtitle_path": {
+            "type": "string"
+          },
+          "subtitles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        },
+        "required": [
+          "workspace_root"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.media.catalog",
+      "description": "探测项目产物或显式媒体路径，返回统一 MediaRef 元数据。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 120,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "media_paths": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "workspace_root"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.proxy.build",
+      "description": "为时间轴媒体生成轻量代理文件；成片仍使用原素材。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "timeout_seconds": 600,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "media_paths": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "proxy_width": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "workspace_root"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.qa",
+      "description": "渲染前 QA：结构、媒体存在性、轨道间隙、链接与字幕。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 60,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "media_paths": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "workspace_root",
+          "timeline"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.delivery.presets",
+      "description": "列出母版、Web、抖音、B 站、YouTube 等交付预设。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 30,
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.delivery.qa",
+      "description": "对交付成片做容器、画布、时长与响度 QC。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 120,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "output_path": {
+            "type": "string"
+          },
+          "delivery_preset": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.templates.list",
+      "description": "列出内置剪辑模板与槽位角色。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 30,
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.template.apply",
+      "description": "把素材套入声明式剪辑模板槽位，生成可精修 Timeline。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 60,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "template_id": {
+            "type": "string"
+          },
+          "media_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "duration_seconds": {
+            "type": "number"
+          },
+          "transition": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "workspace_root",
+          "template_id",
+          "media_ids"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.transcript.search",
+      "description": "在字幕/转写文本中检索命中片段。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 30,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "query": {
+            "type": "string"
+          },
+          "match_mode": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "subtitles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        },
+        "required": [
+          "workspace_root",
+          "query"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.roughcut",
+      "description": "按转写命中文本生成确定性 AI 粗剪 Timeline。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 60,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "query": {
+            "type": "string"
+          },
+          "match_mode": {
+            "type": "string"
+          },
+          "cue_indexes": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "padding_seconds": {
+            "type": "number"
+          },
+          "duration_seconds": {
+            "type": "number"
+          },
+          "timeline": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "workspace_root",
+          "timeline"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.silence.detect",
+      "description": "检测媒体中的静音区间，返回时间范围。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 300,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "media_id": {
+            "type": "string"
+          },
+          "noise_db": {
+            "type": "number"
+          },
+          "min_silence_seconds": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "path",
+          "media_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.silence.trim",
+      "description": "用静音检测生成去停顿的精剪 Timeline；保留可回溯源区间。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 300,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "media_id": {
+            "type": "string"
+          },
+          "noise_db": {
+            "type": "number"
+          },
+          "min_silence_seconds": {
+            "type": "number"
+          },
+          "padding_seconds": {
+            "type": "number"
+          },
+          "timeline": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "workspace_root",
+          "path",
+          "media_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.comment.list",
+      "description": "列出时间码批注与解决状态。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 30,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "project_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.comment.add",
+      "description": "在时间轴指定时间码添加批注。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "timeout_seconds": 30,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "time": {
+            "type": "number"
+          },
+          "note": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "workspace_root",
+          "project_id",
+          "note"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.comment.resolve",
+      "description": "解决或忽略一条时间轴批注。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "timeout_seconds": 30,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "feedback_id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "project_id",
+          "feedback_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.beats.detect",
+      "description": "分析音频能量包络，返回近似节拍时间点。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 120,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "path"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.beats.markers",
+      "description": "把音频节拍写入时间轴 markers，供卡点剪辑使用。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 120,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "workspace_root",
+          "path",
+          "timeline"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.command.log",
+      "description": "读取 append-only 时间轴命令日志。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 30,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "project_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.reframe",
+      "description": "把同一 Timeline 确定性地重构为 9:16 / 1:1 / 16:9 画布。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 30,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "width": {
+            "type": "integer"
+          },
+          "height": {
+            "type": "integer"
+          },
+          "fit_mode": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "timeline",
+          "width",
+          "height"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.pip.apply",
+      "description": "把选中片段复制到 V2 并套用画中画位置/缩放。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 30,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "clip_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "timeline",
+          "clip_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.reframe.auto",
+      "description": "内容感知自动重构画布：按非黑边内容中心调整位置。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 180,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "media_paths": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "width": {
+            "type": "integer"
+          },
+          "height": {
+            "type": "integer"
+          },
+          "fit_mode": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "timeline",
+          "media_paths",
+          "width",
+          "height"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.speed.curve",
+      "description": "把选中片段按速度关键帧拆成恒定速度段，近似速度曲线并保持总时长。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 30,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "clip_id": {
+            "type": "string"
+          },
+          "speed_keyframes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "frame": {
+                  "type": "integer"
+                },
+                "speed": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "frame",
+                "speed"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "workspace_root",
+          "timeline",
+          "clip_id",
+          "speed_keyframes"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.diff",
+      "description": "对比两个 Timeline revision 的 clip 新增/删除/修改。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 30,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "base_timeline": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "target_timeline": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "base_timeline",
+          "target_timeline"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.interchange.export",
+      "description": "把 Timeline 导出为 OTIO 或 EDL，保留扩展元数据。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "timeout_seconds": 30,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {"type": "string"},
+          "timeline": {"type": "object", "additionalProperties": true},
+          "format": {"type": "string", "enum": ["otio", "edl", "both"]},
+          "output": {"type": "string"}
+        },
+        "required": ["workspace_root", "timeline"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.interchange.import",
+      "description": "从 OTIO 或 EDL 导入 Timeline，保持片段时码不变。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 30,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {"type": "string"},
+          "path": {"type": "string"},
+          "content": {"type": "string"},
+          "format": {"type": "string", "enum": ["otio", "edl", "auto"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.semantic-search",
+      "description": "用自然语言在时间轴片段与素材路径中检索，返回可解释命中与定位帧。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 30,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {"type": "string"},
+          "timeline": {"type": "object", "additionalProperties": true},
+          "query": {"type": "string"},
+          "media_paths": {"type": "object", "additionalProperties": true},
+          "limit": {"type": "integer", "minimum": 1, "maximum": 100}
+        },
+        "required": ["timeline", "query"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "id": "media.workbench.timeline.command.plan",
+      "description": "把受支持的自然语言精剪指令转换成可预览命令批次。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "timeout_seconds": 30,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "timeline": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "command_text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "timeline",
+          "command_text"
+        ],
+        "additionalProperties": false
+      }
     }
   ],
   "permissions": [
@@ -2177,7 +4184,12 @@
         "quick_access": true,
         "order": 10,
         "location": "plugin_navigation",
-        "entry": "ui/app/index.html"
+        "entry": "ui/app/index.html",
+        "external_capabilities": [
+          "audio.*",
+          "media.job.*",
+          "visual.*"
+        ]
       }
     ]
   },

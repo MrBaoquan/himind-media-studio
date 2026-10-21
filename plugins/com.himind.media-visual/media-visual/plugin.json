@@ -1,0 +1,390 @@
+{
+  "id": "com.himind.media-visual",
+  "name": "视觉制作",
+  "author": "马宝全",
+  "categories": [
+    "visual",
+    "testing-quality"
+  ],
+  "description": "视觉制作：角色/参考图资产包、参考一致性校验、确定性图像相似度与画面质量检查（色带/色块/过曝/失焦）。图像/视频生成模型调用仍由 Agent Media Kernel 的 media.image.generate / media.video.generate 承担。",
+  "release_notes": "0.6.0：新增 visual.upscale，图片/视频确定性 Lanczos 放大，支持 scale 或目标宽高、视频 CRF/preset、静音保留与输出 SHA。",
+  "version": "0.6.0",
+  "entry": "bin/media-visual.exe",
+  "runtime": "process-jsonrpc-stdio",
+  "platforms": [
+    "windows-x64"
+  ],
+  "min_agent_version": "0.3.40",
+  "governance": "optional",
+  "plugin_dependencies": [],
+  "capabilities": [
+    {
+      "id": "visual.reference.pack",
+      "description": "把角色/主体参考图打包成 himind.asset-pack.v1，并记录 SHA-256、尺寸、许可证与商用标记。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "reference_images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "role": {
+            "type": "string"
+          },
+          "character": {
+            "type": "string"
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "negative_prompt": {
+            "type": "string"
+          },
+          "seed": {
+            "type": "integer"
+          },
+          "license": {
+            "type": "string"
+          },
+          "license_url": {
+            "type": "string"
+          },
+          "commercial_use": {
+            "type": "boolean"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "workspace_root",
+          "pack_id",
+          "reference_images"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 120
+    },
+    {
+      "id": "visual.reference.validate",
+      "description": "校验参考资产包资源是否完整、SHA 是否一致、许可证是否已声明。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "pack_path": {
+            "type": "string"
+          },
+          "reference_assets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "workspace_root",
+          "pack_path"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 60
+    },
+    {
+      "id": "visual.reference.character.consistency",
+      "description": "把候选图与参考包逐张比对，返回最佳匹配分数并判定 consistent / drift。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "pack_path": {
+            "type": "string"
+          },
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "candidate_paths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "threshold": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "required": [
+          "workspace_root",
+          "candidate_paths"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 120
+    },
+    {
+      "id": "visual.image.compare",
+      "description": "比较两张图片的确定性结构+颜色相似度，用于候选筛选与角色漂移预警（不是人脸识别）。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "reference_path": {
+            "type": "string"
+          },
+          "candidate_path": {
+            "type": "string"
+          },
+          "threshold": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "required": [
+          "workspace_root",
+          "reference_path",
+          "candidate_path"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 60
+    },
+    {
+      "id": "visual.image.qa",
+      "description": "确定性画面质量检查：色带/色块风险、8px 块效应、高光溢出、细节量与边缘密度。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "image_path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "image_path"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 60
+    },
+    {
+      "id": "visual.video.qa",
+      "description": "按时间点抽取视频帧并做确定性画质检查，输出逐帧指标、最差色带帧与阻塞项。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "video_path": {
+            "type": "string"
+          },
+          "times": {
+            "type": "string",
+            "description": "逗号分隔的秒数；为空时均匀采样"
+          },
+          "sample_count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          },
+          "keep_frames": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "video_path"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 300
+    },
+    {
+      "id": "visual.video.scenes",
+      "description": "检测视频场景切点（ffmpeg scene score），返回切点时间列表，用于分镜切分与抽帧定位。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "video_path": {
+            "type": "string"
+          },
+          "scene_threshold": {
+            "type": "number",
+            "minimum": 0.01,
+            "maximum": 1
+          },
+          "max_cuts": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 500
+          }
+        },
+        "required": [
+          "workspace_root",
+          "video_path"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 300
+    },
+    {
+      "id": "visual.video.contact-sheet",
+      "description": "把视频按时间点抽帧合成为单张联系表（PNG），返回每格时间映射。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "video_path": {
+            "type": "string"
+          },
+          "times": {
+            "type": "string",
+            "description": "逗号分隔秒数；为空时均匀采样"
+          },
+          "sample_count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 16
+          },
+          "columns": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 6
+          },
+          "cell_width": {
+            "type": "integer",
+            "minimum": 80,
+            "maximum": 960
+          },
+          "output_path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "workspace_root",
+          "video_path"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 300
+    },
+    {
+      "id": "visual.upscale",
+      "description": "图片/视频确定性 Lanczos 放大，返回输出尺寸、大小与 SHA-256。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {
+            "type": "string"
+          },
+          "image_path": {
+            "type": "string"
+          },
+          "video_path": {
+            "type": "string"
+          },
+          "scale": {
+            "type": "number",
+            "minimum": 1.05,
+            "maximum": 8
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 8192
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 8192
+          },
+          "output_path": {
+            "type": "string"
+          },
+          "crf": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 51
+          },
+          "preset": {
+            "type": "string"
+          },
+          "mute": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "workspace_root"
+        ],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 600
+    }
+  ],
+  "permissions": [
+    "filesystem.workspace.read",
+    "filesystem.workspace.write"
+  ],
+  "capability_namespace": "visual",
+  "distribution_targets": [
+    "github"
+  ]
+}

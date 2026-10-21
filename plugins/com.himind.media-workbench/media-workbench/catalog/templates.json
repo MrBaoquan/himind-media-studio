@@ -358,5 +358,27 @@
     "data_contract": "catalog/contracts/sankey.schema.json",
     "storyboard_shot": true,
     "storyboard_order": 85
+  },
+  {
+    "id": "promo-video",
+    "version": "1.0.0",
+    "family": "promo",
+    "name": "产品宣传片",
+    "description": "用真实产品界面、分镜与旁白把产品卖点讲成一支商业宣传片。",
+    "adapter": "remotion",
+    "composition": "PromoVideo",
+    "slots": [
+      "brand",
+      "tagline",
+      "scenes",
+      "cta",
+      "voiceover"
+    ],
+    "compatible_styles": [
+      "promo-cinema"
+    ],
+    "duration_seconds": 35,
+    "status": "ready",
+    "data_contract": "catalog/contracts/promo-video.schema.json"
   }
 ]

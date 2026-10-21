@@ -1,0 +1,39 @@
+{
+  "schema": "himind.video.style-pack.v1",
+  "id": "science-fusion",
+  "version": "0.1.0",
+  "name": "科学聚变",
+  "description": "手绘科学图解 + AI 生成示意图，解释聚变、托卡马克、磁约束与 EAST 纪录。",
+  "renderer": "browser-code",
+  "entry": "render.mjs",
+  "video_out": "out/video.mp4",
+  "duration_seconds": 72,
+  "preview": {
+    "sheet_out": "out/check/sheet.jpg",
+    "strip_out": "out/check/strip.jpg",
+    "stills_out": "out/stills"
+  },
+  "license": "MIT",
+  "network": {
+    "mode": "none",
+    "allow": []
+  },
+  "delivery": {
+    "web": true,
+    "web_width": 1280,
+    "web_crf": 23,
+    "max_master_mb": 50
+  },
+  "attribution": "HiMind original science-sketch style pack; Rough.js 4.6.6 (MIT) vendored locally.",
+  "quality": {
+    "text_audit": {
+      "enabled": true,
+      "page": "reel/index.html",
+      "times": "3,10,18,26,35,44,53,62,69"
+    },
+    "banding_gate": false
+  },
+  "runtime": {
+    "max_workers": 1
+  }
+}

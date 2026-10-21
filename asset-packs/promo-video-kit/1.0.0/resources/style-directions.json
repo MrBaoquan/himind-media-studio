@@ -1,0 +1,38 @@
+{
+  "schema": "himind.promo.style-directions.v1",
+  "source": "HiMind 产品宣传片风格方向",
+  "frames": [
+    {
+      "id": "cinema-teal",
+      "name": "电影深色 · 青绿",
+      "file": "01-cinema-teal.png",
+      "status": "selected",
+      "best_for": "品牌片、发布会开场、真实产品界面展示",
+      "traits": ["深色电影感", "青绿强调", "克制动效", "胶片颗粒"]
+    },
+    {
+      "id": "editorial-ivory",
+      "name": "杂志编辑 · 暖白",
+      "file": "02-editorial-ivory.png",
+      "status": "alternative",
+      "best_for": "创始人故事、品牌理念、To B 产品",
+      "traits": ["暖白纸感", "衬线大标题", "编辑网格", "低饱和"]
+    },
+    {
+      "id": "swiss-grid",
+      "name": "瑞士网格 · 信号红",
+      "file": "03-swiss-grid.png",
+      "status": "alternative",
+      "best_for": "海外发布、工具产品、极简功能讲解",
+      "traits": ["高对比黑字", "红色色块", "严格网格", "直给节奏"]
+    },
+    {
+      "id": "signal-blue",
+      "name": "科幻信号 · 电光蓝",
+      "file": "04-signal-blue.png",
+      "status": "alternative",
+      "best_for": "AI 产品、开发者工具、未来感功能发布",
+      "traits": ["近黑背景", "电光蓝辉光", "扫描线", "技术标签"]
+    }
+  ]
+}

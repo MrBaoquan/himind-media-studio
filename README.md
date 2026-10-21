@@ -10,7 +10,7 @@ HiMind Agent 的自媒体创作拓展源。通过 GitHub 分发，不依赖 Dash
 - **约束清单**（`catalog/constraints.json`）—— harness 的可审计来源：每条约束都必须指向一个执行点。
 - **开源 prior art**（`docs/oss-evaluation/`）—— 新增能力 / Style Pack / Renderer 前先评估可复用开源库、许可证与依赖；GPL / 商业求解器不直接进入核心。
 
-更名记录与预发布硬切换说明见 [docs/rename-to-media-studio.md](docs/rename-to-media-studio.md)；产品方向、同类开源对比与架构价值见 [docs/generator-direction.md](docs/generator-direction.md)；实施架构见 [docs/generator-implementation-architecture.md](docs/generator-implementation-architecture.md)；里程碑与任务拆分见 [docs/generator-implementation-plan.md](docs/generator-implementation-plan.md)；AI 生成新 Remotion 能力的实施计划见 [docs/capability-authoring-plan.md](docs/capability-authoring-plan.md)；现有创作台边界见 [docs/repositioning-architecture.md](docs/repositioning-architecture.md)。
+更名记录与预发布硬切换说明见 [docs/rename-to-media-studio.md](docs/rename-to-media-studio.md)；创意开发与 CreativePackage 见 [docs/creative-development.md](docs/creative-development.md)；故事视频（LibTV 类）能力演进见 [docs/story-video-architecture.md](docs/story-video-architecture.md)；镜头级程序化/AI 能力契约见 [docs/shot-capability-architecture.md](docs/shot-capability-architecture.md)；TTS/字幕/BGM/混音底座见 [docs/audio-subtitle-architecture.md](docs/audio-subtitle-architecture.md)；终极媒体架构与自主实施策略见 [docs/ultimate-media-architecture-implementation.md](docs/ultimate-media-architecture-implementation.md)；合肥人造太阳案例见 [docs/cases/hefei-artificial-sun.md](docs/cases/hefei-artificial-sun.md)；产品方向、同类开源对比与架构价值见 [docs/generator-direction.md](docs/generator-direction.md)；实施架构见 [docs/generator-implementation-architecture.md](docs/generator-implementation-architecture.md)；里程碑与任务拆分见 [docs/generator-implementation-plan.md](docs/generator-implementation-plan.md)；AI 生成新 Remotion 能力的实施计划见 [docs/capability-authoring-plan.md](docs/capability-authoring-plan.md)；现有创作台边界见 [docs/repositioning-architecture.md](docs/repositioning-architecture.md)。
 
 ## 安装与更新
 
@@ -21,7 +21,7 @@ HiMind Agent 的自媒体创作拓展源。通过 GitHub 分发，不依赖 Dash
 ## 组成
 
 - `extensions.json`：独立扩展源目录清单，供 Agent 绑定和发现。
-- `plugins/com.himind.media-workbench/media-workbench`：本地 JSON-RPC stdio 插件。
+- `plugins/com.himind.media-workbench/media-workbench`：本地 JSON-RPC stdio 插件；包含项目/创意/镜头/音频底座（Piper TTS、字幕 cues、BGM 预设、ffmpeg 混音与音频 QA）。
 - `skills/video-director`：先把需求转成叙事计划与分镜计划，再编译和校验 Recipe。
 - `workflows/generate-video`：对话→Plan→项目→预览→渲染提交的独立 Workflow（不由 Feature Pack 组合）。
 - `workflows/author-remotion-capability`：能力缺口→提案→六件套实现→`capability.audit` 的作者 Workflow。
@@ -35,8 +35,11 @@ HiMind Agent 的自媒体创作拓展源。通过 GitHub 分发，不依赖 Dash
 - `style-packs/data-kinetic/`：数据驱动动态字卡，读取 `input/data.json`。
 - `style-packs/paper-collage/`：程序化纸张拼贴、照片卡、胶带与印章风格。
 - `style-packs/whiteboard-explainer/`：Rough.js 手绘白板讲解，适合知识、流程与方法论拆解。
+- `style-packs/science-sketch/`：手绘线条 + 淡彩 + 图解箭头的科学解释风格，首个样例是《天空为什么是蓝色的？》；0.1.1 增加逐帧手绘 boil 与纸张漂移，避免入场动画结束后整屏长静帧。
+- `style-packs/science-fusion/`：手绘科学图解 + AI 生成示意图的聚变科普风格，首个样例是《合肥，有一轮“人造太阳”》（EAST / 1 亿°C / 1066 秒）。
+- `examples/creative-packages/science-sky/`：从主题、研究、脚本、分镜到 ProductionSpec 的完整创作需求包样例。
 - 风格库：显示来源与安装状态，支持搜索、分类筛选、收藏、最近使用、2 秒循环 WebP 动态预览，以及「安装到本机」和「卸载本机副本」。
-- 当前 19 个风格：动态字体、手绘动画、数据字卡、纸张拼贴、白板讲解、复古 VHS、漫画分镜、蓝图技术、歌词卡拉 OK、数据图表、极简编辑、等距信息图、霓虹街机、品牌手册、电影感地图路线、3D 产品展示、3D 数据故事、天体四季科普、线网地图动画。
+- 当前 21 个风格：动态字体、手绘动画、数据字卡、纸张拼贴、白板讲解、科学手绘、复古 VHS、漫画分镜、蓝图技术、歌词卡拉 OK、数据图表、极简编辑、等距信息图、霓虹街机、品牌手册、电影感地图路线、3D 产品展示、3D 数据故事、天体四季科普、线网地图动画、线网开通时间轴。
 - `style-packs/retro-vhs/`：VHS 扫描线、色差、霓虹日落与故障字效。
 - `style-packs/comic-panel/`：漫画分镜、网点、对话气泡与动作线。
 - `style-packs/blueprint-tech/`：蓝图网格、尺寸标注与工程图签。
@@ -132,7 +135,7 @@ python dev/verify-render.py <video.mp4>
 最终帧默认使用 PNG（`--frame-format=png`），避免 JPEG 中间帧把暗部渐变压成色块；`--frame-format=jpg` 仅用于快速测试。
 色带量化：`media.workbench.quality.banding`；旧项目 renderer 升级：`media.workbench.project.upgrade-style`。成片视觉 QA：`media.workbench.quality.visual`。渲染完成后自动执行，结果写入作业与母版 artifact 元数据。Style Pack 声明 `quality.text_audit` 后自动检查文字越界、安全区、重叠与标题命中。平面/白底风格可声明 `quality.banding_gate=false`，只记录平坦段指标而不阻断。
 
-视觉 QA 为 `failed` 或无法完成（`error`）的母版会被 `media.workbench.artifact.export` 阻断，不能进入正式交付；`allow_failed=true` 只用于调试。重型 Canvas Style Pack 可用 `runtime.max_workers` 限制并发，默认渲染器只用 1 个 worker；并发截图导致的停滞与修复记录见 [docs/pitfalls/browser-code-workers.md](docs/pitfalls/browser-code-workers.md)。
+视觉 QA 为 `failed` 或无法完成（`error`）的母版会被 `media.workbench.artifact.export` 阻断，不能进入正式交付；`allow_failed=true` 只用于调试。重型 Canvas Style Pack 可用 `runtime.max_workers` 限制并发，默认渲染器只用 1 个 worker；并发截图导致的停滞与修复记录见 [docs/pitfalls/browser-code-workers.md](docs/pitfalls/browser-code-workers.md)；手绘/白板风格的长静帧问题与修复见 [docs/pitfalls/static-frames.md](docs/pitfalls/static-frames.md)。
 
 代码项目仍由创作台管理项目、修订、审查图、反馈、质量门禁与产物；支持 `project.data.write` 注入 `input/data.json`，默认网络策略为 `none`，最终渲染前还要通过 `preview.determinism`：
 

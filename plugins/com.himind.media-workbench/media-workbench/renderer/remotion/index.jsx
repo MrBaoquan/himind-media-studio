@@ -2,6 +2,7 @@ import React from 'react';
 import {AbsoluteFill, Composition, interpolate, registerRoot, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {RouteGrowth} from './compositions/RouteGrowth.jsx';
 import {Storyboard} from './compositions/Storyboard.jsx';
+import {PromoVideo, promoMetadata} from './compositions/PromoVideo.jsx';
 import {BigNumber} from './shots/BigNumber.jsx';
 import {Compare} from './shots/Compare.jsx';
 import {Quote} from './shots/Quote.jsx';
@@ -172,6 +173,7 @@ export const COMPOSITIONS = {
   ShareBreakdown,
   Flow,
   SankeyFlow,
+  PromoVideo,
 };
 
 // Storyboard 的真实时长由镜头求和决定：编辑镜头后不依赖 recipe.duration_seconds。
@@ -191,6 +193,7 @@ const Root = () => <>
   <Composition id="GDPMapStory" component={MapStory} width={1080} height={1920} fps={30} durationInFrames={540} defaultProps={{}} calculateMetadata={metadata} />
   <Composition id="RouteGrowth" component={RouteGrowth} width={1080} height={1920} fps={30} durationInFrames={540} defaultProps={{}} calculateMetadata={metadata} />
   <Composition id="Storyboard" component={Storyboard} width={1080} height={1920} fps={30} durationInFrames={600} defaultProps={{}} calculateMetadata={storyboardMetadata} />
+  <Composition id="PromoVideo" component={PromoVideo} width={1920} height={1080} fps={30} durationInFrames={1050} defaultProps={{}} calculateMetadata={promoMetadata} />
   <Composition id="Choropleth" component={Choropleth} width={1080} height={1920} fps={30} durationInFrames={300} defaultProps={{}} calculateMetadata={metadata} />
   <Composition id="ShareBreakdown" component={ShareBreakdown} width={1080} height={1920} fps={30} durationInFrames={300} defaultProps={{}} calculateMetadata={metadata} />
   <Composition id="Flow" component={Flow} width={1080} height={1920} fps={30} durationInFrames={300} defaultProps={{}} calculateMetadata={metadata} />
@@ -204,5 +207,4 @@ const Root = () => <>
 
 registerRoot(Root);
 
-export {LeaderboardTech, MapStory, RouteGrowth, Storyboard, BigNumber, Compare, Quote, BarRace, Timeline, Choropleth, ShareBreakdown, Flow, SankeyFlow};
-
+export {LeaderboardTech, MapStory, RouteGrowth, Storyboard, PromoVideo, BigNumber, Compare, Quote, BarRace, Timeline, Choropleth, ShareBreakdown, Flow, SankeyFlow};

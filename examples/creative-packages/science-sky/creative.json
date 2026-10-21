@@ -1,0 +1,328 @@
+{
+  "version": "himind.video.creative-package.v1",
+  "id": "creative-example-science-sky",
+  "revision": 1,
+  "status": "draft",
+  "title": "天空为什么是蓝色的？",
+  "brief": {
+    "title": "天空为什么是蓝色的？",
+    "topic": "瑞利散射",
+    "goal": "用反直觉问题解释天空呈蓝色的物理机制，并纠正常见误解",
+    "audience": "泛知识用户 / 中学生",
+    "platform": "douyin",
+    "duration_seconds": 45,
+    "tone": "好奇、克制、可视化解释",
+    "constraints": [
+      "不能用海水反射解释天空颜色",
+      "必须区分散射与反射",
+      "必须给出来源"
+    ],
+    "success_criteria": [
+      "观众能说出蓝光被空气散射",
+      "能解释日落为什么偏红",
+      "没有事实性错误",
+      "能解释紫光散射更强但天空不呈紫色的原因"
+    ],
+    "source": "NASA Space Place / NOAA JetStream（完整 URL 见 research.sources）"
+  },
+  "research": {
+    "mode": "required",
+    "sources": [
+      {
+        "id": "s1",
+        "publisher": "NASA Space Place",
+        "title": "Why Is the Sky Blue?",
+        "url": "https://spaceplace.nasa.gov/blue-sky/en/"
+      },
+      {
+        "id": "s2",
+        "publisher": "NOAA JetStream",
+        "title": "The Atmosphere",
+        "url": "https://www.noaa.gov/jetstream/atmosphere"
+      }
+    ],
+    "claims": [
+      {
+        "id": "c1",
+        "text": "太阳光包含多种可见光波长",
+        "evidence_refs": [
+          "s1"
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "c2",
+        "text": "瑞利散射强度近似与波长四次方成反比，短波长散射更强",
+        "evidence_refs": [
+          "s1",
+          "s2"
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "c3",
+        "text": "日落时光线穿过更厚的大气层，蓝光被散掉更多",
+        "evidence_refs": [
+          "s1"
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "c4",
+        "text": "天空的蓝色不是海洋反射造成的",
+        "evidence_refs": [
+          "s1"
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "c5",
+        "text": "紫光比蓝光散射更强，但人眼对蓝光更敏感，且太阳光谱中紫光较少",
+        "evidence_refs": [
+          "s1"
+        ],
+        "confidence": "high"
+      }
+    ],
+    "uncertainties": [
+      "45 秒版本不展开臭氧吸收、太阳高度角与观测者纬度的细节"
+    ]
+  },
+  "script": {
+    "logline": "从一个反直觉问题出发，用光、空气分子和日落对比解释天空的蓝色。",
+    "structure": "hook -> sunlight -> scattering -> observer -> sunset -> takeaway",
+    "beats": [
+      {
+        "id": "b1",
+        "purpose": "hook",
+        "duration_seconds": 5,
+        "narration": "天空明明是空的，为什么抬头却是蓝色？",
+        "on_screen_text": "天空为什么是蓝色的？",
+        "visual_intent": "白板问号、淡彩天空、太阳"
+      },
+      {
+        "id": "b2",
+        "purpose": "setup",
+        "duration_seconds": 7,
+        "narration": "阳光看起来是白色，其实包含所有颜色。",
+        "on_screen_text": "白光 = 可见光谱",
+        "visual_intent": "棱镜分出七色光"
+      },
+      {
+        "id": "b3",
+        "purpose": "mechanism",
+        "duration_seconds": 11,
+        "narration": "空气分子会把短波长的蓝光散射到四面八方，强度大约与波长的四次方成反比。",
+        "on_screen_text": "蓝光更容易被散射",
+        "visual_intent": "空气分子与蓝色波浪箭头"
+      },
+      {
+        "id": "b4",
+        "purpose": "proof",
+        "duration_seconds": 8,
+        "narration": "所以无论你看向天空哪里，都有蓝光进入眼睛。紫光散射更强，但人眼对蓝更敏感。",
+        "on_screen_text": "整片天空都在发蓝",
+        "visual_intent": "观察者、来自天空各处的箭头，并标注紫光与视觉敏感度"
+      },
+      {
+        "id": "b5",
+        "purpose": "twist",
+        "duration_seconds": 9,
+        "narration": "日落时光线穿过更厚的大气层，蓝光先被散掉，只剩红橙。",
+        "on_screen_text": "傍晚为什么变红？",
+        "visual_intent": "白天/日落分屏与长路径"
+      },
+      {
+        "id": "b6",
+        "purpose": "conclusion",
+        "duration_seconds": 5,
+        "narration": "你看到的蓝，是空气散射后的阳光。",
+        "on_screen_text": "你看到的蓝，是空气散射后的阳光。",
+        "visual_intent": "结论卡与来源"
+      }
+    ]
+  },
+  "storyboard": {
+    "shots": [
+      {
+        "id": "shot1",
+        "beat_id": "b1",
+        "shot": "title",
+        "role": "hook",
+        "duration_seconds": 5,
+        "visual": "白板问号、淡彩天空、太阳",
+        "text": "天空为什么是蓝色的？"
+      },
+      {
+        "id": "shot2",
+        "beat_id": "b2",
+        "shot": "spectrum",
+        "role": "setup",
+        "duration_seconds": 7,
+        "visual": "棱镜与七色光谱",
+        "text": "白光 = 可见光谱"
+      },
+      {
+        "id": "shot3",
+        "beat_id": "b3",
+        "shot": "scatter",
+        "role": "mechanism",
+        "duration_seconds": 11,
+        "visual": "空气分子与蓝色散射箭头",
+        "text": "蓝光更容易被散射"
+      },
+      {
+        "id": "shot4",
+        "beat_id": "b4",
+        "shot": "observer",
+        "role": "proof",
+        "duration_seconds": 8,
+        "visual": "观察者与来自天空各处的蓝光",
+        "text": "整片天空都在发蓝"
+      },
+      {
+        "id": "shot5",
+        "beat_id": "b5",
+        "shot": "sunset",
+        "role": "twist",
+        "duration_seconds": 9,
+        "visual": "白天/日落分屏与长路径",
+        "text": "傍晚为什么变红？"
+      },
+      {
+        "id": "shot6",
+        "beat_id": "b6",
+        "shot": "takeaway",
+        "role": "conclusion",
+        "duration_seconds": 5,
+        "visual": "结论卡与来源",
+        "text": "你看到的蓝，是空气散射后的阳光。"
+      }
+    ]
+  },
+  "production": {
+    "mode": "code",
+    "style_pack": "science-sketch",
+    "style_version": "0.1.1",
+    "renderer": "browser-code",
+    "duration_seconds": 45,
+    "aspect": "9:16",
+    "platform": "douyin",
+    "required_data": [
+      "scenes",
+      "claims",
+      "sources"
+    ],
+    "required_assets": [],
+    "quality_gates": [
+      "safe_area",
+      "text_bounds",
+      "text_overlap",
+      "determinism"
+    ],
+    "data": {
+      "title": "天空为什么是蓝色的？",
+      "subtitle": "从阳光、空气分子到日落",
+      "source": "来源：NASA Space Place / NOAA JetStream",
+      "sources": [
+        {
+          "id": "s1",
+          "publisher": "NASA Space Place",
+          "title": "Why Is the Sky Blue?",
+          "url": "https://spaceplace.nasa.gov/blue-sky/en/"
+        },
+        {
+          "id": "s2",
+          "publisher": "NOAA JetStream",
+          "title": "The Atmosphere",
+          "url": "https://www.noaa.gov/jetstream/atmosphere"
+        }
+      ],
+      "accent": "#2b74b5",
+      "scenes": [
+        {
+          "id": "hook",
+          "type": "title",
+          "start": 0,
+          "end": 5,
+          "kicker": "SCIENCE SKETCH 01",
+          "title": "天空为什么是蓝色的？",
+          "caption": "天空明明是空的，为什么抬头却是蓝色？",
+          "note": "先别急着说“反射海洋”"
+        },
+        {
+          "id": "spectrum",
+          "type": "spectrum",
+          "start": 5,
+          "end": 12,
+          "kicker": "01 / SUNLIGHT",
+          "title": "阳光不是只有白色",
+          "caption": "白光里藏着从红到紫的可见光谱。",
+          "labels": [
+            "红",
+            "橙",
+            "黄",
+            "绿",
+            "蓝",
+            "靛",
+            "紫"
+          ]
+        },
+        {
+          "id": "scatter",
+          "type": "scatter",
+          "start": 12,
+          "end": 23,
+          "kicker": "02 / SCATTERING",
+          "title": "空气分子把蓝光散开",
+          "caption": "短波长的蓝光更容易被空气分子改变方向。",
+          "note": "瑞利散射 ≈ 1/λ⁴",
+          "labels": [
+            "太阳光",
+            "空气分子",
+            "蓝光被散射"
+          ]
+        },
+        {
+          "id": "observer",
+          "type": "observer",
+          "start": 23,
+          "end": 31,
+          "kicker": "03 / YOUR EYES",
+          "title": "所以整片天空都在发蓝",
+          "caption": "蓝光从天空各处进入你的眼睛，而不只是来自太阳。",
+          "note": "紫光散射更强，但人眼对蓝更敏感"
+        },
+        {
+          "id": "sunset",
+          "type": "sunset",
+          "start": 31,
+          "end": 40,
+          "kicker": "04 / SUNSET",
+          "title": "日落时，蓝光先被散掉",
+          "caption": "光线穿过更厚的大气层，剩下的红橙色抵达眼睛。",
+          "note": "路径更长 → 蓝光被散掉更多"
+        },
+        {
+          "id": "takeaway",
+          "type": "takeaway",
+          "start": 40,
+          "end": 45,
+          "kicker": "TAKEAWAY",
+          "title": "你看到的蓝，是空气散射后的阳光。",
+          "caption": "不是天空被涂成蓝色，也不是海洋的反射。",
+          "source": "来源：NASA Space Place / NOAA JetStream"
+        }
+      ]
+    }
+  },
+  "approval": {
+    "approved_revision": 0
+  },
+  "links": {
+    "project_id": "",
+    "materialized_revision": 0
+  },
+  "created_at": "2026-10-19T00:00:00Z",
+  "updated_at": "2026-10-19T00:00:00Z"
+}

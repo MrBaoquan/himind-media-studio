@@ -1,0 +1,88 @@
+{
+  "schema": "himind.asset-pack.v1",
+  "id": "hefei-tokamak-reference",
+  "version": "1.0.0",
+  "name": "合肥人造太阳 EAST 托卡马克参考包",
+  "description": "由 hefei-artificial-sun 成片 stills 沉淀的主体参考资产，供角色/主体一致性与镜头复用。",
+  "license": "HiMind-Original",
+  "attribution": "HiMind-Original",
+  "resources": [
+    {
+      "id": "reference-01",
+      "type": "image",
+      "path": "resources/01-still-0001.png",
+      "role": "location-reference",
+      "mime": "image/png",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "2d7bb9274cd8682b103e4360a79e15f5c021e41180a7c636dc24015c8c27683f",
+      "size": 637245,
+      "source": "hefei-artificial-sun/out/stills/still-0001.png"
+    },
+    {
+      "id": "reference-02",
+      "type": "image",
+      "path": "resources/02-still-0002.png",
+      "role": "location-reference",
+      "mime": "image/png",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "30cf59e231127e910d6e3344ca3419ef017139f89fd1f5d6d800cea0a65fcf8c",
+      "size": 647124,
+      "source": "hefei-artificial-sun/out/stills/still-0002.png"
+    },
+    {
+      "id": "reference-03",
+      "type": "image",
+      "path": "resources/03-still-0003.png",
+      "role": "location-reference",
+      "mime": "image/png",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "00901d6b895f572ad3b9d2fd6a7cdf3d7421ac62bc5b44afcf24451a6e04f0ce",
+      "size": 556475,
+      "source": "hefei-artificial-sun/out/stills/still-0003.png"
+    }
+  ],
+  "metadata": {
+    "character": "EAST tokamak",
+    "commercial_use": true,
+    "created_at": "2026-10-19T10:31:38Z",
+    "domains": [
+      "image",
+      "reference"
+    ],
+    "negative_prompt": "text, watermark, low resolution",
+    "prompt": "futuristic tokamak fusion reactor, glowing plasma torus, cinematic volumetric light",
+    "provider": "media-visual.reference",
+    "seed": 0
+  },
+  "provenance": {
+    "commercial_use": true,
+    "license": "HiMind-Original",
+    "license_url": "",
+    "resources": 3,
+    "source": "user-provided"
+  },
+  "permissions": {
+    "filesystem": "workspace",
+    "network": {
+      "allow": [],
+      "mode": "none"
+    },
+    "process": []
+  },
+  "consumers": [
+    "com.himind.media-visual",
+    "com.himind.media-workbench"
+  ],
+  "tags": [
+    "reference",
+    "character",
+    "image",
+    "science",
+    "fusion",
+    "tokamak",
+    "hefei"
+  ]
+}

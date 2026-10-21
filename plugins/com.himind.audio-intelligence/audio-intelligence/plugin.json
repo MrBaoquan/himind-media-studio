@@ -1,0 +1,108 @@
+{
+  "id": "com.himind.audio-intelligence",
+  "name": "音频智能",
+  "author": "马宝全",
+  "categories": ["audio", "testing-quality"],
+  "description": "音频智能：逐词对齐、字幕同步检查与脚本可懂度评分；ASR 继续使用 media.ai.transcribe。",
+  "release_notes": "首个音频智能 External Pack：audio.align 逐词对齐、audio.qa.sync 字幕同步、audio.qa.intelligibility 脚本可懂度。",
+  "version": "0.1.0",
+  "entry": "bin/audio-intelligence.exe",
+  "runtime": "process-jsonrpc-stdio",
+  "platforms": ["windows-x64"],
+  "min_agent_version": "0.3.40",
+  "governance": "optional",
+  "plugin_dependencies": [],
+  "capabilities": [
+    {
+      "id": "audio.align",
+      "description": "把旁白文本对齐为逐词时间戳。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {"type": "string"},
+          "creative_id": {"type": "string"},
+          "voice_clips": {"type": "array", "items": {"type": "object"}}
+        },
+        "required": ["workspace_root", "creative_id"],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 120
+    },
+    {
+      "id": "audio.alignment.get",
+      "description": "读取逐词对齐结果。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {"type": "string"},
+          "creative_id": {"type": "string"},
+          "alignment_path": {"type": "string"}
+        },
+        "required": ["workspace_root", "creative_id"],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 30
+    },
+    {
+      "id": "audio.subtitle.from-alignment",
+      "description": "从逐词时间戳生成对齐字幕 cues。",
+      "risk_level": "local_write",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {"type": "string"},
+          "creative_id": {"type": "string"},
+          "alignment_path": {"type": "string"},
+          "max_chars": {"type": "integer", "minimum": 6, "maximum": 60}
+        },
+        "required": ["workspace_root", "creative_id"],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 60
+    },
+    {
+      "id": "audio.qa.sync",
+      "description": "检查字幕 cues 与逐词时间戳同步。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {"type": "string"},
+          "creative_id": {"type": "string"},
+          "alignment_path": {"type": "string"},
+          "subtitles": {"type": "array", "items": {"type": "object"}}
+        },
+        "required": ["workspace_root", "creative_id"],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 60
+    },
+    {
+      "id": "audio.qa.intelligibility",
+      "description": "比较脚本与 ASR 转写，返回可懂度评分。",
+      "risk_level": "read_only",
+      "availability": "local",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "workspace_root": {"type": "string"},
+          "creative_id": {"type": "string"},
+          "script": {"type": "string"},
+          "transcript": {"type": "string"}
+        },
+        "required": ["workspace_root"],
+        "additionalProperties": false
+      },
+      "timeout_seconds": 60
+    }
+  ],
+  "permissions": ["filesystem.workspace.read", "filesystem.workspace.write"],
+  "capability_namespace": "audio",
+  "distribution_targets": ["github"]
+}

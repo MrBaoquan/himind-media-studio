@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "promo-video data contract",
+  "type": "object",
+  "required": ["brand"],
+  "properties": {
+    "brand": {"type": "string", "minLength": 1, "maxLength": 40},
+    "tagline": {"type": "string", "maxLength": 120},
+    "kicker": {"type": "string", "maxLength": 80},
+    "scenes": {
+      "type": "array", "minItems": 3, "maxItems": 8,
+      "items": {
+        "type": "object",
+        "required": ["kind", "duration_seconds"],
+        "properties": {
+          "kind": {"type": "string", "enum": ["hero", "statement", "screenshot", "cta"]},
+          "duration_seconds": {"type": "number", "minimum": 2, "maximum": 20},
+          "title": {"type": "string", "maxLength": 100},
+          "subtitle": {"type": "string", "maxLength": 180},
+          "kicker": {"type": "string", "maxLength": 80},
+          "image": {"type": "string", "maxLength": 200},
+          "bullets": {"type": "array", "maxItems": 5, "items": {"type": "string", "maxLength": 80}},
+          "points": {"type": "array", "maxItems": 4, "items": {"type": "string", "maxLength": 40}},
+          "cta": {"type": "string", "maxLength": 80}
+        },
+        "additionalProperties": false
+      }
+    },
+    "cta": {
+      "type": "object",
+      "properties": {
+        "title": {"type": "string", "maxLength": 40},
+        "subtitle": {"type": "string", "maxLength": 120},
+        "url": {"type": "string", "maxLength": 120}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

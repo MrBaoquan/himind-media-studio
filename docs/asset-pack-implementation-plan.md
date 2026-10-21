@@ -83,6 +83,7 @@
 - [x] data-story-3d
 - [x] celestial-seasons（three.js PBR / 30s / 科学事实卡 / NASA 地球贴图）
 - [x] transit-network（白底线网 / 线路生长 / 站名避让 / 合肥示意数据 / PNG 帧）
+- [x] science-sketch 0.1.1（手绘线条 / 淡彩 / 光谱 / 散射 / 45 秒科普场景 / 逐帧 boil / 纸张漂移 / 成片无长静帧）
 
 ## Phase 6：跨领域验证
 
@@ -91,17 +92,3 @@
 - [ ] 数据集包
 - [ ] 提示词包
 - [ ] 品牌套件（跨插件共享）
-
-
-
-
-
-
-
-
-
-
-
-
-
-

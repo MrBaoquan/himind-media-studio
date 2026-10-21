@@ -1,0 +1,248 @@
+{
+  "schema_version": "workflow_package.v1",
+  "id": "com.himind.media.workflow.media-qa",
+  "version": "0.1.2",
+  "distribution_targets": [
+    "workbench",
+    "github"
+  ],
+  "name": "整片体检",
+  "description": "对视频/图片/参考包做一次体检：联系表、抽帧画质、场景切点、图像画质、参考一致性，以及项目级文字与音频 QA。",
+  "release_notes": "0.1.2：明确独立终检与 no-go 规则；capability-only 工作流不声明 supported_runtimes。",
+  "min_agent_version": "0.3.47",
+  "local_requirements": {
+    "platform": "windows",
+    "workspace": "directory",
+    "required_tools": [
+      "ffmpeg",
+      "ffprobe"
+    ],
+    "recommended_tools": []
+  },
+  "execution_policy": "segmented",
+  "entrypoints": [
+    {
+      "id": "qa",
+      "at_step": "MQ-SHEET",
+      "label": "开始整片体检",
+      "requires": []
+    }
+  ],
+  "default_entrypoint": "qa",
+  "default_exitpoint": "report",
+  "exits": [
+    {
+      "id": "sheet_ready",
+      "at_step": "MQ-SHEET",
+      "label": "联系表已生成",
+      "produces": []
+    },
+    {
+      "id": "video_ready",
+      "at_step": "MQ-VIDEO",
+      "label": "成片抽帧 QA 完成",
+      "produces": []
+    },
+    {
+      "id": "scenes_ready",
+      "at_step": "MQ-SCENES",
+      "label": "场景切点已检测",
+      "produces": []
+    },
+    {
+      "id": "reference_ready",
+      "at_step": "MQ-REFERENCE",
+      "label": "参考一致性已检查",
+      "produces": []
+    },
+    {
+      "id": "report",
+      "at_step": "MQ-PROJECT",
+      "label": "项目级 QA 完成",
+      "produces": []
+    }
+  ],
+  "capabilities": [
+    "visual.video.contact-sheet",
+    "visual.video.qa",
+    "visual.video.scenes",
+    "visual.image.qa",
+    "visual.reference.character.consistency",
+    "media.workbench.quality.visual"
+  ],
+  "dependencies": {
+    "skills": [],
+    "plugins": [
+      "com.himind.media-visual",
+      "com.himind.media-workbench"
+    ],
+    "connectors": [],
+    "runtimes": []
+  },
+  "steps": [
+    {
+      "id": "MQ-SHEET",
+      "title": "生成整片联系表",
+      "kind": "capability",
+      "capability_id": "visual.video.contact-sheet",
+      "execution_mode": "sync",
+      "risk_level": "local_write",
+      "when": {
+        "operator": "all",
+        "conditions": [
+          {
+            "operator": "exists",
+            "path": "input.video_path"
+          },
+          {
+            "operator": "not_equals",
+            "path": "input.video_path",
+            "value": ""
+          }
+        ]
+      },
+      "input": {}
+    },
+    {
+      "id": "MQ-VIDEO",
+      "title": "成片抽帧画质检查",
+      "kind": "capability",
+      "capability_id": "visual.video.qa",
+      "execution_mode": "sync",
+      "risk_level": "read_only",
+      "depends_on": [
+        "MQ-SHEET"
+      ],
+      "when": {
+        "operator": "all",
+        "conditions": [
+          {
+            "operator": "exists",
+            "path": "input.video_path"
+          },
+          {
+            "operator": "not_equals",
+            "path": "input.video_path",
+            "value": ""
+          }
+        ]
+      },
+      "input": {}
+    },
+    {
+      "id": "MQ-SCENES",
+      "title": "检测视觉切点",
+      "kind": "capability",
+      "capability_id": "visual.video.scenes",
+      "execution_mode": "sync",
+      "risk_level": "read_only",
+      "depends_on": [
+        "MQ-VIDEO"
+      ],
+      "when": {
+        "operator": "all",
+        "conditions": [
+          {
+            "operator": "exists",
+            "path": "input.video_path"
+          },
+          {
+            "operator": "not_equals",
+            "path": "input.video_path",
+            "value": ""
+          }
+        ]
+      },
+      "input": {}
+    },
+    {
+      "id": "MQ-IMAGE",
+      "title": "关键帧/图片画质检查",
+      "kind": "capability",
+      "capability_id": "visual.image.qa",
+      "execution_mode": "sync",
+      "risk_level": "read_only",
+      "depends_on": [
+        "MQ-SCENES"
+      ],
+      "when": {
+        "operator": "all",
+        "conditions": [
+          {
+            "operator": "exists",
+            "path": "input.image_path"
+          },
+          {
+            "operator": "not_equals",
+            "path": "input.image_path",
+            "value": ""
+          }
+        ]
+      },
+      "input": {}
+    },
+    {
+      "id": "MQ-REFERENCE",
+      "title": "角色/主体一致性检查",
+      "kind": "capability",
+      "capability_id": "visual.reference.character.consistency",
+      "execution_mode": "sync",
+      "risk_level": "read_only",
+      "depends_on": [
+        "MQ-IMAGE"
+      ],
+      "when": {
+        "operator": "all",
+        "conditions": [
+          {
+            "operator": "exists",
+            "path": "input.pack_path"
+          },
+          {
+            "operator": "not_equals",
+            "path": "input.pack_path",
+            "value": ""
+          }
+        ]
+      },
+      "input": {}
+    },
+    {
+      "id": "MQ-PROJECT",
+      "title": "项目级文字/音频 QA",
+      "kind": "capability",
+      "capability_id": "media.workbench.quality.visual",
+      "execution_mode": "sync",
+      "risk_level": "read_only",
+      "depends_on": [
+        "MQ-REFERENCE"
+      ],
+      "when": {
+        "operator": "all",
+        "conditions": [
+          {
+            "operator": "exists",
+            "path": "input.project_id"
+          },
+          {
+            "operator": "not_equals",
+            "path": "input.project_id",
+            "value": ""
+          }
+        ]
+      },
+      "input": {}
+    }
+  ],
+  "artifacts": [],
+  "ui": {
+    "mode": "declarative",
+    "surfaces": [
+      "agent",
+      "dashboard"
+    ],
+    "entry": "ui/workflow-view.json"
+  },
+  "supported_runtimes": [],
+  "created_at": "2026-10-19T00:00:00Z"
+}

@@ -12,6 +12,16 @@
   "extensions": [
     {
       "type": "plugin",
+      "id": "com.himind.audio-intelligence",
+      "path": "plugins/com.himind.audio-intelligence/audio-intelligence"
+    },
+    {
+      "type": "plugin",
+      "id": "com.himind.audio-production",
+      "path": "plugins/com.himind.audio-production/audio-production"
+    },
+    {
+      "type": "plugin",
       "id": "com.himind.media-workbench",
       "path": "plugins/com.himind.media-workbench/media-workbench"
     },
@@ -49,6 +59,49 @@
       "type": "skill",
       "id": "com.himind.media.code-project",
       "path": "skills/video-code-project"
+    },
+    {
+      "type": "plugin",
+      "id": "com.himind.media-visual",
+      "path": "plugins/com.himind.media-visual/media-visual"
+    },
+    {
+      "type": "workflow",
+      "id": "com.himind.media.workflow.media-qa",
+      "path": "workflows/media-qa"
+    },
+    {
+      "type": "skill",
+      "id": "com.himind.media.promo",
+      "path": "skills/video-promo"
+    },
+    {
+      "type": "workflow",
+      "id": "com.himind.media.workflow.generate-promo-video",
+      "path": "workflows/generate-promo-video"
+    }
+  ],
+  "feature_packs": [
+    {
+      "id": "com.himind.feature.media-workbench",
+      "name": "自媒体创作台",
+      "plugin_ids": [
+        "com.himind.audio-intelligence",
+        "com.himind.audio-production",
+        "com.himind.media-workbench",
+        "com.himind.media-visual"
+      ],
+      "skill_ids": [
+        "com.himind.media.director",
+        "com.himind.media.creator",
+        "com.himind.media.style-curator",
+        "com.himind.media.capability-author",
+        "com.himind.media.code-project",
+        "com.himind.media.promo"
+      ],
+      "agent_preset_ids": [
+        "himind-media-workbench"
+      ]
     }
   ]
 }

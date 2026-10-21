@@ -1,0 +1,171 @@
+{
+  "schema_version": "workflow_package.v1",
+  "id": "com.himind.media.workflow.generate-promo-video",
+  "version": "0.1.0",
+  "distribution_targets": [
+    "workbench",
+    "github"
+  ],
+  "name": "生成产品宣传片",
+  "description": "从已批准的 CreativePackage 生成真实产品宣传片：物化项目、预览、人工审片、质量门禁，并在审批后提交渲染。",
+  "release_notes": "首版：promo-video 模板与 promo-cinema 风格的生产编排；Skill 固化十阶段创作方法，Workflow 负责已批准创作包之后的确定性执行。",
+  "min_agent_version": "0.3.47",
+  "local_requirements": {
+    "platform": "windows",
+    "workspace": "directory",
+    "required_tools": [
+      "node",
+      "npm"
+    ],
+    "recommended_tools": [
+      "ffmpeg",
+      "ffprobe"
+    ]
+  },
+  "execution_policy": "segmented",
+  "entrypoints": [
+    {
+      "id": "produce",
+      "at_step": "PR-MATERIALIZE",
+      "label": "从已批准创作包生产",
+      "requires": [
+        "workspace_root",
+        "creative_id"
+      ]
+    },
+    {
+      "id": "review",
+      "at_step": "PR-PREVIEW",
+      "label": "从已有项目重新预览",
+      "requires": [
+        "workspace_root",
+        "project_id"
+      ]
+    }
+  ],
+  "default_entrypoint": "produce",
+  "default_exitpoint": "render_started",
+  "exits": [
+    {
+      "id": "preview_ready",
+      "at_step": "PR-PREVIEW",
+      "label": "预览已生成",
+      "produces": []
+    },
+    {
+      "id": "reviewed",
+      "at_step": "PR-REVIEW-GATE",
+      "label": "预览已人工确认",
+      "produces": []
+    },
+    {
+      "id": "quality_ready",
+      "at_step": "PR-QUALITY",
+      "label": "质量门禁已通过",
+      "produces": []
+    },
+    {
+      "id": "render_started",
+      "at_step": "PR-RENDER",
+      "label": "渲染已提交",
+      "produces": []
+    }
+  ],
+  "capabilities": [
+    "media.workbench.creative.materialize",
+    "media.workbench.preview.start",
+    "media.workbench.quality.check",
+    "media.workbench.render.start"
+  ],
+  "dependencies": {
+    "skills": [],
+    "plugins": [
+      {
+        "plugin_id": "com.himind.media-workbench",
+        "required": true,
+        "min_version": "0.83.0"
+      }
+    ],
+    "connectors": [],
+    "runtimes": []
+  },
+  "steps": [
+    {
+      "id": "PR-MATERIALIZE",
+      "title": "物化已批准创作包",
+      "kind": "capability",
+      "capability_id": "media.workbench.creative.materialize",
+      "execution_mode": "sync",
+      "risk_level": "local_write",
+      "input": {}
+    },
+    {
+      "id": "PR-PREVIEW",
+      "title": "生成故事板预览",
+      "kind": "capability",
+      "capability_id": "media.workbench.preview.start",
+      "execution_mode": "sync",
+      "risk_level": "local_write",
+      "depends_on": [
+        "PR-MATERIALIZE"
+      ],
+      "input": {
+        "project_step": "PR-MATERIALIZE"
+      }
+    },
+    {
+      "id": "PR-REVIEW-GATE",
+      "title": "人工审片",
+      "kind": "manual",
+      "execution_mode": "sync",
+      "risk_level": "local_write",
+      "depends_on": [
+        "PR-PREVIEW"
+      ],
+      "approval_required": true,
+      "input": {
+        "instructions": "检查真实产品素材、叙事节奏、文字安全区、风格一致性和音频方案。未确认前不要提交渲染。"
+      }
+    },
+    {
+      "id": "PR-QUALITY",
+      "title": "运行质量门禁",
+      "kind": "capability",
+      "capability_id": "media.workbench.quality.check",
+      "execution_mode": "sync",
+      "risk_level": "read_only",
+      "depends_on": [
+        "PR-REVIEW-GATE"
+      ],
+      "input": {
+        "project_step": "PR-MATERIALIZE"
+      }
+    },
+    {
+      "id": "PR-RENDER",
+      "title": "审批并提交渲染",
+      "kind": "capability",
+      "capability_id": "media.workbench.render.start",
+      "execution_mode": "long_running",
+      "risk_level": "local_write",
+      "depends_on": [
+        "PR-QUALITY"
+      ],
+      "approval_required": true,
+      "input": {
+        "project_step": "PR-MATERIALIZE"
+      }
+    }
+  ],
+  "artifacts": [],
+  "ui": {
+    "mode": "declarative",
+    "surfaces": [
+      "agent",
+      "dashboard"
+    ],
+    "entry": "ui/workflow-view.json"
+  },
+  "supported_runtimes": [],
+  "created_at": "2026-10-20T00:00:00Z"
+}

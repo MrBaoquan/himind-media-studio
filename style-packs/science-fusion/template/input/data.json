@@ -1,0 +1,16 @@
+{
+  "title": "合肥，有一轮“人造太阳”",
+  "subtitle": "EAST 托卡马克如何把太阳的聚变搬到地球",
+  "source": "来源：中国科学院合肥物质科学研究院 / EAST · ITER",
+  "scenes": [
+    {"id":"hook","type":"image","start":0,"end":5,"kicker":"HEFEI / FUSION","title":"合肥，有一轮“人造太阳”","caption":"它不挂在天空，而是在一座实验装置里。","image":"/assets/hook.jpg","ai":true},
+    {"id":"east","type":"tokamak","start":5,"end":12,"kicker":"01 / EAST","title":"它不是太阳，是托卡马克","caption":"EAST：全超导托卡马克核聚变实验装置。","labels":["真空室","等离子体","超导磁体"]},
+    {"id":"fusion","type":"fusion","start":12,"end":21,"kicker":"02 / FUSION","title":"太阳的能量，来自聚变","caption":"轻原子核在极高温下结合，释放能量。","labels":["氢核","氦","中子","能量"]},
+    {"id":"plasma","type":"image","start":21,"end":29,"kicker":"03 / 100 MILLION °C","title":"上亿度，物质变成等离子体","caption":"没有材料能直接盛放它。","image":"/assets/plasma.jpg","ai":true},
+    {"id":"magnetic","type":"magnetic","start":29,"end":40,"kicker":"04 / MAGNETIC CONFINEMENT","title":"没有容器，只有磁场","caption":"强磁场把带电粒子悬在空中，不接触器壁。","labels":["磁力线","带电粒子","真空室"]},
+    {"id":"superconducting","type":"tokamak","start":40,"end":48,"kicker":"05 / SUPERCONDUCTING","title":"超导磁体，让强磁场长时间工作","caption":"超导线圈让长脉冲运行成为可能。","labels":["超导磁体","等离子体环","真空室"]},
+    {"id":"record","type":"record","start":48,"end":58,"kicker":"06 / RECORD","title":"1 亿度，1066 秒","caption":"2025-01-20，EAST 刷新此前 403 秒的世界纪录。","labels":["1 亿°C","1066 s","403 s"]},
+    {"id":"boundary","type":"compare","start":58,"end":66,"kicker":"07 / NOT YET","title":"这不是聚变发电","caption":"它证明的是：我们能让微型太阳稳定燃烧得更久。","labels":["稳定性","材料","氚增殖","净能量增益"]},
+    {"id":"takeaway","type":"image","start":66,"end":72,"kicker":"TAKEAWAY","title":"照亮下一种可能","caption":"合肥的这轮人造太阳，照亮的不是天空，而是人类能源的下一种可能。","image":"/assets/future.jpg","ai":true,"source":"来源：中国科学院合肥物质科学研究院 / EAST · ITER"}
+  ]
+}

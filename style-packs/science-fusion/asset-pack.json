@@ -1,0 +1,100 @@
+{
+  "schema": "himind.asset-pack.v1",
+  "id": "science-fusion",
+  "version": "0.1.0",
+  "name": "科学聚变",
+  "description": "手绘科学图解 + AI 生成示意图，用于解释聚变、托卡马克、磁约束与 EAST 纪录。",
+  "license": "MIT",
+  "attribution": "HiMind original science-fusion style pack; Rough.js 4.6.6 (MIT) vendored locally.",
+  "resources": [
+    {
+      "id": "template",
+      "type": "template",
+      "path": "template",
+      "role": "render-template",
+      "runtime": "browser-code",
+      "entry": "render.mjs",
+      "format": "directory"
+    },
+    {
+      "id": "preview",
+      "type": "image",
+      "path": "preview/sheet.jpg",
+      "role": "preview",
+      "mime": "image/jpeg"
+    },
+    {
+      "id": "storyboard",
+      "type": "docs",
+      "path": "template/STORYBOARD.md",
+      "role": "storyboard",
+      "mime": "text/markdown"
+    },
+    {
+      "id": "preview_loop",
+      "type": "image",
+      "path": "preview/loop.webp",
+      "role": "preview_loop",
+      "mime": "image/webp"
+    }
+  ],
+  "entrypoints": [
+    {
+      "id": "render",
+      "resource": "template",
+      "runtime": "browser-code",
+      "entry": "render.mjs",
+      "inputs": [
+        "brief.json",
+        "data.json"
+      ],
+      "outputs": [
+        "video.mp4",
+        "video-web.mp4"
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "https://github.com/MrBaoquan/himind-media-studio",
+    "commit": "local",
+    "license": "MIT",
+    "adapted_files": [
+      "science-sketch renderer",
+      "Rough.js vendored"
+    ],
+    "changes": [
+      "fusion/tokamak/magnetic/record scene grammar",
+      "mixed AI image + programmatic shot support",
+      "72s science explainer timeline"
+    ]
+  },
+  "permissions": {
+    "filesystem": "workspace",
+    "process": [
+      "node",
+      "chrome",
+      "ffmpeg"
+    ],
+    "network": {
+      "mode": "none",
+      "allow": []
+    }
+  },
+  "quality": {
+    "smoke": "preview/sheet.jpg",
+    "determinism": true
+  },
+  "consumers": [
+    "com.himind.media-workbench"
+  ],
+  "tags": [
+    "video",
+    "style",
+    "science",
+    "fusion",
+    "tokamak",
+    "explainer",
+    "hand-drawn",
+    "ai-image"
+  ]
+}
